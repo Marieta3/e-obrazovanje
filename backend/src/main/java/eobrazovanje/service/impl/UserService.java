@@ -21,7 +21,13 @@ public class UserService implements IUserService {
         this.userRepo = userRepo;
     }
 
-    public void CreateUser(UserRequest user){
+    @Override
+    public User findByUsername(String username) {
+        return userRepo.findUserByUsername(username);
+    }
 
+    //TODO: popuni
+    public User CreateUser(UserRequest user){
+        return null;
     }
 }
