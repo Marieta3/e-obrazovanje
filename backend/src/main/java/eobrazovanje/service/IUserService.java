@@ -1,7 +1,7 @@
 package eobrazovanje.service;
 
-import eobrazovanje.model.User;
+import eobrazovanje.model.UserRequest;
 
 public interface IUserService {
-    void CreateUser(User u);
+    void CreateUser(UserRequest u);
 }

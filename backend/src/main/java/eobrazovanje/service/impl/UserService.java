@@ -1,13 +1,18 @@
-package eobrazovanje.service;
+package eobrazovanje.service.impl;
 
+import eobrazovanje.model.Authority;
 import eobrazovanje.model.User;
+import eobrazovanje.model.UserRequest;
+import eobrazovanje.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Service;
 import eobrazovanje.repostiroy.IUserRepository;
 
+import java.util.List;
+
 @Service
-public class UserService implements IUserService{
+public class UserService implements IUserService {
 
     private IUserRepository userRepo;
 
@@ -16,7 +21,7 @@ public class UserService implements IUserService{
         this.userRepo = userRepo;
     }
 
-    public void CreateUser(User u){
-        userRepo.save(u);
+    public void CreateUser(UserRequest user){
+
     }
 }

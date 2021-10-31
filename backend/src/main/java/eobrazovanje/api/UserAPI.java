@@ -17,9 +17,6 @@ public class UserAPI {
 
     @PostMapping
     public void CreateUser(){
-        User u = new User();
-        u.setFirstName("Name1");
-        u.setLastName("Surname1");
-        userService.CreateUser(u);
+
     }
 }
