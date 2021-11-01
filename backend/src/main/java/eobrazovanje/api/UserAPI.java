@@ -1,12 +1,14 @@
 package eobrazovanje.api;
 
 import eobrazovanje.model.User;
+import eobrazovanje.model.UserRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import eobrazovanje.service.IUserService;
 
 @RestController
-@RequestMapping("api/users")
+@RequestMapping("users")
 public class UserAPI {
     private IUserService userService;
 
@@ -15,11 +17,9 @@ public class UserAPI {
         this.userService = userDAO;
     }
 
-    @PostMapping
-    public void CreateUser(){
-        User u = new User();
-        u.setFirstName("Name1");
-        u.setLastName("Surname1");
-        userService.CreateUser(u);
+    @GetMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_STUDENT')")
+    public User FindUserById(@PathVariable("id") Long id){
+        return userService.findById(id);
     }
 }

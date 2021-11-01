@@ -1,7 +1,10 @@
 package eobrazovanje.service;
 
 import eobrazovanje.model.User;
+import eobrazovanje.model.UserRequest;
 
 public interface IUserService {
-    void CreateUser(User u);
+    User findByUsername(String username);
+    User CreateUser(UserRequest u);
+    User findById(Long id);
 }
