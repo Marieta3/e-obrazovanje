@@ -1,5 +1,6 @@
 package eobrazovanje.api;
 
+import eobrazovanje.model.User;
 import eobrazovanje.model.UserRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -16,9 +17,9 @@ public class UserAPI {
         this.userService = userDAO;
     }
 
-    @PostMapping
+    @GetMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_STUDENT')")
-    public void CreateUser(){
-        userService.CreateUser(ur);
+    public User FindUserById(@PathVariable("id") Long id){
+        return userService.findById(id);
     }
 }

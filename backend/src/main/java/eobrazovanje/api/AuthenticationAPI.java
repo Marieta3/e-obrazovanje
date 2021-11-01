@@ -61,7 +61,7 @@ public class AuthenticationAPI{
     }
 
     // Endpoint za registraciju novog korisnika
-    @PostMapping("/signup")
+    @PostMapping("/register")
     public ResponseEntity<User> addUser(@RequestBody UserRequest userRequest, UriComponentsBuilder ucBuilder) {
 
         User existUser = userService.findByUsername(userRequest.getUsername());
@@ -71,7 +71,7 @@ public class AuthenticationAPI{
 
         User user = userService.CreateUser(userRequest);
         HttpHeaders headers = new HttpHeaders();
-        headers.setLocation(ucBuilder.path("/api/user/{userId}").buildAndExpand(user.getId()).toUri());
+        headers.setLocation(ucBuilder.path("/users/{userId}").buildAndExpand(user.getId()).toUri());
         return new ResponseEntity<>(user, HttpStatus.CREATED);
     }
 
