@@ -25,8 +25,8 @@ public class UserService implements IUserService {
     private IUserRepository userRepository;
 
     @Autowired
-    public UserService(IUserRepository userRepo) {
-        this.userRepository = userRepo;
+    public UserService(IUserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -34,18 +34,15 @@ public class UserService implements IUserService {
         return userRepository.findUserByUsername(username);
     }
 
-    //TODO: popuni
     public User CreateUser(UserRequest userRequest){
         User u = new User();
         u.setUsername(userRequest.getUsername());
-        // pre nego sto postavimo lozinku u atribut hesiramo je
         u.setPassword(passwordEncoder.encode(userRequest.getPassword()));
         u.setFirstName(userRequest.getFirstName());
         u.setLastName(userRequest.getLastName());
         u.setEnabled(true);
-
-        List<Authority> auth = authService.findByname("ROLE_USER");
-        // u primeru se registruju samo obicni korisnici i u skladu sa tim im se i dodeljuje samo rola USER
+        //TODO ishendlati role koje se koriste u sistemu
+        List<Authority> auth = authService.findByName("ROLE_STUDENT");
         u.setAuthorities(auth);
 
         u = userRepository.save(u);

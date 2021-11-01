@@ -11,6 +11,6 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         //TODO: napraviti dinamicku putanju
-        registry.addMapping("/**").allowedOrigins("http://localhost:9000");
+        registry.addMapping("/**").allowedOrigins("http://localhost:3000");
     }
 }

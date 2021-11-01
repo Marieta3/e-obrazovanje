@@ -4,10 +4,12 @@ import eobrazovanje.model.Authority;
 import eobrazovanje.repostiroy.IAuthorityRepository;
 import eobrazovanje.service.IAuthorityService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class AuthorityService implements IAuthorityService {
     @Autowired
     private IAuthorityRepository authorityRepository;
@@ -21,7 +23,7 @@ public class AuthorityService implements IAuthorityService {
     }
 
     @Override
-    public List<Authority> findByname(String name) {
+    public List<Authority> findByName(String name) {
         Authority auth = authorityRepository.findByName(name);
         List<Authority> auths = new ArrayList<>();
         auths.add(auth);

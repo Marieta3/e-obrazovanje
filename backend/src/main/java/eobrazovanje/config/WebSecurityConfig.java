@@ -23,8 +23,6 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    // Implementacija PasswordEncoder-a koriscenjem BCrypt hashing funkcije.
-    // BCrypt po defalt-u radi 10 rundi hesiranja prosledjene vrednosti.
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();

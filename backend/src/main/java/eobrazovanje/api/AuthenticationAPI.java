@@ -27,7 +27,7 @@ import javax.servlet.http.HttpServletResponse;
 
 @RestController
 @RequestMapping(value = "/auth", produces = MediaType.APPLICATION_JSON_VALUE)
-public class AuthenticationAPI {
+public class AuthenticationAPI{
     @Autowired
     private TokenUtils tokenUtils;
 
@@ -40,13 +40,10 @@ public class AuthenticationAPI {
     @Autowired
     private IUserService userService;
 
-    // Prvi endpoint koji pogadja korisnik kada se loguje.
-    // Tada zna samo svoje korisnicko ime i lozinku i to prosledjuje na backend.
     @PostMapping("/login")
     public ResponseEntity<UserTokenState> createAuthenticationToken(@RequestBody JwtAuthenticationRequest authenticationRequest,
                                                                     HttpServletResponse response) {
 
-        //
         Authentication authentication = authenticationManager
                 .authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(),
                         authenticationRequest.getPassword()));
