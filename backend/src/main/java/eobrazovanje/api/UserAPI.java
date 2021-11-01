@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import eobrazovanje.service.IUserService;
 
 @RestController
-@RequestMapping("users")
+@RequestMapping("/users")
 public class UserAPI {
     private IUserService userService;
 
@@ -20,6 +20,11 @@ public class UserAPI {
     @GetMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_STUDENT')")
     public User FindUserById(@PathVariable("id") Long id){
+        return userService.findById(id);
+    }
+
+    @GetMapping("/noauth/{id}")
+    public User FindUserById1(@PathVariable("id") Long id){
         return userService.findById(id);
     }
 }

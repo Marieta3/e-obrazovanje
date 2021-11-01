@@ -34,20 +34,21 @@ public class UserService implements IUserService {
         return userRepository.findUserByUsername(username);
     }
 
-    public User CreateUser(UserRequest userRequest){
-        User u = new User();
-        u.setUsername(userRequest.getUsername());
-        u.setPassword(passwordEncoder.encode(userRequest.getPassword()));
-        u.setFirstName(userRequest.getFirstName());
-        u.setLastName(userRequest.getLastName());
-        u.setEnabled(true);
-        //TODO ishendlati role koje se koriste u sistemu
-        List<Authority> auth = authService.findByName("ROLE_STUDENT");
-        u.setAuthorities(auth);
-
-        u = userRepository.save(u);
-        return u;
-    }
+//    public User CreateUser(UserRequest userRequest){
+////        User u = new User();
+////        u.setUsername(userRequest.getUsername());
+////        u.setPassword(passwordEncoder.encode(userRequest.getPassword()));
+////        u.setFirstName(userRequest.getFirstName());
+////        u.setLastName(userRequest.getLastName());
+////        u.setEnabled(true);
+////        //TODO ishendlati role koje se koriste u sistemu
+////        List<Authority> auth = authService.findByName("ROLE_STUDENT");
+////        u.setAuthorities(auth);
+////
+////        u = userRepository.save(u);
+////        return u;
+//        return null;
+//    }
 
     @Override
     public User findById(Long id) {
