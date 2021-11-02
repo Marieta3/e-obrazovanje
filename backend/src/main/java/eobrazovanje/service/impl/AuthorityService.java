@@ -22,11 +22,11 @@ public class AuthorityService implements IAuthorityService {
         return auths;
     }
 
-    @Override
-    public List<Authority> findByName(String name) {
-        Authority auth = authorityRepository.findByName(name);
-        List<Authority> auths = new ArrayList<>();
-        auths.add(auth);
-        return auths;
-    }
+//    @Override
+//    public List<Authority> findByName(String name) {
+//        Authority auth = authorityRepository.findByName(name);
+//        List<Authority> auths = new ArrayList<>();
+//        auths.add(auth);
+//        return auths;
+//    }
 }

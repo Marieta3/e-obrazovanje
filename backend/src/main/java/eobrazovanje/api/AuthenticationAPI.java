@@ -1,8 +1,7 @@
 package eobrazovanje.api;
 
 import eobrazovanje.exception.ResourceConflictException;
-import eobrazovanje.model.User;
-import eobrazovanje.model.UserRequest;
+import eobrazovanje.model.*;
 import eobrazovanje.security.TokenUtils;
 import eobrazovanje.security.auth.JwtAuthenticationRequest;
 import eobrazovanje.security.auth.UserTokenState;
@@ -43,7 +42,7 @@ public class AuthenticationAPI{
     @PostMapping("/login")
     public ResponseEntity<UserTokenState> createAuthenticationToken(@RequestBody JwtAuthenticationRequest authenticationRequest,
                                                                     HttpServletResponse response) {
-
+        System.out.println("\n\nLOGIN       \n\n");
         Authentication authentication = authenticationManager
                 .authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(),
                         authenticationRequest.getPassword()));
@@ -53,7 +52,19 @@ public class AuthenticationAPI{
 
         // Kreiraj token za tog korisnika
         User user = (User) authentication.getPrincipal();
-        String jwt = tokenUtils.generateToken(user.getUsername());
+        Role role = null;
+
+        if (user instanceof Admin) {
+            role = Role.ROLE_ADMIN;
+        }
+        else if (user instanceof Teacher) {
+            role = Role.ROLE_TEACHER;
+        }
+        else if (user instanceof Student){
+            role = Role.ROLE_STUDENT;
+        }
+
+        String jwt = tokenUtils.generateToken(user.getUsername(), role.toString());
         int expiresIn = tokenUtils.getExpiredIn();
 
         // Vrati token kao odgovor na uspesnu autentifikaciju
@@ -61,18 +72,18 @@ public class AuthenticationAPI{
     }
 
     // Endpoint za registraciju novog korisnika
-    @PostMapping("/register")
-    public ResponseEntity<User> addUser(@RequestBody UserRequest userRequest, UriComponentsBuilder ucBuilder) {
-
-        User existUser = userService.findByUsername(userRequest.getUsername());
-        if (existUser != null) {
-            throw new ResourceConflictException(userRequest.getId(), "Username already exists");
-        }
-
-        User user = userService.CreateUser(userRequest);
-        HttpHeaders headers = new HttpHeaders();
-        headers.setLocation(ucBuilder.path("/users/{userId}").buildAndExpand(user.getId()).toUri());
-        return new ResponseEntity<>(user, HttpStatus.CREATED);
-    }
+//    @PostMapping("/register")
+//    public ResponseEntity<User> addUser(@RequestBody UserRequest userRequest, UriComponentsBuilder ucBuilder) {
+//
+//        User existUser = userService.findByUsername(userRequest.getUsername());
+//        if (existUser != null) {
+//            throw new ResourceConflictException(userRequest.getId(), "Username already exists");
+//        }
+//
+//        User user = userService.CreateUser(userRequest);
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.setLocation(ucBuilder.path("/users/{userId}").buildAndExpand(user.getId()).toUri());
+//        return new ResponseEntity<>(user, HttpStatus.CREATED);
+//    }
 
 }

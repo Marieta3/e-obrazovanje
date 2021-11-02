@@ -1,5 +1,6 @@
 package eobrazovanje.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
@@ -13,14 +14,33 @@ public class Authority implements GrantedAuthority {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name")
-    private String name;
+//    @Column(name = "name")
+//    private String name;
 
-    @Override
+    @Column(name = "role")
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
+
     public String getAuthority() {
-        return name;
+        return role.toString();
     }
 
+    @JsonIgnore
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+//    @Override
+//    public String getAuthority() {
+//        return name;
+//    }
+
+    @JsonIgnore
     public Long getId() {
         return id;
     }
@@ -29,11 +49,11 @@ public class Authority implements GrantedAuthority {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
+//    public String getName() {
+//        return name;
+//    }
+//
+//    public void setName(String name) {
+//        this.name = name;
+//    }
 }
