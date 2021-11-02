@@ -31,6 +31,8 @@
 </template>
 
 <script>
+import axios from 'axios'
+import * as comm from '../configuration/communication.js'
 export default {
     name: "LogIn",
     data() {
@@ -42,7 +44,15 @@ export default {
     },
     methods:{
         login(){
-            alert("Send axios to back");
+            axios.post(comm.protocol +'://' + comm.server + '/auth/login', {username: this.username, password: this.password})
+            .then(response => {
+              if(response.status==200){
+                alert("uspesno se ulogovao")
+                console.log(response.data)
+              }
+            }).catch(() => {
+              alert("greska")
+            })
         }
     }
 }
