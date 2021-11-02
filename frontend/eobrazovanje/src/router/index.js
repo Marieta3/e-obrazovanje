@@ -5,10 +5,17 @@ import Home from '../views/Home.vue'
 Vue.use(VueRouter)
 
 const routes = [{
-  path: '/',
-  name: 'Home',
-  component: Home
-}, ]
+    path: '/',
+    name: 'Home',
+    component: Home
+  },
+  {
+    path: '/question',
+    name: 'Question',
+    component: () =>
+      import ('../components/Question.vue')
+  }
+]
 
 const router = new VueRouter({
   routes
