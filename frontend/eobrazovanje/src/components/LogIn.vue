@@ -48,7 +48,7 @@ export default {
             .then(response => {
               if(response.status==200){
                 alert("uspesno se ulogovao")
-                console.log(response.data)
+                comm.setJWTToken(response.data.accessToken);
               }
             }).catch(() => {
               alert("greska")
