@@ -43,12 +43,7 @@ export default {
         name : "",
         description: "",
         select: "",
-        allTeachers: [
-          'Programming',
-          'Design',
-          'Vue',
-          'Vuetify',
-        ],
+        allTeachers: []
       }
     },
     created(){
@@ -56,7 +51,11 @@ export default {
     },
     methods : {
         create(){
-            axios.post(comm.protocol +'://' + comm.server + '/courses', {name: this.name, description: this.description, teacherId: 4})
+            let selectedTeacherId = this.select.split(" ")[0]
+            let config = {
+                headers: comm.getHeader()
+            }
+            axios.post(comm.protocol +'://' + comm.server + '/courses', {name: this.name, description: this.description, teacherId: selectedTeacherId}, config)
             .then(response => {
               if(response.status==200){
                 alert("uspesno kreiran kurs")
@@ -66,7 +65,25 @@ export default {
             })
         },
         getAllTeachers(){
-            //TODO: dobavaljanje svih profesora i smestanje u allTeachers
+            let config = {
+                headers: comm.getHeader()
+            }
+            axios.get(comm.protocol +'://' + comm.server + '/users/teachers',config)
+            .then(response => {
+              if(response.status==200){
+                  console.log(response.data)
+                  this.prepareDataFromResponse(response.data)
+              }
+            }).catch(() => {
+              alert("greska")
+            })
+        },
+        prepareDataFromResponse(items){
+            let result = []
+            for(let item of items){
+                result.push(item.id + " " + item.firstName + " " + item.lastName )
+            }
+            this.allTeachers = result
         }
     }
 }
