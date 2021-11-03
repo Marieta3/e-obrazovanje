@@ -74,7 +74,7 @@ public class TokenUtils {
     }
 
     private Date generateExpirationDate() {
-        return new Date(new Date().getTime() + EXPIRES_IN);
+        return new Date(new Date().getTime() + EXPIRES_IN*100);
     }
 
     // Funkcija za refresh JWT tokena

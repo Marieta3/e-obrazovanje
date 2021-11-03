@@ -63,7 +63,7 @@ public class AuthenticationAPI{
         else if (user instanceof Student){
             role = Role.ROLE_STUDENT;
         }
-
+        System.out.println(role.toString());
         String jwt = tokenUtils.generateToken(user.getUsername(), role.toString());
         int expiresIn = tokenUtils.getExpiredIn();
 
