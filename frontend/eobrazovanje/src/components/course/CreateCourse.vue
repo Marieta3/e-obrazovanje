@@ -34,6 +34,8 @@
 </template>
 
 <script>
+import axios from 'axios'
+import * as comm from '../../configuration/communication.js'
 export default {
     name:"CreateCourse",
     data () {
@@ -48,6 +50,24 @@ export default {
           'Vuetify',
         ],
       }
+    },
+    created(){
+        this.getAllTeachers()
+    },
+    methods : {
+        create(){
+            axios.post(comm.protocol +'://' + comm.server + '/courses', {name: this.name, description: this.description, teacherId: 4})
+            .then(response => {
+              if(response.status==200){
+                alert("uspesno kreiran kurs")
+              }
+            }).catch(() => {
+              alert("greska")
+            })
+        },
+        getAllTeachers(){
+            //TODO: dobavaljanje svih profesora i smestanje u allTeachers
+        }
     }
 }
 </script>

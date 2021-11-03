@@ -1,7 +1,7 @@
 <template>
   <v-container>
       <v-row justify="center">
-          <v-col cols="12" md="8" >
+          <v-col cols="12" md="6" >
               <v-text-field
                 label="Title"
                 v-model="title"
@@ -10,7 +10,7 @@
           </v-col>
       </v-row>
       <template v-if="renderComponent">
-      <v-row v-for="(item,index) in questions" :key="index" justify="center" >
+      <v-row v-for="(item,index) in questions" class="pa-3" :key="index" justify="center" >
           <v-col cols="12" md="6">
               <question-dialog :index="index" :oldQuestion="item" v-on:commitedQuestion="updateQuestion(index,$event)"/>
           </v-col>
@@ -34,9 +34,12 @@
 
 <script>
 import QuestionDialog from '../dialogs/modals/QuestionDialog.vue'
+import axios from 'axios'
+import * as comm from '../configuration/communication.js'
 export default {
   components: { QuestionDialog },
     name: "Test",
+    props: ['courseId'],
     data(){
         return{
             title: "",
@@ -51,11 +54,21 @@ export default {
             console.log(this.questions)
         },
         commitTest(){
-            console.log({title:this.title, qustions:this.questions})
+            let config = {
+                headers: comm.getHeader()
+            }
+            axios.post(comm.protocol +'://' + comm.server + '/tests', {title: this.title, courseId: this.courseId, questions: this.questions},config)
+            .then(response => {
+              if(response.status==200){
+                alert("uspesno kreiran test")
+              }
+            }).catch(() => {
+              alert("greska")
+            })
         },
         addQuestion(){
             this.questions.push({
-                text: "",
+                text: "New question",
                 answers: [],
                 isRandom: false,
                 points: ""

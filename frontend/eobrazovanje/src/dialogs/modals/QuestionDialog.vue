@@ -7,9 +7,9 @@
       transition="dialog-top-transition"
     >
       <template v-slot:activator="{ on, attrs }">
-        <v-card class="d-flex justify-start" flat tile elevation="12" color="primary" dark v-bind="attrs" v-on="on">
-            <p >{{index}}</p>
-            <p class="pl-6">{{oldQuestion.text}}</p>
+        <v-card class="d-flex justify-start" width="300px" flat tile elevation="12" color="success" dark v-bind="attrs" v-on="on">
+            <p class="ml-2 mt-2">{{index}}</p>
+            <p class="pl-6 mt-2">{{oldQuestion.text}}</p>
         </v-card>
       </template>
       <v-card>
@@ -37,9 +37,6 @@ import Question from '../../components/Question.vue'
         changeIndicator: 0,
         question : {},
         dialog: false,
-        notifications: false,
-        sound: true,
-        widgets: false,
       }
     },
     methods:{

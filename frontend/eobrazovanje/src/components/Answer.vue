@@ -28,6 +28,7 @@ export default {
         return{
             answer : {
                 text: "",
+                imagePath: "",
                 isCorrect: false,
             }
         }

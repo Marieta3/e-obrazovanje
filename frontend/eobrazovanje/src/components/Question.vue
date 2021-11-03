@@ -12,7 +12,7 @@
       <v-row justify="center">
           <v-col cols="12" md="3" >
               <v-switch
-                v-model="question.isRandom"
+                v-model="question.randomized"
                 :label="`randomize`"
                 ></v-switch>
           </v-col>
@@ -56,7 +56,7 @@ export default {
             question : {
                 text: "",
                 answers: [],
-                isRandom: false,
+                randomized: false,
                 points: ""
             }
         }
