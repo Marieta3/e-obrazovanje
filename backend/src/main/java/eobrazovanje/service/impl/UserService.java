@@ -1,6 +1,7 @@
 package eobrazovanje.service.impl;
 
 import eobrazovanje.model.Authority;
+import eobrazovanje.model.Role;
 import eobrazovanje.model.User;
 import eobrazovanje.model.UserRequest;
 import eobrazovanje.service.IUserService;
@@ -53,5 +54,10 @@ public class UserService implements IUserService {
     @Override
     public User findById(Long id) {
         return userRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public List<User> findByRole(Role role) {
+        return userRepository.findAllByRole(role);
     }
 }
