@@ -15,6 +15,9 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
+import java.util.List;
+
 @RestController
 @RequestMapping("/courses")
 public class CourseAPI {
@@ -39,5 +42,28 @@ public class CourseAPI {
         course.setDescription(courseDTO.getDescription());
         course.setTeacher((Teacher) userService.findById(courseDTO.getTeacherId()));
         return new ResponseEntity<>(courseService.save(course), HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping(value="/all", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<Course>> getAllCourses() {
+        // admin vidi sve kurseve
+        return new ResponseEntity<>(courseService.findAll(), HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping(value="/all/{teacher_id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<Course>> getAllCoursesByTeacherId(@PathVariable("teacher_id") Long teacher_id) {
+        //admin moze da pronadje kurseve nekog konkretnog nastavnika
+        return new ResponseEntity<>(courseService.findByTeacherId(teacher_id), HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasRole('ROLE_TEACHER')")
+    @GetMapping(value="/mycourses", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<Course>> getAllCoursesByTeacher(Principal user) {
+        //pronalazenje kurseva na osnovu ulogovanog korisnika koji mora biti teacher
+        //nastavnik vidi samo svoje kurseve
+        // username je unique??
+        return new ResponseEntity<>(courseService.findByTeacherUsername(user.getName()), HttpStatus.OK);
     }
 }
