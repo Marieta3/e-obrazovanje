@@ -29,7 +29,7 @@ public class TestAPI {
     private ICourseService courseService;
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ROLE_STUDENT', ROLE_TEACHER'')")
+    @PreAuthorize("hasAnyRole('ROLE_STUDENT', 'ROLE_TEACHER')")
     public Test FindTestById(@PathVariable("id") Long id){
         return testService.findById(id);
     }
