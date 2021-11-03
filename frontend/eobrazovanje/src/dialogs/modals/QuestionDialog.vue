@@ -20,7 +20,6 @@
           <v-toolbar-title>Question {{index}}</v-toolbar-title>
           <v-spacer></v-spacer>
         </v-toolbar>
-        {{oldQuestion}}
         <question :oldQuestion="oldQuestion" :key="changeIndicator" v-on:commitQuestion="commit($event)"/>
       </v-card>
     </v-dialog>

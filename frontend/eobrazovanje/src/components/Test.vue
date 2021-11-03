@@ -50,6 +50,9 @@ export default {
             
             console.log(this.questions)
         },
+        commitTest(){
+            console.log({title:this.title, qustions:this.questions})
+        },
         addQuestion(){
             this.questions.push({
                 text: "",

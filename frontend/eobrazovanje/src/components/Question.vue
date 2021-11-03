@@ -26,7 +26,7 @@
       </v-row>
       <v-row v-for="(item,index) in question.answers" :key="index" justify="center">
           <v-col cols="12" md="8">
-              <answer v-on:answerChanged="changeAnswer($event,index)"/>
+              <answer :oldAnswer="item" v-on:answerChanged="changeAnswer($event,index)"/>
           </v-col>
       </v-row>
       <v-row>
@@ -79,7 +79,7 @@ export default {
     },
     created(){
         this.question = this.oldQuestion
-    }
+    },
 
 
 }

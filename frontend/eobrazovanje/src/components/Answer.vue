@@ -23,6 +23,7 @@
 <script>
 export default {
     name: "Answer",
+    props: ["oldAnswer"],
     data(){
         return{
             answer : {
@@ -35,6 +36,9 @@ export default {
         emitChange(){
             this.$emit('answerChanged',this.answer)
         }
+    },
+    created(){
+        this.answer = this.oldAnswer
     }
 }
 </script>
