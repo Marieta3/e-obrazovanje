@@ -23,7 +23,7 @@
     }),
     methods:{
         enterCourse(){
-            alert("Usao si na kurs "+ this.course.name);
+            this.$router.push({name: 'Test', params: {courseId : this.course.id}})
         }
     }
   }

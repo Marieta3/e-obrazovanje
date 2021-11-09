@@ -9,21 +9,33 @@
 </template>
 
 <script>
+import axios from 'axios'
 import CourseCard from '../components/course/CourseCard.vue'
+import * as comm from '../configuration/communication.js'
 export default {
     components: { CourseCard },
     name: "Courses",
     data(){
         return {
-            courses:[
-                {name: "Course 1", description: "Desc 1"},
-                {name: "Course 2", description: "Desc 2"},
-                {name: "Course 3", description: "Desc 3"},
-                {name: "Course 4", description: "Desc 4"},
-                {name: "Course 5", description: "Desc 5"},
-                {name: "Course 6", description: "Desc 6"},
-                {name: "Course 7", description: "Desc 7"}
-            ]
+            courses: []
+        }
+    },
+    created(){
+        this.getMyCourses();
+    },
+    methods:{
+        getMyCourses(){
+             let config = {
+                headers: comm.getHeader()
+            }
+            axios.get(comm.protocol +'://' + comm.server + '/courses/my',config)
+            .then(response => {
+              if(response.status==200){
+                this.courses = response.data
+              }
+            }).catch(() => {
+              alert("greska")
+            })
         }
     }
 }

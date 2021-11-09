@@ -59,7 +59,7 @@ public class CourseAPI {
     }
 
     @PreAuthorize("hasRole('ROLE_TEACHER')")
-    @GetMapping(value="/mycourses", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value="/my", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Course>> getAllCoursesByTeacher(Principal user) {
         //pronalazenje kurseva na osnovu ulogovanog korisnika koji mora biti teacher
         //nastavnik vidi samo svoje kurseve
