@@ -23,7 +23,7 @@
     }),
     methods:{
         enterCourse(){
-            this.$router.push({name: 'Test', params: {courseId : this.course.id}})
+            this.$router.push({name: 'CourseTests', params: {courseId : this.course.id}})
         }
     }
   }
