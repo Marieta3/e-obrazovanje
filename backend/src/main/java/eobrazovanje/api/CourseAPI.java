@@ -6,6 +6,7 @@ import eobrazovanje.model.Course;
 import eobrazovanje.model.Teacher;
 import eobrazovanje.model.Test;
 import eobrazovanje.service.ICourseService;
+import eobrazovanje.service.ITestService;
 import eobrazovanje.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,6 +25,9 @@ public class CourseAPI {
 
     @Autowired
     private ICourseService courseService;
+
+    @Autowired
+    private ITestService testService;
 
     @Autowired
     private IUserService userService;
@@ -65,5 +69,11 @@ public class CourseAPI {
         //nastavnik vidi samo svoje kurseve
         // username je unique??
         return new ResponseEntity<>(courseService.findByTeacherUsername(user.getName()), HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasRole('ROLE_TEACHER')")
+    @GetMapping(value = "{course_id}/tests", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<Test>> getAllTestsForCourse(@PathVariable("course_id") Long courseId){
+        return new ResponseEntity<>(testService.findByCourseId(courseId), HttpStatus.OK);
     }
 }

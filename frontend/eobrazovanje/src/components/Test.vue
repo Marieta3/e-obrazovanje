@@ -39,12 +39,17 @@ import * as comm from '../configuration/communication.js'
 export default {
   components: { QuestionDialog },
     name: "Test",
-    props: ['courseId'],
+    props: ['courseId','testId'],
     data(){
         return{
             title: "",
             renderComponent: true,
             questions:[]
+        }
+    },
+    created(){
+        if(this.testId){
+            //TODO: preuzmi test sa beka
         }
     },
     methods:{
