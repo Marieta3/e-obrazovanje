@@ -3,9 +3,9 @@ package eobrazovanje.dto;
 public class AnswerDTO {
     private String text;
     private String imagePath;
-    private boolean correct;
+    private Boolean correct;
 
-    public AnswerDTO(String text, String imagePath, boolean correct) {
+    public AnswerDTO(String text, String imagePath, Boolean correct) {
         this.text = text;
         this.imagePath = imagePath;
         this.correct = correct;
@@ -27,11 +27,11 @@ public class AnswerDTO {
         this.imagePath = imagePath;
     }
 
-    public boolean getCorrect() {
+    public Boolean getCorrect() {
         return correct;
     }
 
-    public void setCorrect(boolean correct) {
+    public void setCorrect(Boolean correct) {
         this.correct = correct;
     }
 

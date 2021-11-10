@@ -9,6 +9,7 @@ import eobrazovanje.model.Question;
 import eobrazovanje.model.Test;
 import eobrazovanje.service.ICourseService;
 import eobrazovanje.service.ITestService;
+import eobrazovanje.util.Converter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -37,15 +38,10 @@ public class TestAPI {
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_TEACHER', 'ROLE_STUDENT')")
-    public void FindTestById(HttpServletResponse response, @PathVariable("id") Long id){
+    public TestDTO FindTestById(@PathVariable("id") Long id){
 
         Test test = testService.findById(id);
-        if(hasRole("ROLE_STUDENT")){
-
-        }
-
-
-
+        return Converter.convertTestToTestDTO(test, !hasRole("ROLE_STUDENT"));
     }
 
     @PreAuthorize("hasRole('ROLE_TEACHER')")
