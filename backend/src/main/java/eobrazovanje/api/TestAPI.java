@@ -24,6 +24,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletResponse;
 import java.security.Principal;
 import java.util.Collection;
+
+import static eobrazovanje.util.Connection.hasRole;
 //import javax.validation.Valid;
 
 @RestController
@@ -70,11 +72,6 @@ public class TestAPI {
         return new ResponseEntity<>(testService.save(test), HttpStatus.OK);
     }
 
-    private boolean hasRole(String role){
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        return authentication.getAuthorities().stream()
-                .anyMatch(r -> r.getAuthority().equals(role));
-    }
 
 }
