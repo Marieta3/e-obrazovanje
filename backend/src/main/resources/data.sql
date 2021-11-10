@@ -1,9 +1,12 @@
 insert into authority (id, role) values (1,'ROLE_STUDENT'), (2,'ROLE_TEACHER'), (3,'ROLE_ADMIN');
 
+insert into users (user_type,first_name,last_name,username,password,enabled,index_number)
+values
+('student','Marko','Markovic','mare021','$2a$10$kMLJl/fG/j6OHIPLKUC8fetWtt1cXv8fgJTOpOLRSQcotxsmyCDJy',TRUE, 'R2-123-2021'), -- sifra 123, id 1
+('student','Petar','Petrovic','pero','$2a$10$GQHFBBU1gG8y0W5uT7zFsO90TayiQ7ALfMlWlipIttUCKIalP0qli',TRUE, 'R2-456-2021');    -- id 2
+
 insert into users (user_type,first_name,last_name,username,password,enabled)
 values
-('student','Marko','Markovic','mare021','$2a$10$kMLJl/fG/j6OHIPLKUC8fetWtt1cXv8fgJTOpOLRSQcotxsmyCDJy',TRUE), -- sifra 123, id 1
-('student','Petar','Petrovic','pero','$2a$10$GQHFBBU1gG8y0W5uT7zFsO90TayiQ7ALfMlWlipIttUCKIalP0qli',TRUE),    -- id 2
 ('admin','Marta','Martic','martaa','$2a$10$GwmzvbZUxoDR.4tlCLauve7C7qKtDR1q15OcFKCGM4FcT/f5q/H1.',TRUE),      -- id 3
 ('teacher','Eva','Ras','eva','$2a$10$nzYuqq4AvIAH42I.f.jQDuL0247GwUFU5yF2SiSl.o5qFeU4z95DC',TRUE),            -- id 4
 ('teacher','sdkfs','adsa','ddd','$2a$10$nzYuqq4AvIAH42I.f.jQDuL0247GwUFU5yF2SiSl.o5qFeU4z95DC',TRUE);         -- id 5
@@ -29,3 +32,8 @@ values
 (null, false, 'prvi', 1),    -- id 1
 (null, false, 'drugi', 1),   -- id 2
 (null, true, 'treci', 1);    -- id 3
+
+insert into students_courses (completed, course_id, student_id, student_index)
+values
+(false, 1, 1,'R2-123-2021'),
+(true, 1, 2,'R2-456-2021');
