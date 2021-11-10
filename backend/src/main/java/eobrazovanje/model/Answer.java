@@ -27,6 +27,10 @@ public class Answer {
     @JsonBackReference("questionAnswers")
     private Question question;
 
+//    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+//    @JsonBackReference("testResultAnswers")
+//    private TestResult testResult;
+
     public Answer(Long id, String text, String imagePath, boolean isCorrect, Question question) {
         this.id = id;
         this.text = text;

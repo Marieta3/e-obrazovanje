@@ -10,5 +10,8 @@ public interface ITestService {
 
     Test save(Test test);
 
+    List<Test> findAll();
+
     List<Test> findByCourseId(Long courseId);
+
 }
