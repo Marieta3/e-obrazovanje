@@ -3,7 +3,7 @@
       <v-row>
           <v-col cols="12" md="3">
               <v-checkbox
-                v-model="answer.isCorrect"
+                v-model="answer.correct"
                 :label="`Correct?`"
                 @change="emitChange()"
               ></v-checkbox>
@@ -29,7 +29,7 @@ export default {
             answer : {
                 text: "",
                 imagePath: "",
-                isCorrect: false,
+                correct: false,
             }
         }
     },
