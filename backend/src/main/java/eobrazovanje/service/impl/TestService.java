@@ -26,9 +26,13 @@ public class TestService implements ITestService {
     }
 
     @Override
+    public List<Test> findAll() {
+        return testRepository.findAll();
+    }
+
+    @Override
     public List<Test> findByCourseId(Long courseId) {
         return testRepository.findByCourseId(courseId);
     }
-
 
 }
