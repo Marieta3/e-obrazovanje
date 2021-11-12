@@ -37,10 +37,11 @@ const routes = [{
       import ('../components/course/CreateCourse')
   },
   {
-    path: '/question',
-    name: 'Question',
+    path: '/tests/:testId',
+    props: true,
+    name: 'StudentTest',
     component: () =>
-      import ('../components/Question.vue')
+      import ('../views/TestForStudent.vue')
   },
   {
     path: '/course',

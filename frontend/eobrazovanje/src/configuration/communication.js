@@ -7,6 +7,32 @@ export function setJWTToken(jwt) {
   sessionStorage.setItem("JWT", JSON.stringify(jwt));
 }
 
+export const Role = {
+  ANON: 0,
+  STUDENT: 1,
+  TEACHER: 2,
+  ADMIN: 3
+};
+Object.freeze(Role);
+
+export function getRole() {
+  let jwt = JSON.parse(sessionStorage.getItem("JWT"));
+  if (jwt == undefined || jwt == null || jwt == {}) {
+    return Role.ANON;
+  }
+  let decoded = VueJwtDecode.decode(jwt);
+  switch (decoded.role) {
+    case 'ROLE_STUDENT':
+      return Role.STUDENT
+    case 'ROLE_TEACHER':
+      return Role.TEACHER
+    case 'ROLE_ADMIN':
+      return Role.ADMIN
+    default:
+      return Role.ANON
+  }
+}
+
 export function hasRole(role) {
   let jwt = JSON.parse(sessionStorage.getItem("JWT"));
   if (jwt == undefined || jwt == null || jwt == {}) {

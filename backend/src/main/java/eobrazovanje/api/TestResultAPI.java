@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.Set;
 
 @RestController
-@RequestMapping("/testResults")
+@RequestMapping("/test-results")
 public class TestResultAPI {
 
     @Autowired
