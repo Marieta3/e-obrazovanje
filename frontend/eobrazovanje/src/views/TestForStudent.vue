@@ -1,41 +1,57 @@
-<template>    
-    <v-stepper v-model="currentStep">
-        <v-stepper-header>
-            <template v-for="n in steps">
-            <v-stepper-step
-                :key="`${n}-step`"
-                :complete="currentStep > n"
-                :step="n"
-                editable
-            >
-                Question {{ n }}
-            </v-stepper-step>
+<template> 
+    <v-container>
+        <v-row justify="center">
+            <v-col v-if="!testStarted">
+                <v-btn color="success"  @click="startTest()" >Start test</v-btn>
+            </v-col>
+            <v-col  v-else>
+                <v-stepper v-model="currentStep">
+                    <v-stepper-header>
+                        <template v-for="n in steps">
+                            <v-stepper-step
+                                :key="`${n}-step`"
+                                :complete="currentStep > n"
+                                :step="n"
+                                editable
+                            >
+                                Question {{ n }}
+                            </v-stepper-step>
 
-            <v-divider
-                v-if="n !== steps"
-                :key="n"
-            ></v-divider>
-            </template>
-        </v-stepper-header>
-           
-        <v-stepper-items class="text-center">
-            <v-stepper-content v-for="(q,index) in questions" :key="q.id" :step="index+1">
-                <v-container>
-                    <v-row>
-                        <v-col>
-                            <question :currentQuestion="q" v-on:questionChanged="updateMyAnswers(index,$event)"/>
-                        </v-col>
-                    </v-row>
-                    <v-row>
-                        <v-col>
-                            <v-btn color="success" @click="finishTest()">Finish test</v-btn>
-                        </v-col>
-                    </v-row>
-                </v-container>
-                
-            </v-stepper-content>
-        </v-stepper-items>
-    </v-stepper>
+                            <v-divider
+                                v-if="n !== steps"
+                                :key="n"
+                            ></v-divider>
+                        </template>
+                    </v-stepper-header>
+                    
+                    <v-stepper-items class="text-center">
+                        <v-stepper-content v-for="(q,index) in questions" :key="q.id" :step="index+1">
+                            <v-container>
+                                <v-row>
+                                    <v-col>
+                                        <question :currentQuestion="q" v-on:questionChanged="updateMyAnswers(index,$event)"/>
+                                    </v-col>
+                                </v-row>
+                                <v-row>
+                                    <v-col>
+                                        <v-btn @click="currentStep += 1" :disabled="currentStep == steps">Next</v-btn>
+                                    </v-col>
+                                    <v-col>
+                                        <v-btn @click="currentStep -= 1" :disabled="currentStep == 1">Previous</v-btn>
+                                    </v-col>
+
+                                    <v-col>
+                                        <v-btn color="success" @click="finishTest()">Finish test</v-btn>
+                                    </v-col>
+                                </v-row>
+                            </v-container>
+                            
+                        </v-stepper-content>
+                    </v-stepper-items>
+                </v-stepper>
+            </v-col>
+        </v-row>
+    </v-container>
 </template>
 
 <script>
@@ -51,11 +67,10 @@
             return {
                 currentStep: 0,
                 questions: [],
-                steps: 0
+                steps: 0,
+                testStarted: false,
+                startTime: null
             }
-        },
-        created(){
-            this.getTestQuestions()
         },
         methods:{
             getTestQuestions(){
@@ -66,6 +81,9 @@
                     console.log(response.data)
                     this.questions = response.data.questions
                     this.steps = this.questions.length
+                    this.testStarted = true
+                    this.startTime = new Date().getTime()
+                    this.currentStep = 1
                 }
                 }).catch(() => {
                 alert("greska")
@@ -75,7 +93,32 @@
                 this.questions[index] = updatedQuestion
             },
             finishTest(){
-                console.log(this.questions)
+                let myAnswers = this.getMyAnswers()
+                let endTime = new Date().getTime()
+                console.log(endTime)
+                 let config = { headers: comm.getHeader() }
+                axios.post(comm.protocol +'://' + comm.server + '/test-results', {startTime: this.startTime, endTime: endTime, answeIDs: myAnswers},config)
+                .then(response => {
+                if(response.status==200){
+                    alert("uspesno zavrsen test")
+                }
+                }).catch(() => {
+                alert("greska")
+                })
+            },
+            getMyAnswers(){
+                let result = []
+                for(let q of this.questions){
+                    for(let answer of q.answers){
+                        if (answer.correct == true){
+                            result.push(answer.id)
+                        }
+                    }
+                }
+                return result
+            },
+            startTest(){
+                this.getTestQuestions()
             }
         }
     }

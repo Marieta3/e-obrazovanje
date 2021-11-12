@@ -29,6 +29,7 @@ export default {
     data(){
         return{
             answer : {
+                id: 0,
                 text: "",
                 imagePath: "",
                 correct: false,

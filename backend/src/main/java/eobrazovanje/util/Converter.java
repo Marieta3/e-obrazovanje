@@ -17,7 +17,7 @@ public class Converter {
             QuestionDTO questionDTO = new QuestionDTO(question.getText(), question.isRandomize(), question.getPoints(), null);
             ArrayList<AnswerDTO> answers = new ArrayList<AnswerDTO>(question.getAnswers().size());
             for(Answer answer : question.getAnswers()){
-                AnswerDTO answerDTO = new AnswerDTO(answer.getText(), answer.getImagePath(), null);
+                AnswerDTO answerDTO = new AnswerDTO(answer.getId(), answer.getText(), answer.getImagePath(), null);
                 if(shouldContainsIsAnswerCorrectProperty){
                     answerDTO.setCorrect(answer.isCorrect());
                 }

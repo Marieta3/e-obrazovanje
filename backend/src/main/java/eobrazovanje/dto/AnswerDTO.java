@@ -1,14 +1,24 @@
 package eobrazovanje.dto;
 
 public class AnswerDTO {
+    private Long id;
     private String text;
     private String imagePath;
     private Boolean correct;
 
-    public AnswerDTO(String text, String imagePath, Boolean correct) {
+    public AnswerDTO(Long id, String text, String imagePath, Boolean correct) {
+        this.id = id;
         this.text = text;
         this.imagePath = imagePath;
         this.correct = correct;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getText() {
