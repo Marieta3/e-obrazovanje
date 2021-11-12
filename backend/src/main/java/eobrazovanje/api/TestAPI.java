@@ -43,15 +43,27 @@ public class TestAPI {
         for(QuestionDTO questionDTO : testDTO.getQuestions()){
             Question question = new Question();
             question.setText(questionDTO.getText());
-            question.setPoints(questionDTO.getPoints());
+            //question.setPoints(questionDTO.getPoints());
             question.setTest(test);
             question.setRandomize(questionDTO.getRandomized());
+            int num_correct = 0;
+            for(AnswerDTO aDTO: questionDTO.getAnswers()){
+                if(aDTO.getCorrect()){
+                    num_correct += 1;
+                }
+            }
+            int accuracy = 100/num_correct;
             for(AnswerDTO answerDTO: questionDTO.getAnswers()){
                 Answer answer = new Answer();
                 answer.setText(answerDTO.getText());
                 answer.setCorrect(answerDTO.getCorrect());
                 answer.setImagePath(answerDTO.getImagePath());
                 answer.setQuestion(question);
+                if(answer.isCorrect()){
+                    answer.setAccuracy(accuracy);
+                }else{
+                    answer.setAccuracy(0-accuracy);
+                }
                 question.getAnswers().add(answer);
             }
 

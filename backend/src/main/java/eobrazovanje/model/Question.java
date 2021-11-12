@@ -23,8 +23,8 @@ public class Question {
     @Column(name = "is_randomize")
     private boolean isRandomize;
 
-    @Column(name = "points")
-    private int points;
+//    @Column(name = "points")
+//    private int points;
 
     @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     @JsonBackReference("testQuestions")
@@ -34,11 +34,10 @@ public class Question {
     @JsonManagedReference("questionAnswers")
     private Set<Answer> answers = new HashSet<>();
 
-    public Question(Long id, String text, boolean isRandomize, int points, Test test, Set<Answer> answers) {
+    public Question(Long id, String text, boolean isRandomize, Test test, Set<Answer> answers) {
         this.id = id;
         this.text = text;
         this.isRandomize = isRandomize;
-        this.points = points;
         this.test = test;
         this.answers = answers;
     }
@@ -70,14 +69,6 @@ public class Question {
         isRandomize = randomize;
     }
 
-    public int getPoints() {
-        return points;
-    }
-
-    public void setPoints(int points) {
-        this.points = points;
-    }
-
     public Test getTest() {
         return test;
     }
@@ -100,7 +91,6 @@ public class Question {
                 "id=" + id +
                 ", text='" + text + '\'' +
                 ", isRandomize=" + isRandomize +
-                ", points=" + points +
                 ", test=" + test +
                 ", answers=" + answers +
                 '}';

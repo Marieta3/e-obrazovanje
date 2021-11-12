@@ -6,16 +6,14 @@ import java.util.ArrayList;
 public class QuestionDTO {
     private String text;
     private boolean randomized;
-    private int points;
     private ArrayList<AnswerDTO> answers;
 
     public QuestionDTO() {
     }
 
-    public QuestionDTO(String text, boolean randomized, int points, ArrayList<AnswerDTO> answers) {
+    public QuestionDTO(String text, boolean randomized, ArrayList<AnswerDTO> answers) {
         this.text = text;
         this.randomized = randomized;
-        this.points = points;
         this.answers = answers;
     }
 
@@ -33,14 +31,6 @@ public class QuestionDTO {
 
     public void setRandomized(boolean randomized) {
         this.randomized = randomized;
-    }
-
-    public int getPoints() {
-        return points;
-    }
-
-    public void setPoints(int points) {
-        this.points = points;
     }
 
     public ArrayList<AnswerDTO> getAnswers() {

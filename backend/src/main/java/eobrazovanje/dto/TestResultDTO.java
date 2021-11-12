@@ -8,14 +8,16 @@ public class TestResultDTO {
     private Date startTime;
     private Date endTime;
     private ArrayList<Long> answerIDs;
+    private Long testID;
 
     public TestResultDTO() {
     }
 
-    public TestResultDTO(Date startTime, Date endTime, ArrayList<Long> answerIDs) {
+    public TestResultDTO(Date startTime, Date endTime, ArrayList<Long> answerIDs, Long testID) {
         this.startTime = startTime;
         this.endTime = endTime;
         this.answerIDs = answerIDs;
+        this.testID = testID;
     }
 
     public Date getStartTime() {
@@ -40,5 +42,13 @@ public class TestResultDTO {
 
     public void setAnswerIDs(ArrayList<Long> answerIDs) {
         this.answerIDs = answerIDs;
+    }
+
+    public Long getTestID() {
+        return testID;
+    }
+
+    public void setTestID(Long testID) {
+        this.testID = testID;
     }
 }
