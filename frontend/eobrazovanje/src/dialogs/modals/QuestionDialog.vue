@@ -9,7 +9,7 @@
       <template v-slot:activator="{ on, attrs }">
         <v-card class="d-flex justify-start" width="300px" flat tile elevation="12" color="success" dark v-bind="attrs" v-on="on">
             <p class="ml-2 mt-2">{{index}}</p>
-            <p class="pl-6 mt-2">{{oldQuestion.text}}</p>
+            <p class="pl-6 mt-2">{{currentQuestion.text}}</p>
         </v-card>
       </template>
       <v-card>
@@ -20,7 +20,7 @@
           <v-toolbar-title>Question {{index}}</v-toolbar-title>
           <v-spacer></v-spacer>
         </v-toolbar>
-        <question :oldQuestion="oldQuestion" :key="changeIndicator" v-on:commitQuestion="commit($event)"/>
+        <question :currentQuestion="currentQuestion" :key="changeIndicator" v-on:commitQuestion="commit($event)"/>
       </v-card>
     </v-dialog>
   </v-row>
@@ -31,7 +31,7 @@ import Question from '../../components/Question.vue'
   export default {
   components: { Question },
     name: "QuestionDialog",
-    props: ["index", "oldQuestion"],
+    props: ["index", "currentQuestion"],
     data () {
       return {
         changeIndicator: 0,
