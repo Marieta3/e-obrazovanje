@@ -29,7 +29,7 @@ import java.util.Map;
 import java.util.Set;
 
 @RestController
-@RequestMapping("/testResults")
+@RequestMapping("/test-results")
 public class TestResultAPI {
 
     @Autowired

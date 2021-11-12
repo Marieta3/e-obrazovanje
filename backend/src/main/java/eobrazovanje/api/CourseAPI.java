@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
+import static eobrazovanje.util.Connection.hasRole;
 
 import java.security.Principal;
 import java.util.List;
@@ -62,18 +63,27 @@ public class CourseAPI {
         return new ResponseEntity<>(courseService.findByTeacherId(teacher_id), HttpStatus.OK);
     }
 
-    @PreAuthorize("hasRole('ROLE_TEACHER')")
+    @PreAuthorize("hasAnyRole('ROLE_STUDENT', 'ROLE_ADMIN', 'ROLE_TEACHER')")
     @GetMapping(value="/my", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Course>> getAllCoursesByTeacher(Principal user) {
         //pronalazenje kurseva na osnovu ulogovanog korisnika koji mora biti teacher
         //nastavnik vidi samo svoje kurseve
         // username je unique??
-        return new ResponseEntity<>(courseService.findByTeacherUsername(user.getName()), HttpStatus.OK);
+        if(hasRole("ROLE_TEACHER"))
+            return new ResponseEntity<>(courseService.findByTeacherUsername(user.getName()), HttpStatus.OK);
+        return getAllCourses();
     }
 
     @PreAuthorize("hasRole('ROLE_TEACHER')")
     @GetMapping(value = "{course_id}/tests", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Test>> getAllTestsForCourse(@PathVariable("course_id") Long courseId){
+        return new ResponseEntity<>(testService.findByCourseId(courseId), HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasRole('ROLE_STUDENT')")
+    @GetMapping(value = "{course_id}/tests/available", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<Test>> getAllAvailableCourseTestsForStudent(@PathVariable("course_id") Long courseId){
+        //TODO: implementirati logiku za dobavljanje dostupnih testova
         return new ResponseEntity<>(testService.findByCourseId(courseId), HttpStatus.OK);
     }
 }

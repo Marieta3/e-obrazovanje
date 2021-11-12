@@ -10,4 +10,5 @@ import java.util.List;
 public interface ITestRepository extends JpaRepository<Test,Long> {
     @Query("select t from Test t WHERE t.course.id = ?1")
     public List<Test> findByCourseId(Long id);
+
 }

@@ -9,13 +9,23 @@ import eobrazovanje.model.Question;
 import eobrazovanje.model.Test;
 import eobrazovanje.service.ICourseService;
 import eobrazovanje.service.ITestService;
+import eobrazovanje.util.Converter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletResponse;
+import java.security.Principal;
+import java.util.Collection;
+
+import static eobrazovanje.util.Connection.hasRole;
 //import javax.validation.Valid;
 
 @RestController
@@ -29,9 +39,11 @@ public class TestAPI {
     private ICourseService courseService;
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ROLE_STUDENT', 'ROLE_TEACHER')")
-    public Test FindTestById(@PathVariable("id") Long id){
-        return testService.findById(id);
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_TEACHER', 'ROLE_STUDENT')")
+    public TestDTO FindTestById(@PathVariable("id") Long id){
+
+        Test test = testService.findById(id);
+        return Converter.convertTestToTestDTO(test, !hasRole("ROLE_STUDENT"));
     }
 
     @PreAuthorize("hasRole('ROLE_TEACHER')")
@@ -71,4 +83,7 @@ public class TestAPI {
         }
         return new ResponseEntity<>(testService.save(test), HttpStatus.OK);
     }
+
+
+
 }

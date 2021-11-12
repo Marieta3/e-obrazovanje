@@ -4,15 +4,15 @@
           <v-col cols="12" md="6" >
               <v-text-field
                 label="Title"
-                v-model="title"
+                v-model="test.title"
                 filled
             ></v-text-field>
           </v-col>
       </v-row>
       <template v-if="renderComponent">
-      <v-row v-for="(item,index) in questions" class="pa-3" :key="index" justify="center" >
+      <v-row v-for="(item,index) in test.questions" class="pa-3" :key="index" justify="center" >
           <v-col cols="12" md="6">
-              <question-dialog :index="index" :oldQuestion="item" v-on:commitedQuestion="updateQuestion(index,$event)"/>
+              <question-dialog :index="index" :currentQuestion="item" v-on:commitedQuestion="updateQuestion(index,$event)"/>
           </v-col>
       </v-row>
       </template>
@@ -42,27 +42,28 @@ export default {
     props: ['courseId','testId'],
     data(){
         return{
-            title: "",
+            test:{
+                id: 0,
+                title: "",
+                questions:[]
+            },
             renderComponent: true,
-            questions:[]
         }
     },
     created(){
         if(this.testId){
-            //TODO: preuzmi test sa beka
+            this.getTestById();
         }
     },
     methods:{
         updateQuestion(index,newQuestion){
-            this.questions[index] = newQuestion;
-            
-            console.log(this.questions)
+            this.test.questions[index] = newQuestion;
         },
         commitTest(){
             let config = {
                 headers: comm.getHeader()
             }
-            axios.post(comm.protocol +'://' + comm.server + '/tests', {title: this.title, courseId: this.courseId, questions: this.questions},config)
+            axios.post(comm.protocol +'://' + comm.server + '/tests', {title: this.test.title, courseId: this.courseId, questions: this.test.questions},config)
             .then(response => {
               if(response.status==200){
                 alert("uspesno kreiran test")
@@ -72,8 +73,8 @@ export default {
             })
         },
         addQuestion(){
-            this.questions.push({
-                text: "New question",
+            this.test.questions.push({
+                text: "",
                 answers: [],
                 isRandom: false,
                 points: ""
@@ -87,7 +88,18 @@ export default {
             // Adding the component back in
             this.renderComponent = true;
         });
-      }
+        },
+        getTestById(){
+            let config = { headers: comm.getHeader() }
+            axios.get(comm.protocol +'://' + comm.server + '/tests/'+this.testId,config)
+            .then(response => {
+              if(response.status==200){
+                this.test = response.data
+              }
+            }).catch(() => {
+              alert("greska")
+            })
+        }
     }
 }
 </script>

@@ -24,13 +24,15 @@ export default {
         }
     },
     created(){
-        this.getCourseTests();
+        if(comm.hasRole("ROLE_TEACHER")){
+            this.getAllCourseTests();
+        } else if(comm.hasRole("ROLE_STUDENT")){
+            this.getTestsForStudent();
+        }
     },
     methods:{
-        getCourseTests(){
-            let config = {
-                headers: comm.getHeader()
-            }
+        getAllCourseTests(){
+            let config = {headers: comm.getHeader()}
             axios.get(comm.protocol +'://' + comm.server + '/courses/'+this.courseId+'/tests',config)
             .then(response => {
               if(response.status==200){
@@ -41,8 +43,24 @@ export default {
               alert("greska")
             })
         },
+        getTestsForStudent(){
+            let config = {headers: comm.getHeader()}
+            axios.get(comm.protocol +'://' + comm.server + '/courses/'+this.courseId+'/tests/available',config)
+            .then(response => {
+              if(response.status==200){
+                console.log(response.data)
+                this.tests = response.data
+              }
+            }).catch(() => {
+              alert("greska")
+            })
+        },
         redirectToTest(testId){
-             this.$router.push({name: 'Test', params: {courseId : this.courseId, testId: testId}})
+            if(comm.hasRole("ROLE_STUDENT"))
+                this.$router.push({name: 'StudentTest', params: {testId: testId}})
+            else    
+                this.$router.push({name: 'Test', params: {courseId : this.courseId, testId: testId}})
+            
         },
         redirectToCreateTestPage(){
             this.$router.push({name: 'NewTest', params: {courseId : this.courseId}})
