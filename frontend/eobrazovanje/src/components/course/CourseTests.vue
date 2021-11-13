@@ -1,11 +1,11 @@
 <template>
   <v-container>
-      <v-row  v-for="t in tests" :key="t.id" justify="center" class="pt-3">
-        <v-btn @click="redirectToTest(t.id)">
+      <v-row  v-for="t in tests" :key="t.testId" justify="center" class="pt-3">
+        <v-btn @click="redirectToTest(t.testId)">
             {{t.title}}
         </v-btn>
       </v-row>
-      <v-row>
+      <v-row v-if="hasAnyRole(userTypes.TEACHER)">
           <v-col cols="12" sm="4">
               <v-btn color="success" @click="redirectToCreateTestPage()">Create new</v-btn>
           </v-col>
@@ -20,7 +20,8 @@ export default {
     props:['courseId'],
     data(){
         return{
-            tests: []
+            tests: [],
+            userTypes: comm.Role,
         }
     },
     created(){
@@ -64,6 +65,9 @@ export default {
         },
         redirectToCreateTestPage(){
             this.$router.push({name: 'NewTest', params: {courseId : this.courseId}})
+        },
+        hasAnyRole(... roles){
+            return comm.hasAnyRole(roles)
         }
     }
 }

@@ -60,7 +60,6 @@ export default {
                 points: ""
             },
             userTypes: comm.Role,
-            loggedUserType: 0
         }
     },
 
@@ -79,16 +78,10 @@ export default {
             this.$emit('commitQuestion',this.question)
         },
         hasAnyRole(... roles){
-            for(let role of roles){
-                if(role == this.loggedUserType){
-                    return true
-                }
-            }
-            return false
+            return comm.hasAnyRole(roles)
         }
     },
     created(){
-        this.loggedUserType = comm.getRole()
         this.question = this.currentQuestion
     },
     watch:{
