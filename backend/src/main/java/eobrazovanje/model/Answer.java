@@ -27,16 +27,20 @@ public class Answer {
     @JsonBackReference("questionAnswers")
     private Question question;
 
+    @Column(name = "accuracy")
+    private int accuracy;
+
 //    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
 //    @JsonBackReference("testResultAnswers")
 //    private TestResult testResult;
 
-    public Answer(Long id, String text, String imagePath, boolean isCorrect, Question question) {
+    public Answer(Long id, String text, String imagePath, boolean isCorrect, Question question, int accuracy) {
         this.id = id;
         this.text = text;
         this.imagePath = imagePath;
         this.isCorrect = isCorrect;
         this.question = question;
+        this.accuracy = accuracy;
     }
 
     public Answer() {
@@ -82,6 +86,14 @@ public class Answer {
         this.question = question;
     }
 
+    public int getAccuracy() {
+        return accuracy;
+    }
+
+    public void setAccuracy(int accuracy) {
+        this.accuracy = accuracy;
+    }
+
     @Override
     public String toString() {
         return "Answer{" +
@@ -90,6 +102,7 @@ public class Answer {
                 ", imagePath='" + imagePath + '\'' +
                 ", isCorrect=" + isCorrect +
                 ", question=" + question +
+                ", accuracy=" + accuracy +
                 '}';
     }
 

@@ -12,4 +12,5 @@ public interface IAnswerRepository extends JpaRepository<Answer,Long> {
 
     @Query("select a from Answer a WHERE a.id IN ?1")
     public Set<Answer> findByIds(ArrayList<Long> ids);
+
 }

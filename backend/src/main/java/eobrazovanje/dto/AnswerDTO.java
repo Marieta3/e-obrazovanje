@@ -5,12 +5,14 @@ public class AnswerDTO {
     private String text;
     private String imagePath;
     private Boolean correct;
+    private Integer accuracy;
 
-    public AnswerDTO(Long id, String text, String imagePath, Boolean correct) {
+    public AnswerDTO(Long id, String text, String imagePath, Boolean correct, Integer accuracy) {
         this.id = id;
         this.text = text;
         this.imagePath = imagePath;
         this.correct = correct;
+        this.accuracy = accuracy;
     }
 
     public Long getId() {
@@ -43,6 +45,14 @@ public class AnswerDTO {
 
     public void setCorrect(Boolean correct) {
         this.correct = correct;
+    }
+
+    public Integer getAccuracy() {
+        return accuracy;
+    }
+
+    public void setAccuracy(Integer accuracy) {
+        this.accuracy = accuracy;
     }
 
     public AnswerDTO() {

@@ -39,13 +39,19 @@ public class TestResult {
     @JsonBackReference("studentTestResults")
     private Student student;
 
-    public TestResult(Long id, Date startTime, Date endTime, int points, Set<Answer> answers, Student student) {
+    @JoinColumn(name = "test_id", unique = false)
+    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    @JsonBackReference
+    private Test test;
+
+    public TestResult(Long id, Date startTime, Date endTime, int points, Set<Answer> answers, Student student, Test test) {
         this.id = id;
         this.startTime = startTime;
         this.endTime = endTime;
         this.points = points;
         this.answers = answers;
         this.student = student;
+        this.test = test;
     }
 
     public TestResult() {
@@ -99,15 +105,24 @@ public class TestResult {
         this.student = student;
     }
 
+    public Test getTest() {
+        return test;
+    }
+
+    public void setTest(Test test) {
+        this.test = test;
+    }
+
     @Override
     public String toString() {
         return "TestResult{" +
                 "id=" + id +
-                ", start=" + startTime +
-                ", end=" + endTime +
+                ", startTime=" + startTime +
+                ", endTime=" + endTime +
                 ", points=" + points +
-                ", answers=" + answers +
-                ", student=" + student +
+                ", answers=" + answers.size() +
+                ", student=" + student.getFirstName() +
+                ", test=" + test.getTitle() +
                 '}';
     }
 
