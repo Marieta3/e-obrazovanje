@@ -2,6 +2,7 @@ package eobrazovanje.api;
 
 import eobrazovanje.dto.CourseDTO;
 import eobrazovanje.dto.TestDTO;
+import eobrazovanje.dto.TestDescriptionDTO;
 import eobrazovanje.model.Course;
 import eobrazovanje.model.Teacher;
 import eobrazovanje.model.Test;
@@ -83,8 +84,8 @@ public class CourseAPI {
 
     @PreAuthorize("hasRole('ROLE_STUDENT')")
     @GetMapping(value = "{course_id}/tests/available", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<Test>> getAllAvailableCourseTestsForStudent(@PathVariable("course_id") Long courseId){
+    public ResponseEntity<List<TestDescriptionDTO>> getAllAvailableCourseTestsForStudent(@PathVariable("course_id") Long courseId){
         //TODO: implementirati logiku za dobavljanje dostupnih testova
-        return new ResponseEntity<>(testService.findByCourseId(courseId), HttpStatus.OK);
+        return new ResponseEntity<>(Converter.testsToTestDescriptionDTOs(testService.findByCourseId(courseId)), HttpStatus.OK);
     }
 }

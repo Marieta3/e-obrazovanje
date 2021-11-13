@@ -55,5 +55,15 @@ public class Converter {
         return result;
     }
 
+    public static TestDescriptionDTO testToTestDescritpionDTO(Test test){
+        return new TestDescriptionDTO(test.getTitle(),test.getId(),test.getCourse().getId());
+    }
 
+    public static List<TestDescriptionDTO> testsToTestDescriptionDTOs(List<Test> tests){
+        List<TestDescriptionDTO> result = new ArrayList<>(tests.size());
+        for (Test t : tests){
+            result.add(testToTestDescritpionDTO(t));
+        }
+        return result;
+    }
 }
