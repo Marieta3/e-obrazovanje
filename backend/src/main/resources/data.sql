@@ -23,15 +23,15 @@ insert into tests(title, course_id)
 values
 ('Prvi test', 1); -- id 1
 
-insert into questions (is_randomize, points, text, test_id)
+insert into questions (is_randomize, text, test_id)
 values
-(false, 3, 'Koji odgovor je tacan?', 1); -- id 1
+(false, 'Koji odgovor je tacan?', 1); -- id 1
 
-insert into answers (image_path, is_correct, text, question_id)
+insert into answers (image_path, is_correct, text, question_id, accuracy)
 values
-(null, false, 'prvi', 1),    -- id 1
-(null, false, 'drugi', 1),   -- id 2
-(null, true, 'treci', 1);    -- id 3
+(null, false, 'prvi', 1, -100),    -- id 1
+(null, false, 'drugi', 1, -100),   -- id 2
+(null, true, 'treci', 1, 100);    -- id 3
 
 insert into students_courses (completed, course_id, student_id, student_index)
 values
