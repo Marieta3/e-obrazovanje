@@ -60,7 +60,6 @@ export default {
                 points: ""
             },
             userTypes: comm.Role,
-            loggedUserType: 0
         }
     },
 
@@ -83,7 +82,6 @@ export default {
         }
     },
     created(){
-        this.loggedUserType = comm.getRole()
         this.question = this.currentQuestion
     },
     watch:{
