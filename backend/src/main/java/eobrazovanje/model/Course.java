@@ -23,11 +23,11 @@ public class Course {
     @Column(name = "description")
     private String description;
 
-    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JsonBackReference("teacherCourses")
     private Teacher teacher;
 
-    @OneToMany(mappedBy = "course", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "course", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonManagedReference("courseTests")
     private Set<Test> tests = new HashSet<>();
 

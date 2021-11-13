@@ -26,7 +26,7 @@ public class Question {
 //    @Column(name = "points")
 //    private int points;
 
-    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JsonBackReference("testQuestions")
     private Test test;
 

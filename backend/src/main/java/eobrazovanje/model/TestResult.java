@@ -27,20 +27,17 @@ public class TestResult {
     @Column(name = "points")
     private int points;
 
-    /*@OneToMany(mappedBy = "testResult", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JsonManagedReference("testResultAnswers")
-    */
-    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JoinTable(name = "test_result_answer", joinColumns = @JoinColumn(name = "test_result_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "answer_id", referencedColumnName = "id"))
     @JsonBackReference
     private Set<Answer> answers = new HashSet<>();
 
-    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JsonBackReference("studentTestResults")
     private Student student;
 
     @JoinColumn(name = "test_id", unique = false)
-    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JsonBackReference
     private Test test;
 
