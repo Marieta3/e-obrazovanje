@@ -25,23 +25,23 @@ public class UserAPI {
     @GetMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_STUDENT')")
     public UserDTO FindUserById(@PathVariable("id") Long id){
-        return Converter.convertUserToUserDTO(userService.findById(id));
+        return Converter.userToUserDTO(userService.findById(id));
     }
 
     @GetMapping("/noauth/{id}")
     public UserDTO FindUserById1(@PathVariable("id") Long id){
-        return Converter.convertUserToUserDTO(userService.findById(id));
+        return Converter.userToUserDTO(userService.findById(id));
     }
 
     @GetMapping("/teachers")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public List<User> FindAllTeachers(){
-        return userService.findByRole(Role.ROLE_TEACHER);
+    public List<UserDTO> FindAllTeachers(){
+        return Converter.usersToUserDTOs(userService.findByRole(Role.ROLE_TEACHER));
     }
 
     @GetMapping("/students")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public List<User> FindAllStudents(){
-        return userService.findByRole(Role.ROLE_STUDENT);
+    public List<UserDTO> FindAllStudents(){
+        return Converter.usersToUserDTOs(userService.findByRole(Role.ROLE_STUDENT));
     }
 }

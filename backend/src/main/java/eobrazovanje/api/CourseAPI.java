@@ -8,6 +8,7 @@ import eobrazovanje.model.Test;
 import eobrazovanje.service.ICourseService;
 import eobrazovanje.service.ITestService;
 import eobrazovanje.service.IUserService;
+import eobrazovanje.util.Converter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -51,9 +52,9 @@ public class CourseAPI {
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping(value="/all", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<Course>> getAllCourses() {
+    public ResponseEntity<List<CourseDTO>> getAllCourses() {
         // admin vidi sve kurseve
-        return new ResponseEntity<>(courseService.findAll(), HttpStatus.OK);
+        return new ResponseEntity<>(Converter.coursesToCourseDTOs(courseService.findAll()), HttpStatus.OK);
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -65,12 +66,12 @@ public class CourseAPI {
 
     @PreAuthorize("hasAnyRole('ROLE_STUDENT', 'ROLE_ADMIN', 'ROLE_TEACHER')")
     @GetMapping(value="/my", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<Course>> getAllCoursesByTeacher(Principal user) {
+    public ResponseEntity<List<CourseDTO>> getAllCoursesByTeacher(Principal user) {
         //pronalazenje kurseva na osnovu ulogovanog korisnika koji mora biti teacher
         //nastavnik vidi samo svoje kurseve
         // username je unique??
         if(hasRole("ROLE_TEACHER"))
-            return new ResponseEntity<>(courseService.findByTeacherUsername(user.getName()), HttpStatus.OK);
+            return new ResponseEntity<>(Converter.coursesToCourseDTOs(courseService.findByTeacherUsername(user.getName())), HttpStatus.OK);
         return getAllCourses();
     }
 
