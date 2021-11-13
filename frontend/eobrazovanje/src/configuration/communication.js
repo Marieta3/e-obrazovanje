@@ -46,6 +46,16 @@ export function getJWTToken() {
   return JSON.parse(sessionStorage.getItem("JWT"));
 }
 
+export function hasAnyRole(...roles) {
+  let loggedUserRole = getRole()
+  for (let role of roles) {
+    if (role == loggedUserRole) {
+      return true
+    }
+  }
+  return false
+}
+
 export function getHeader() {
   if (getJWTToken()) {
     return {

@@ -34,10 +34,10 @@
                                 </v-row>
                                 <v-row>
                                     <v-col>
-                                        <v-btn @click="currentStep += 1" :disabled="currentStep == steps">Next</v-btn>
+                                        <v-btn @click="currentStep -= 1" :disabled="currentStep == 1">Previous</v-btn>
                                     </v-col>
                                     <v-col>
-                                        <v-btn @click="currentStep -= 1" :disabled="currentStep == 1">Previous</v-btn>
+                                        <v-btn @click="currentStep += 1" :disabled="currentStep == steps">Next</v-btn>
                                     </v-col>
 
                                     <v-col>
@@ -95,9 +95,8 @@
             finishTest(){
                 let myAnswers = this.getMyAnswers()
                 let endTime = new Date().getTime()
-                console.log(endTime)
-                 let config = { headers: comm.getHeader() }
-                axios.post(comm.protocol +'://' + comm.server + '/test-results', {startTime: this.startTime, endTime: endTime, answeIDs: myAnswers},config)
+                let config = { headers: comm.getHeader() }
+                axios.post(comm.protocol +'://' + comm.server + '/test-results', {startTime: this.startTime, endTime: endTime, answeIDs: myAnswers, testID: this.testId},config)
                 .then(response => {
                 if(response.status==200){
                     alert("uspesno zavrsen test")
