@@ -13,7 +13,7 @@ public class Teacher extends User{
 
     private static final long serialVersionUID = 1L;
 
-    @OneToMany(mappedBy = "teacher", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "teacher", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonManagedReference("teacherCourses")
     private Set<Course> courses = new HashSet<>();
 

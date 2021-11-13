@@ -3,9 +3,11 @@ package eobrazovanje.util;
 import eobrazovanje.dto.AnswerDTO;
 import eobrazovanje.dto.QuestionDTO;
 import eobrazovanje.dto.TestDTO;
+import eobrazovanje.dto.UserDTO;
 import eobrazovanje.model.Answer;
 import eobrazovanje.model.Question;
 import eobrazovanje.model.Test;
+import eobrazovanje.model.User;
 
 import java.util.ArrayList;
 
@@ -32,5 +34,9 @@ public class Converter {
         result.setQuestions(questions);
 
         return result;
+    }
+
+    public static UserDTO convertUserToUserDTO(User user){
+        return new UserDTO(user.getId(),user.getUsername(),user.getFirstName(),user.getLastName());
     }
 }

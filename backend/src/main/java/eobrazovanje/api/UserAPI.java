@@ -1,8 +1,10 @@
 package eobrazovanje.api;
 
+import eobrazovanje.dto.UserDTO;
 import eobrazovanje.model.Role;
 import eobrazovanje.model.User;
 import eobrazovanje.model.UserRequest;
+import eobrazovanje.util.Converter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -22,13 +24,13 @@ public class UserAPI {
 
     @GetMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_STUDENT')")
-    public User FindUserById(@PathVariable("id") Long id){
-        return userService.findById(id);
+    public UserDTO FindUserById(@PathVariable("id") Long id){
+        return Converter.convertUserToUserDTO(userService.findById(id));
     }
 
     @GetMapping("/noauth/{id}")
-    public User FindUserById1(@PathVariable("id") Long id){
-        return userService.findById(id);
+    public UserDTO FindUserById1(@PathVariable("id") Long id){
+        return Converter.convertUserToUserDTO(userService.findById(id));
     }
 
     @GetMapping("/teachers")
