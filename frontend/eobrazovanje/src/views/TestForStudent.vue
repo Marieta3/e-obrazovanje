@@ -96,7 +96,8 @@
                 let myAnswers = this.getMyAnswers()
                 let endTime = new Date().getTime()
                 let config = { headers: comm.getHeader() }
-                axios.post(comm.protocol +'://' + comm.server + '/test-results', {startTime: this.startTime, endTime: endTime, answeIDs: myAnswers, testID: this.testId},config)
+                let data = {startTime: this.startTime, endTime: endTime, answerIDs: myAnswers, testID: this.testId}
+                axios.post(comm.protocol +'://' + comm.server + '/test-results', data ,config)
                 .then(response => {
                 if(response.status==200){
                     alert("uspesno zavrsen test")
