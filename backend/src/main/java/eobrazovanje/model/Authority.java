@@ -14,9 +14,6 @@ public class Authority implements GrantedAuthority {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-//    @Column(name = "name")
-//    private String name;
-
     @Column(name = "role")
     @Enumerated(EnumType.STRING)
     private Role role;
@@ -35,11 +32,6 @@ public class Authority implements GrantedAuthority {
         this.role = role;
     }
 
-//    @Override
-//    public String getAuthority() {
-//        return name;
-//    }
-
     @JsonIgnore
     public Long getId() {
         return id;
@@ -48,12 +40,4 @@ public class Authority implements GrantedAuthority {
     public void setId(Long id) {
         this.id = id;
     }
-
-//    public String getName() {
-//        return name;
-//    }
-//
-//    public void setName(String name) {
-//        this.name = name;
-//    }
 }

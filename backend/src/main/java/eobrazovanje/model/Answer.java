@@ -21,18 +21,14 @@ public class Answer {
     private String imagePath;
 
     @Column(name = "is_correct")
-    private boolean isCorrect;
+    private Boolean isCorrect;
 
-    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JsonBackReference("questionAnswers")
     private Question question;
 
     @Column(name = "accuracy")
     private int accuracy;
-
-//    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
-//    @JsonBackReference("testResultAnswers")
-//    private TestResult testResult;
 
     public Answer(Long id, String text, String imagePath, boolean isCorrect, Question question, int accuracy) {
         this.id = id;
@@ -70,11 +66,11 @@ public class Answer {
         this.imagePath = imagePath;
     }
 
-    public boolean isCorrect() {
+    public Boolean isCorrect() {
         return isCorrect;
     }
 
-    public void setCorrect(boolean correct) {
+    public void setCorrect(Boolean correct) {
         isCorrect = correct;
     }
 

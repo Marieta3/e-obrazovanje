@@ -20,7 +20,7 @@ public class Test {
     @Column(name = "title")
     private String title;
 
-    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JsonBackReference("courseTests")
     private Course course;
 

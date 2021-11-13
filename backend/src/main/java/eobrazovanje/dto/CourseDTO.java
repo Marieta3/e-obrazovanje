@@ -1,41 +1,23 @@
 package eobrazovanje.dto;
 
+import lombok.Getter;
+import lombok.Setter;
+
 public class CourseDTO {
 
-    private String name;
-    private String description;
-    private Long teacherId;
+    @Getter @Setter
+    private Long id, teacherId;
 
-    public CourseDTO(String name, String description, Long teacherId) {
+    @Getter @Setter
+    private String name, description;
+
+    public CourseDTO(Long id, String name, String description, Long teacherId) {
         this.name = name;
         this.description = description;
         this.teacherId = teacherId;
+        this.id = id;
     }
 
     public CourseDTO() {
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Long getTeacherId() {
-        return teacherId;
-    }
-
-    public void setTeacherId(Long teacherId) {
-        this.teacherId = teacherId;
     }
 }

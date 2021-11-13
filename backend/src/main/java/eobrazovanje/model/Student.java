@@ -16,11 +16,11 @@ public class Student extends User{
     @Column(name="index_number")
     private String indexNumber;
 
-    @OneToMany(mappedBy = "student", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "student", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonManagedReference("studentTestResults")
     private Set<TestResult> testResults = new HashSet<>();
 
-    @OneToMany(mappedBy = "student", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "student", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonManagedReference("studentCourses")
     private Set<StudentCourse> studentCourses = new HashSet<>();
 

@@ -1,13 +1,10 @@
 package eobrazovanje.util;
 
-import eobrazovanje.dto.AnswerDTO;
-import eobrazovanje.dto.QuestionDTO;
-import eobrazovanje.dto.TestDTO;
-import eobrazovanje.model.Answer;
-import eobrazovanje.model.Question;
-import eobrazovanje.model.Test;
+import eobrazovanje.dto.*;
+import eobrazovanje.model.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Converter {
     public static TestDTO convertTestToTestDTO(Test test, boolean shouldContainsIsAnswerCorrectProperty){
@@ -31,6 +28,42 @@ public class Converter {
 
         result.setQuestions(questions);
 
+        return result;
+    }
+
+    public static UserDTO userToUserDTO(User user){
+        return new UserDTO(user.getId(),user.getUsername(),user.getFirstName(),user.getLastName());
+    }
+
+    public static List<UserDTO> usersToUserDTOs(List<User> users){
+        List<UserDTO> result = new ArrayList<>(users.size());
+        for (User u : users){
+            result.add(userToUserDTO(u));
+        }
+        return result;
+    }
+
+    public static CourseDTO courseToCourseDTO(Course course){
+        return new CourseDTO(course.getId(), course.getName(), course.getDescription(), course.getTeacher().getId());
+    }
+
+    public static List<CourseDTO> coursesToCourseDTOs(List<Course> courses){
+        List<CourseDTO> result = new ArrayList<>(courses.size());
+        for (Course c : courses){
+            result.add(courseToCourseDTO(c));
+        }
+        return result;
+    }
+
+    public static TestDescriptionDTO testToTestDescritpionDTO(Test test){
+        return new TestDescriptionDTO(test.getTitle(),test.getId(),test.getCourse().getId());
+    }
+
+    public static List<TestDescriptionDTO> testsToTestDescriptionDTOs(List<Test> tests){
+        List<TestDescriptionDTO> result = new ArrayList<>(tests.size());
+        for (Test t : tests){
+            result.add(testToTestDescritpionDTO(t));
+        }
         return result;
     }
 }
