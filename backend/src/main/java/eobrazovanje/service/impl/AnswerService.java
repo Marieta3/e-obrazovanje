@@ -28,11 +28,11 @@ public class AnswerService implements IAnswerService {
 
     @Override
     public Answer save(Answer answer) {
-        return null;
+        return answerRepository.save(answer);
     }
 
     @Override
     public List<Answer> findAll() {
-        return null;
+        return answerRepository.findAll();
     }
 }

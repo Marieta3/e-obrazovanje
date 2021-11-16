@@ -21,7 +21,7 @@ export default {
     VueDiagramEditor
   },
   data: () => ({
-     nodes:{},
+     nodes: {},
      id: 1
   }),
   mounted() {
@@ -47,7 +47,8 @@ export default {
       return node.coordinates.y > 200;
     },
     createLink(data){
-        data.id = 15
+      console.log(data.id)
+      console.log(this.$refs.diagram.serialize())
     },
     addNewNode(){
         let id = this.id
@@ -55,7 +56,7 @@ export default {
             id: 'node-'+ id,
             title: 'My node '+id,
             size: {
-            width: 200,
+            width: 200.25,
             height: 220
             },
             coordinates: {
@@ -63,10 +64,10 @@ export default {
             y: 200
             },
             portsIn: {
-            default: 'in'
+            port: 'in'
             },
             portsOut: {
-                default: 'out'
+                port: 'out'
             }
         }
         this.$refs.diagram.addNode(newNode)
