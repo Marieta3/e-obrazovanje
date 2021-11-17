@@ -29,6 +29,18 @@ public class DomainProblemDTO {
         this.portsOut = portsOut;
     }
 
+    @Override
+    public String toString() {
+        return "DomainProblemDTO{" +
+                "id='" + id + '\'' +
+                ", title='" + title + '\'' +
+                ", size=" + size +
+                ", coordinates=" + coordinates.toString() +
+                ", portsIn=" + portsIn +
+                ", portsOut=" + portsOut +
+                '}';
+    }
+
     public static class Coordinates{
         @Getter @Setter
         private Double x;
@@ -41,6 +53,14 @@ public class DomainProblemDTO {
         public Coordinates(Double x, Double y) {
             this.x = x;
             this.y = y;
+        }
+
+        @Override
+        public String toString() {
+            return "Coordinates{" +
+                    "x=" + x +
+                    ", y=" + y +
+                    '}';
         }
     }
 

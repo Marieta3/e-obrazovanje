@@ -50,7 +50,8 @@ const routes = [{
       import ('../views/Courses.vue')
   },
   {
-    path: '/diagram',
+    path: '/diagram/:knowledgeSpaceId',
+    props: true,
     name: 'Diagram',
     component: () =>
       import ('../components/knowledgeSpace/DiagramEditor.vue')

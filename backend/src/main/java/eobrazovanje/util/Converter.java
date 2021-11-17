@@ -106,8 +106,13 @@ public class Converter {
             dp.setKnowledgeSpace(ks);
             //DomainProblem dpSaved = domainProblemService.save(dp);
             mapa.put(dpDTO.getId(), dp);
-            ks.getDomainProblems().add(dp);
+            ks.addDomainProblem(dp);
         }
+        System.out.println("*****************************************************");
+        for (DomainProblem dp : ks.getDomainProblems()){
+            System.out.println(dp.toString());
+        }
+        System.out.println("*****************************************************");
 
         for(LinkDTO linkDTO: ksDTO.getLinks()){
             Link link = new Link();
@@ -115,6 +120,9 @@ public class Converter {
             link.setStartNode(mapa.get(linkDTO.getStart_id()));
             link.setEndNode(mapa.get(linkDTO.getEnd_id()));
             ks.getLinks().add(link);
+        }
+        for(String key : mapa.keySet()){
+            System.out.println(mapa.get(key).toString());
         }
 
         return ks;

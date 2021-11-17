@@ -1,6 +1,7 @@
 package eobrazovanje.model;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import eobrazovanje.dto.DomainProblemDTO;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -87,8 +88,8 @@ public class KnowledgeSpace {
         return Objects.equals(getId(), that.getId());
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(getId());
+
+    public void addDomainProblem(DomainProblem dp){
+        domainProblems.add(dp);
     }
 }
