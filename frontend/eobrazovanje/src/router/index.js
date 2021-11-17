@@ -48,6 +48,12 @@ const routes = [{
     name: 'Courses',
     component: () =>
       import ('../views/Courses.vue')
+  },
+  {
+    path: '/diagram',
+    name: 'Diagram',
+    component: () =>
+      import ('../components/knowledgeSpace/DiagramEditor.vue')
   }
 ]
 
