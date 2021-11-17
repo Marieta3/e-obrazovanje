@@ -13,9 +13,9 @@ public class DomainProblemDTO {
     @Getter @Setter
     private Coordinates coordinates;
     @Getter @Setter
-    private Ports portsIn;
+    private Ports portsIn = new Ports("in");
     @Getter @Setter
-    private Ports portsOut;
+    private Ports portsOut = new Ports("out");
 
     public DomainProblemDTO() {
     }
@@ -29,7 +29,7 @@ public class DomainProblemDTO {
         this.portsOut = portsOut;
     }
 
-    public class Coordinates{
+    public static class Coordinates{
         @Getter @Setter
         private Double x;
         @Getter @Setter
@@ -56,7 +56,7 @@ public class DomainProblemDTO {
         }
     }
 
-    public class Size{
+    public static class Size{
         @Getter @Setter
         private Double width;
         @Getter @Setter

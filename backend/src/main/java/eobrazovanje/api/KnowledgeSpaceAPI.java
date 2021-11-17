@@ -8,6 +8,7 @@ import eobrazovanje.model.KnowledgeSpace;
 import eobrazovanje.model.Link;
 import eobrazovanje.service.IDomainProblemService;
 import eobrazovanje.service.IKnowledgeSpaceService;
+import eobrazovanje.util.Converter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -31,36 +32,17 @@ public class KnowledgeSpaceAPI {
 
     @GetMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_TEACHER')")
-    public KnowledgeSpace FindKnowledgeSpaceById(@PathVariable("id") Long id){
-        return knowledgeSpaceService.findById(id);
+    public ResponseEntity<KnowledgeSpaceDTO> FindKnowledgeSpaceById(@PathVariable("id") Long id){
+        KnowledgeSpace ks = knowledgeSpaceService.findById(id);
+        KnowledgeSpaceDTO ksDTO = Converter.knowledgeSpaceToDTO(ks);
+        return new ResponseEntity<>(ksDTO, HttpStatus.OK);
     }
 
     @PreAuthorize("hasRole('ROLE_TEACHER')")
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<KnowledgeSpace> createKnowledgeSpace(@RequestBody KnowledgeSpaceDTO ksDTO) throws MethodArgumentNotValidException {
-        KnowledgeSpace ks = new KnowledgeSpace();
-        ks.setTitle(ksDTO.getTitle());
-        Map<String, DomainProblem> mapa = new HashMap<>();
-        for(DomainProblemDTO dpDTO: ksDTO.getNodes()){
-            DomainProblem dp = new DomainProblem();
-            dp.setTitle(dpDTO.getTitle());
-            dp.setWidth(dpDTO.getSize().getWidth());
-            dp.setHeight(dpDTO.getSize().getHeight());
-            dp.setxCoordinate(dpDTO.getCoordinates().getX());
-            dp.setyCoordinate(dpDTO.getCoordinates().getY());
-            dp.setKnowledgeSpace(ks);
-            //DomainProblem dpSaved = domainProblemService.save(dp);
-            mapa.put(dpDTO.getId(), dp);
-            ks.getDomainProblems().add(dp);
-        }
-
-        for(LinkDTO linkDTO: ksDTO.getLinks()){
-            Link link = new Link();
-            link.setKnowledgeSpace(ks);
-            link.setStartNode(mapa.get(linkDTO.getStart_id()));
-            link.setEndNode(mapa.get(linkDTO.getEnd_id()));
-            ks.getLinks().add(link);
-        }
+        KnowledgeSpace ks = Converter.dtoToKnowledgeSpace(ksDTO);
         return new ResponseEntity<>(knowledgeSpaceService.save(ks), HttpStatus.OK);
     }
+
 }

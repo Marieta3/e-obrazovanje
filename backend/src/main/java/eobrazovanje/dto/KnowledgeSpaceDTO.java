@@ -1,12 +1,13 @@
 package eobrazovanje.dto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class KnowledgeSpaceDTO {
 
-    private List<DomainProblemDTO> nodes;
+    private List<DomainProblemDTO> nodes = new ArrayList<>();
 
-    private List<LinkDTO> links;
+    private List<LinkDTO> links = new ArrayList<>();
 
     private String title;
 
