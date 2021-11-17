@@ -32,7 +32,7 @@ export default {
     CreateNewNodeDialog
   },
   data: () => ({
-     nodes:{},
+     nodes: {},
      id: 1
   }),
   mounted() {
@@ -66,10 +66,10 @@ export default {
             title: node.title,
             data : node.description,
             portsIn: {
-            default: 'in'
+            port: 'in'
             },
             portsOut: {
-                default: 'out'
+                port: 'out'
             }
         }
         this.$refs.diagram.addNode(newNode)
