@@ -53,7 +53,7 @@ const routes = [{
     path: '/diagram',
     name: 'Diagram',
     component: () =>
-      import ('../components/DiagramEditor.vue')
+      import ('../components/knowledgeSpace/DiagramEditor.vue')
   }
 ]
 
