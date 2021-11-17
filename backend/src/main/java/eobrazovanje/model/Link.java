@@ -85,8 +85,4 @@ public class Link {
         return Objects.equals(getId(), link.getId());
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(getId());
-    }
 }

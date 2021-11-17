@@ -107,7 +107,6 @@ public class DomainProblem {
         return "DomainProblem{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
-                ", knowledgeSpace=" + knowledgeSpace +
                 '}';
     }
 
@@ -119,8 +118,4 @@ public class DomainProblem {
         return Objects.equals(getId(), that.getId());
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(getId());
-    }
 }
