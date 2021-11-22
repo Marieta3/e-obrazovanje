@@ -1,6 +1,8 @@
 package eobrazovanje.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.Objects;
@@ -32,6 +34,11 @@ public class DomainProblem {
     @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JsonBackReference("domainProblems")
     private KnowledgeSpace knowledgeSpace;
+
+
+    @Column(name = "description")
+    @Getter @Setter
+    private String description;
 
     public DomainProblem() {
     }

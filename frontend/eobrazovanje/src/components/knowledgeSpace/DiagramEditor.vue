@@ -61,7 +61,8 @@ export default {
     },
 
     nodePulsable(node) {
-      return node.coordinates.y > 200;
+      console.log(node.coordinates.y > 200)
+      return false
     },
     createLink(data){
       console.log(data.id)
@@ -108,7 +109,12 @@ export default {
                 alert("greska")
                 })
     }
-  }
+  },
+   watch:{
+        knowledgeSpaceId: function(){
+            this.init()
+        }
+    }
 };
 </script>
 

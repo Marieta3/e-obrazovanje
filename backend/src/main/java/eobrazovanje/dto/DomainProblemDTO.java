@@ -16,6 +16,8 @@ public class DomainProblemDTO {
     private Ports portsIn = new Ports("in");
     @Getter @Setter
     private Ports portsOut = new Ports("out");
+    @Getter @Setter
+    private String data;
 
     public DomainProblemDTO() {
     }
