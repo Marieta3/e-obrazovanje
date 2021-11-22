@@ -78,6 +78,7 @@ public class Converter {
             dpDTO.setId(dp.getId().toString());
             dpDTO.setCoordinates(new DomainProblemDTO.Coordinates(dp.getxCoordinate(), dp.getyCoordinate()));
             dpDTO.setSize(new DomainProblemDTO.Size(dp.getWidth(), dp.getHeight()));
+            dpDTO.setData(dp.getDescription());
             ksDTO.getNodes().add(dpDTO);
         }
 
@@ -104,6 +105,7 @@ public class Converter {
             dp.setxCoordinate(dpDTO.getCoordinates().getX());
             dp.setyCoordinate(dpDTO.getCoordinates().getY());
             dp.setKnowledgeSpace(ks);
+            dp.setDescription(dpDTO.getData());
             //DomainProblem dpSaved = domainProblemService.save(dp);
             mapa.put(dpDTO.getId(), dp);
             ks.addDomainProblem(dp);
