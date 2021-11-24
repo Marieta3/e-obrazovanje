@@ -5,6 +5,11 @@
                 <course-card :course="c"/>    
             </v-col>
         </v-row>
+        <v-row>
+            <v-col cols="12" sm="3">
+                <v-btn v-if="hasAnyRole(userTypes.ADMIN)" @click="redirectToCreateCourse()">Create new course</v-btn>
+            </v-col>
+        </v-row>
     </v-container>
 </template>
 
@@ -17,7 +22,8 @@ export default {
     name: "Courses",
     data(){
         return {
-            courses: []
+            courses: [],
+            userTypes: comm.Role,
         }
     },
     created(){
@@ -36,6 +42,12 @@ export default {
             }).catch(() => {
               alert("greska")
             })
+        },
+        hasAnyRole(... roles){
+            return comm.hasAnyRole(roles)
+        },
+        redirectToCreateCourse(){
+            this.$router.push({name:'CreateCourse'})
         }
     }
 }
