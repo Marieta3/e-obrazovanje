@@ -7,7 +7,10 @@
       </v-row>
       <v-row v-if="hasAnyRole(userTypes.TEACHER)">
           <v-col cols="12" sm="4">
-              <v-btn color="success" @click="redirectToCreateTestPage()">Create new</v-btn>
+              <v-btn color="success" @click="redirectToCreateTestPage()">Create new test</v-btn>
+          </v-col>
+          <v-col cols="12" sm="4">
+              <v-btn color="success" @click="redirectToDiagramEditor()">Knowledge space</v-btn>
           </v-col>
       </v-row>
   </v-container>
@@ -68,6 +71,10 @@ export default {
         },
         hasAnyRole(... roles){
             return comm.hasAnyRole(roles)
+        },
+        redirectToDiagramEditor(){
+            //TODO: srediti knowledgeSpaceId
+            this.$router.push({name: 'Diagram', params: {knowledgeSpaceId : 1}})
         }
     }
 }

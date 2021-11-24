@@ -50,6 +50,7 @@ export default {
                 //alert("uspesno se ulogovao")
                 comm.setJWTToken(response.data.accessToken);
                 this.$router.push({name:'Courses'})
+                this.$root.$emit('loggedUser')
               }
             }).catch(() => {
               alert("greska")

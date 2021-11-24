@@ -35,7 +35,7 @@ public class KnowledgeSpaceService implements IKnowledgeSpaceService {
         ks.setTitle(knowledgeSpace.getTitle());
         ks.setLinks(knowledgeSpace.getLinks());
 
-        ks.getDomain().setDomainProblems(knowledgeSpace.getDomain().getDomainProblems());
+        //ks.getDomain().setDomainProblems(knowledgeSpace.getDomain().getDomainProblems());
 
         return null;
     }

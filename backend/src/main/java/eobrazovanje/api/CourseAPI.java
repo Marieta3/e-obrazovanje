@@ -79,8 +79,8 @@ public class CourseAPI {
 
     @PreAuthorize("hasRole('ROLE_TEACHER')")
     @GetMapping(value = "{course_id}/tests", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<Test>> getAllTestsForCourse(@PathVariable("course_id") Long courseId){
-        return new ResponseEntity<>(testService.findByCourseId(courseId), HttpStatus.OK);
+    public ResponseEntity<List<TestDescriptionDTO>> getAllTestsForCourse(@PathVariable("course_id") Long courseId){
+        return new ResponseEntity<>(Converter.testsToTestDescriptionDTOs(testService.findByCourseId(courseId)), HttpStatus.OK);
     }
 
     @PreAuthorize("hasRole('ROLE_STUDENT')")
