@@ -8,6 +8,7 @@ import eobrazovanje.model.Course;
 import eobrazovanje.model.Question;
 import eobrazovanje.model.Test;
 import eobrazovanje.service.ICourseService;
+import eobrazovanje.service.IDomainProblemService;
 import eobrazovanje.service.ITestService;
 import eobrazovanje.util.Converter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,10 +39,12 @@ public class TestAPI {
     @Autowired
     private ICourseService courseService;
 
+    @Autowired
+    private IDomainProblemService domainProblemService;
+
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_TEACHER', 'ROLE_STUDENT')")
     public TestDTO FindTestById(@PathVariable("id") Long id){
-
         Test test = testService.findById(id);
         return Converter.convertTestToTestDTO(test, !hasRole("ROLE_STUDENT"));
     }
@@ -55,6 +58,7 @@ public class TestAPI {
         for(QuestionDTO questionDTO : testDTO.getQuestions()){
             Question question = new Question();
             question.setText(questionDTO.getText());
+            question.setDomainProblem(domainProblemService.findById(questionDTO.getDomainProblemId()));
             //question.setPoints(questionDTO.getPoints());
             question.setTest(test);
             question.setRandomize(questionDTO.getRandomized());

@@ -10,4 +10,6 @@ public interface IKnowledgeSpaceService {
     KnowledgeSpace save(KnowledgeSpace knowledgeSpace);
 
     List<KnowledgeSpace> findAll();
+
+    KnowledgeSpace update(Long id, KnowledgeSpace knowledgeSpace);
 }

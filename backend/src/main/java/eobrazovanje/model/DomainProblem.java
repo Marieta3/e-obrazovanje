@@ -1,8 +1,6 @@
 package eobrazovanje.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import lombok.Getter;
-import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.Objects;
@@ -33,24 +31,24 @@ public class DomainProblem {
 
     @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JsonBackReference("domainProblems")
-    private KnowledgeSpace knowledgeSpace;
+    private Domain domain;
 
 
     @Column(name = "description")
-    @Getter @Setter
     private String description;
 
     public DomainProblem() {
     }
 
-    public DomainProblem(Long id, String title, Double width, Double height, Double xCoordinate, Double yCoordinate, KnowledgeSpace knowledgeSpace) {
+    public DomainProblem(Long id, String title, Double width, Double height, Double xCoordinate, Double yCoordinate, Domain domain, String description) {
         this.id = id;
         this.title = title;
         this.width = width;
         this.height = height;
         this.xCoordinate = xCoordinate;
         this.yCoordinate = yCoordinate;
-        this.knowledgeSpace = knowledgeSpace;
+        this.domain = domain;
+        this.description = description;
     }
 
     public Long getId() {
@@ -67,14 +65,6 @@ public class DomainProblem {
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public KnowledgeSpace getKnowledgeSpace() {
-        return knowledgeSpace;
-    }
-
-    public void setKnowledgeSpace(KnowledgeSpace knowledgeSpace) {
-        this.knowledgeSpace = knowledgeSpace;
     }
 
     public Double getWidth() {
@@ -109,11 +99,33 @@ public class DomainProblem {
         this.yCoordinate = yCoordinate;
     }
 
+    public Domain getDomain() {
+        return domain;
+    }
+
+    public void setDomain(Domain domain) {
+        this.domain = domain;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     @Override
     public String toString() {
         return "DomainProblem{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
+                ", width=" + width +
+                ", height=" + height +
+                ", xCoordinate=" + xCoordinate +
+                ", yCoordinate=" + yCoordinate +
+                ", domain=" + domain +
+                ", description='" + description + '\'' +
                 '}';
     }
 

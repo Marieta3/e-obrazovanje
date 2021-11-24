@@ -47,8 +47,9 @@ export default {
             axios.post(comm.protocol +'://' + comm.server + '/auth/login', {username: this.username, password: this.password})
             .then(response => {
               if(response.status==200){
-                alert("uspesno se ulogovao")
+                //alert("uspesno se ulogovao")
                 comm.setJWTToken(response.data.accessToken);
+                this.$router.push({name:'Courses'})
               }
             }).catch(() => {
               alert("greska")

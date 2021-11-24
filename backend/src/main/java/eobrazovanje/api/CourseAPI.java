@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import static eobrazovanje.util.Connection.hasRole;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
