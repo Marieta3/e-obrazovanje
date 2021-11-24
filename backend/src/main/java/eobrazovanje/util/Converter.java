@@ -13,7 +13,7 @@ public class Converter {
         TestDTO result = new TestDTO(test.getTitle(),test.getCourse().getId(),null);
         ArrayList<QuestionDTO> questions = new ArrayList<>(test.getQuestions().size());
         for (Question question : test.getQuestions()){
-            QuestionDTO questionDTO = new QuestionDTO(question.getText(), question.isRandomize(), null);
+            QuestionDTO questionDTO = new QuestionDTO(question.getText(), question.isRandomize(), null, question.getDomainProblem().getId());
             ArrayList<AnswerDTO> answers = new ArrayList<AnswerDTO>(question.getAnswers().size());
             for(Answer answer : question.getAnswers()){
                 AnswerDTO answerDTO = new AnswerDTO(answer.getId(), answer.getText(), answer.getImagePath(), null, answer.getAccuracy());
@@ -69,10 +69,10 @@ public class Converter {
         return result;
     }
 
-    public static KnowledgeSpaceDTO knowledgeSpaceToDTO(KnowledgeSpace ks){
-        KnowledgeSpaceDTO ksDTO = new KnowledgeSpaceDTO();
+    public static GraphDTO knowledgeSpaceToDTO(KnowledgeSpace ks){
+        GraphDTO ksDTO = new GraphDTO();
         ksDTO.setTitle(ks.getTitle());
-        for(DomainProblem dp: ks.getDomainProblems()){
+        for(DomainProblem dp: ks.getDomain().getDomainProblems()){
             DomainProblemDTO dpDTO = new DomainProblemDTO();
             dpDTO.setTitle(dp.getTitle());
             dpDTO.setId(dp.getId().toString());
@@ -93,38 +93,35 @@ public class Converter {
         return ksDTO;
     }
 
-    public static KnowledgeSpace dtoToKnowledgeSpace(KnowledgeSpaceDTO ksDTO){
+    public static KnowledgeSpace dtoToKnowledgeSpace(GraphDTO graphDTO){
+        Domain domain = new Domain();
         KnowledgeSpace ks = new KnowledgeSpace();
-        ks.setTitle(ksDTO.getTitle());
+        ks.setTitle(graphDTO.getTitle());
         Map<String, DomainProblem> mapa = new HashMap<>();
-        for(DomainProblemDTO dpDTO: ksDTO.getNodes()){
+
+        for(DomainProblemDTO dpDTO: graphDTO.getNodes()){
             DomainProblem dp = new DomainProblem();
             dp.setTitle(dpDTO.getTitle());
             dp.setWidth(dpDTO.getSize().getWidth());
             dp.setHeight(dpDTO.getSize().getHeight());
             dp.setxCoordinate(dpDTO.getCoordinates().getX());
             dp.setyCoordinate(dpDTO.getCoordinates().getY());
-            dp.setKnowledgeSpace(ks);
+            dp.setDomain(domain);
             dp.setDescription(dpDTO.getData());
             //DomainProblem dpSaved = domainProblemService.save(dp);
             mapa.put(dpDTO.getId(), dp);
-            ks.addDomainProblem(dp);
+            domain.getDomainProblems().add(dp);
         }
-        System.out.println("*****************************************************");
-        for (DomainProblem dp : ks.getDomainProblems()){
-            System.out.println(dp.toString());
-        }
-        System.out.println("*****************************************************");
 
-        for(LinkDTO linkDTO: ksDTO.getLinks()){
+        ks.setDomain(domain);
+        domain.getKnowledgeSpaces().add(ks);
+
+        for(LinkDTO linkDTO: graphDTO.getLinks()){
             Link link = new Link();
             link.setKnowledgeSpace(ks);
             link.setStartNode(mapa.get(linkDTO.getStart_id()));
             link.setEndNode(mapa.get(linkDTO.getEnd_id()));
             ks.getLinks().add(link);
-        }
-        for(String key : mapa.keySet()){
-            System.out.println(mapa.get(key).toString());
         }
 
         return ks;

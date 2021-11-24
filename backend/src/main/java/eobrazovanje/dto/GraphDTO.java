@@ -3,7 +3,7 @@ package eobrazovanje.dto;
 import java.util.ArrayList;
 import java.util.List;
 
-public class KnowledgeSpaceDTO {
+public class GraphDTO {
 
     private List<DomainProblemDTO> nodes = new ArrayList<>();
 
@@ -11,10 +11,10 @@ public class KnowledgeSpaceDTO {
 
     private String title;
 
-    public KnowledgeSpaceDTO() {
+    public GraphDTO() {
     }
 
-    public KnowledgeSpaceDTO(List<DomainProblemDTO> nodes, List<LinkDTO> links, String title) {
+    public GraphDTO(List<DomainProblemDTO> nodes, List<LinkDTO> links, String title) {
         this.nodes = nodes;
         this.links = links;
         this.title = title;

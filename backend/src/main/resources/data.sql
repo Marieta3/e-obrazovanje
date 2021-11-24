@@ -15,6 +15,26 @@ values
 insert into user_authority (user_id, authority_id)
 values (1,1),(2,1),(3,3),(4,2),(5,2) ;
 
+insert into domains (title)
+values
+('Prvi domen');
+
+insert into domain_problems (title, description, domain_id, height, width, x_coord, y_coord)
+values
+('Prvi domenski problem', 'Opis prvog domenskog problema', 1, 150, 150, 10, 10),
+('Drugi domenski problem', 'Opis drugog domenskog problema', 1, 150, 150, 390, 10),
+('Treci domenski problem', 'Opis treceg domenskog problema', 1, 150, 150, 175, 160);
+
+insert into knowledge_spaces (title, domain_id)
+values
+('Prvi prostor znanja za prvi domen', 1);
+
+insert into links (start_domain_problem_id, end_domain_problem_id, knowledge_space_id)
+values
+(1, 3, 1),
+(3, 2, 1),
+(2, 1, 1);
+
 insert into courses (description, name, teacher_id)
 values
 ('Prvi kurs koji polazu polaznici, predmet kursa je prepoznavanje', 'Prvi kurs PK', 4); --id 1
@@ -23,9 +43,9 @@ insert into tests(title, course_id)
 values
 ('Prvi test', 1); -- id 1
 
-insert into questions (is_randomize, text, test_id)
+insert into questions (is_randomize, text, test_id, domain_problem_id)
 values
-(false, 'Koji odgovor je tacan?', 1); -- id 1
+(false, 'Koji odgovor je tacan?', 1, 1); -- id 1
 
 insert into answers (image_path, is_correct, text, question_id, accuracy)
 values
@@ -37,3 +57,5 @@ insert into students_courses (completed, course_id, student_id, student_index)
 values
 (false, 1, 1,'R2-123-2021'),
 (true, 1, 2,'R2-456-2021');
+
+

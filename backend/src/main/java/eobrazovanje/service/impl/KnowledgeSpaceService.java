@@ -28,4 +28,15 @@ public class KnowledgeSpaceService implements IKnowledgeSpaceService {
     public List<KnowledgeSpace> findAll() {
         return knowledgeSpaceRepository.findAll();
     }
+
+    @Override
+    public KnowledgeSpace update(Long id, KnowledgeSpace knowledgeSpace) {
+        KnowledgeSpace ks = findById(id);
+        ks.setTitle(knowledgeSpace.getTitle());
+        ks.setLinks(knowledgeSpace.getLinks());
+
+        ks.getDomain().setDomainProblems(knowledgeSpace.getDomain().getDomainProblems());
+
+        return null;
+    }
 }

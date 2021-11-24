@@ -1,7 +1,7 @@
 package eobrazovanje.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import eobrazovanje.dto.DomainProblemDTO;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -21,21 +21,21 @@ public class KnowledgeSpace {
     private String title;
 
     @OneToMany(mappedBy = "knowledgeSpace", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JsonManagedReference("domainProblems")
-    private Set<DomainProblem> domainProblems = new HashSet<>();
-
-    @OneToMany(mappedBy = "knowledgeSpace", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JsonManagedReference("links")
     private Set<Link> links = new HashSet<>();
+
+    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @JsonBackReference("knowledgeSpaces")
+    private Domain domain;
 
     public KnowledgeSpace() {
     }
 
-    public KnowledgeSpace(Long id, String title, Set<DomainProblem> domainProblems, Set<Link> links) {
+    public KnowledgeSpace(Long id, String title, Set<Link> links, Domain domain) {
         this.id = id;
         this.title = title;
-        this.domainProblems = domainProblems;
         this.links = links;
+        this.domain = domain;
     }
 
     public Long getId() {
@@ -54,14 +54,6 @@ public class KnowledgeSpace {
         this.title = title;
     }
 
-    public Set<DomainProblem> getDomainProblems() {
-        return domainProblems;
-    }
-
-    public void setDomainProblems(Set<DomainProblem> domainProblems) {
-        this.domainProblems = domainProblems;
-    }
-
     public Set<Link> getLinks() {
         return links;
     }
@@ -70,12 +62,19 @@ public class KnowledgeSpace {
         this.links = links;
     }
 
+    public Domain getDomain() {
+        return domain;
+    }
+
+    public void setDomain(Domain domain) {
+        this.domain = domain;
+    }
+
     @Override
     public String toString() {
         return "KnowledgeSpace{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
-                ", domainProblems=" + domainProblems +
                 ", links=" + links +
                 '}';
     }
@@ -88,8 +87,4 @@ public class KnowledgeSpace {
         return Objects.equals(getId(), that.getId());
     }
 
-
-    public void addDomainProblem(DomainProblem dp){
-        domainProblems.add(dp);
-    }
 }

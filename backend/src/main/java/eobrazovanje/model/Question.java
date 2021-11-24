@@ -1,6 +1,7 @@
 package eobrazovanje.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
@@ -34,12 +35,20 @@ public class Question {
     @JsonManagedReference("questionAnswers")
     private Set<Answer> answers = new HashSet<>();
 
-    public Question(Long id, String text, boolean isRandomize, Test test, Set<Answer> answers) {
+    /*@ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @JoinColumn(name = "domain_problem_id", unique = false)
+    @JsonIgnoreProperties(value = {"applications", "hibernateLazyInitializer"})*/
+    @JoinColumn(name = "domain_problem_id", referencedColumnName = "id", unique = false)
+    @ManyToOne(cascade = CascadeType.ALL)
+    private DomainProblem domainProblem;
+
+    public Question(Long id, String text, boolean isRandomize, Test test, Set<Answer> answers, DomainProblem domainProblem) {
         this.id = id;
         this.text = text;
         this.isRandomize = isRandomize;
         this.test = test;
         this.answers = answers;
+        this.domainProblem = domainProblem;
     }
 
     public Question() {
@@ -85,6 +94,14 @@ public class Question {
         this.answers = answers;
     }
 
+    public DomainProblem getDomainProblem() {
+        return domainProblem;
+    }
+
+    public void setDomainProblem(DomainProblem domainProblem) {
+        this.domainProblem = domainProblem;
+    }
+
     @Override
     public String toString() {
         return "Question{" +
@@ -93,6 +110,7 @@ public class Question {
                 ", isRandomize=" + isRandomize +
                 ", test=" + test +
                 ", answers=" + answers +
+                ", domainProblem=" + domainProblem +
                 '}';
     }
 
