@@ -2,8 +2,12 @@ package eobrazovanje.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -16,6 +20,11 @@ public class KnowledgeSpace {
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @CreatedDate
+    @Column(name = "created_at", nullable = false, updatable = false)
+    @Getter @Setter
+    private Date createdAt;
 
     @Column(name = "title")
     private String title;

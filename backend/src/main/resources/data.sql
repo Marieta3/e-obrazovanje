@@ -25,9 +25,9 @@ values
 ('Drugi domenski problem', 'Opis drugog domenskog problema', 1, 150, 150, 390, 10),
 ('Treci domenski problem', 'Opis treceg domenskog problema', 1, 150, 150, 175, 160);
 
-insert into knowledge_spaces (title, domain_id)
+insert into knowledge_spaces (created_at, title, domain_id)
 values
-('Prvi prostor znanja za prvi domen', 1);
+(NOW(), 'Prvi prostor znanja za prvi domen', 1);
 
 insert into links (start_domain_problem_id, end_domain_problem_id, knowledge_space_id)
 values
@@ -35,9 +35,9 @@ values
 (3, 2, 1),
 (2, 1, 1);
 
-insert into courses (description, name, teacher_id)
+insert into courses (description, name, teacher_id, domain_id)
 values
-('Prvi kurs koji polazu polaznici, predmet kursa je prepoznavanje', 'Prvi kurs PK', 4); --id 1
+('Prvi kurs koji polazu polaznici, predmet kursa je prepoznavanje', 'Prvi kurs PK', 4, 1); --id 1
 
 insert into tests(title, course_id)
 values

@@ -12,4 +12,6 @@ public interface IKnowledgeSpaceService {
     List<KnowledgeSpace> findAll();
 
     KnowledgeSpace update(Long id, KnowledgeSpace knowledgeSpace);
+
+    List<KnowledgeSpace> findByDomainId(Long domainId);
 }
