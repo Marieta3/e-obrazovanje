@@ -34,7 +34,7 @@
             value: 'createdAt',
           },
           { text: 'Type', value: 'type' },
-          { text: '', value: 'show' },
+          { text: '', value: 'show', sortable: false },
           { text: 'Is active', value: 'active' },
         ],
         knowledgeSpaces: [],
