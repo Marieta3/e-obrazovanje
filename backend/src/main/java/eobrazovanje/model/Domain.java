@@ -1,6 +1,8 @@
 package eobrazovanje.model;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -27,15 +29,9 @@ public class Domain {
     @JsonManagedReference("knowledgeSpaces")
     private Set<KnowledgeSpace> knowledgeSpaces = new HashSet<>();
 
-    public Domain() {
-    }
-
-    public Domain(Long id, String title, Set<DomainProblem> domainProblems, Set<KnowledgeSpace> knowledgeSpaces) {
-        this.id = id;
-        this.title = title;
-        this.domainProblems = domainProblems;
-        this.knowledgeSpaces = knowledgeSpaces;
-    }
+    @OneToOne(mappedBy = "domain")
+    @Getter @Setter
+    private Course course;
 
     public Long getId() {
         return id;

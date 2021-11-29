@@ -126,4 +126,12 @@ public class Converter {
 
         return ks;
     }
+
+    public static List<KnowledgeSpaceDescriptionDTO> KnowledgeSpaceToKnowledgeSpaceDescriptionDTO(List<KnowledgeSpace> knowledgeSpaces){
+        List<KnowledgeSpaceDescriptionDTO> result = new ArrayList<>(knowledgeSpaces.size());
+        for(KnowledgeSpace ks : knowledgeSpaces){
+            result.add(new KnowledgeSpaceDescriptionDTO(ks));
+        }
+        return result;
+    }
 }

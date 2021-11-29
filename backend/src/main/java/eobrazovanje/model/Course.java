@@ -2,6 +2,8 @@ package eobrazovanje.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -31,16 +33,10 @@ public class Course {
     @JsonManagedReference("courseTests")
     private Set<Test> tests = new HashSet<>();
 
-    public Course() {
-    }
-
-    public Course(Long id, String name, String description, Teacher teacher, Set<Test> tests) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.teacher = teacher;
-        this.tests = tests;
-    }
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "domain_id", referencedColumnName = "id")
+    @Getter @Setter
+    private Domain domain;
 
     public Long getId() {
         return id;

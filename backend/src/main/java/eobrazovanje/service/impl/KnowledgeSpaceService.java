@@ -39,4 +39,9 @@ public class KnowledgeSpaceService implements IKnowledgeSpaceService {
 
         return null;
     }
+
+    @Override
+    public List<KnowledgeSpace> findByDomainId(Long domainId) {
+        return knowledgeSpaceRepository.findAllByDomainId(domainId);
+    }
 }

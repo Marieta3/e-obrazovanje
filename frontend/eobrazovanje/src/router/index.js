@@ -17,7 +17,7 @@ const routes = [{
       import ('../components/Test.vue')
   },
   {
-    path: '/courses/:courseId/tests',
+    path: '/courses/:courseId',
     props: true,
     name: 'CourseTests',
     component: () =>
@@ -48,6 +48,13 @@ const routes = [{
     name: 'Courses',
     component: () =>
       import ('../views/Courses.vue')
+  },
+  {
+    path: '/courses/:courseId/knowledge-spaces',
+    props: true,
+    name: 'KnowledgeSpaceTable',
+    component: () =>
+      import ('../components/knowledgeSpace/KnowledgeSpaceTable.vue')
   },
   {
     path: '/diagram/:knowledgeSpaceId',

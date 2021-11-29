@@ -1,12 +1,14 @@
 package eobrazovanje.api;
 
 import eobrazovanje.dto.CourseDTO;
+import eobrazovanje.dto.KnowledgeSpaceDescriptionDTO;
 import eobrazovanje.dto.TestDTO;
 import eobrazovanje.dto.TestDescriptionDTO;
 import eobrazovanje.model.Course;
 import eobrazovanje.model.Teacher;
 import eobrazovanje.model.Test;
 import eobrazovanje.service.ICourseService;
+import eobrazovanje.service.IKnowledgeSpaceService;
 import eobrazovanje.service.ITestService;
 import eobrazovanje.service.IUserService;
 import eobrazovanje.util.Converter;
@@ -29,6 +31,9 @@ public class CourseAPI {
 
     @Autowired
     private ICourseService courseService;
+
+    @Autowired
+    IKnowledgeSpaceService knowledgeSpaceService;
 
     @Autowired
     private ITestService testService;
@@ -88,5 +93,12 @@ public class CourseAPI {
     public ResponseEntity<List<TestDescriptionDTO>> getAllAvailableCourseTestsForStudent(@PathVariable("course_id") Long courseId){
         //TODO: implementirati logiku za dobavljanje dostupnih testova
         return new ResponseEntity<>(Converter.testsToTestDescriptionDTOs(testService.findByCourseId(courseId)), HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_TEACHER')")
+    @GetMapping(value = "{course_id}/knowledge-spaces/description")
+    public ResponseEntity<List<KnowledgeSpaceDescriptionDTO>> getListOfKnowledgeSpaceDescritpitonDTO(@PathVariable("course_id") Long courseId){
+        Long domainId = courseService.findById(courseId).getDomain().getId();
+        return new ResponseEntity<>(Converter.KnowledgeSpaceToKnowledgeSpaceDescriptionDTO(knowledgeSpaceService.findByDomainId(domainId)),HttpStatus.OK);
     }
 }

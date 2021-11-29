@@ -35,11 +35,11 @@ public class Question {
     @JsonManagedReference("questionAnswers")
     private Set<Answer> answers = new HashSet<>();
 
-    /*@ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JoinColumn(name = "domain_problem_id", unique = false)
-    @JsonIgnoreProperties(value = {"applications", "hibernateLazyInitializer"})*/
+    /*@JsonIgnoreProperties(value = {"applications", "hibernateLazyInitializer"})
     @JoinColumn(name = "domain_problem_id", referencedColumnName = "id", unique = false)
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)*/
     private DomainProblem domainProblem;
 
     public Question(Long id, String text, boolean isRandomize, Test test, Set<Answer> answers, DomainProblem domainProblem) {
