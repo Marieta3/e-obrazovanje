@@ -11,4 +11,6 @@ public interface IDomainProblemService {
     DomainProblem save(DomainProblem domainProblem);
 
     List<DomainProblem> findAll();
+
+    List<DomainProblem> findByDomainId(Long domainId);
 }
