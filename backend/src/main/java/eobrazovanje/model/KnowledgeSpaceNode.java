@@ -1,6 +1,5 @@
 package eobrazovanje.model;
 
-import com.fasterxml.jackson.databind.util.ClassUtil;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,14 +15,16 @@ public class KnowledgeSpaceNode {
     @Getter @Setter
     private Long id;
 
-    @Column(name = "node", nullable = false)
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "domain_problem_id", nullable = false)
     @Getter @Setter
     private DomainProblem node;
 
     @Embedded
     @Getter @Setter
+    @AttributeOverrides({
+            @AttributeOverride( name = "x", column = @Column(name = "coordinate_x")),
+            @AttributeOverride( name = "y", column = @Column(name = "coordinate_y"))})
     private Coordinates coordinates;
     @Embedded
     @Getter @Setter

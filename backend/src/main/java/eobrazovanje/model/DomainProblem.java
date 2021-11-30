@@ -1,8 +1,11 @@
 package eobrazovanje.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -36,6 +39,10 @@ public class DomainProblem {
 
     @Column(name = "description")
     private String description;
+
+    @OneToMany(mappedBy = "node")
+    @Getter @Setter
+    private List<KnowledgeSpaceNode> knowledgeSpaceNodeList;
 
     public DomainProblem() {
     }
