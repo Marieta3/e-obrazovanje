@@ -1,16 +1,17 @@
 <template>
   <v-container>
-      <v-row  v-for="t in tests" :key="t.testId" justify="center" class="pt-3">
-        <v-btn @click="redirectToTest(t.testId)">
-            {{t.title}}
-        </v-btn>
+      <v-row>
+          <v-card height="400" width="100%">
+            <v-row  v-for="t in tests" :key="t.testId" justify="center" class="pt-3">
+                <v-btn @click="redirectToTest(t.testId)">
+                    {{t.title}}
+                </v-btn>
+            </v-row>
+          </v-card>
       </v-row>
       <v-row v-if="hasAnyRole(userTypes.TEACHER)">
           <v-col cols="12" sm="4">
               <v-btn color="success" @click="redirectToCreateTestPage()">Create new test</v-btn>
-          </v-col>
-          <v-col cols="12" sm="4">
-              <v-btn color="success" @click="showAllKnowledgeSpacesForCurrentCourse()">Knowledge space</v-btn>
           </v-col>
       </v-row>
   </v-container>

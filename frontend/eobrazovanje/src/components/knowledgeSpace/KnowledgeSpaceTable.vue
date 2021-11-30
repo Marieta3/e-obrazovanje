@@ -30,7 +30,6 @@
         headers: [
           {
             text: 'Created date (DD-MM-YYYY HH:mm)',
-            align: 'start',
             value: 'createdAt',
           },
           { text: 'Type', value: 'type' },

@@ -17,13 +17,6 @@ const routes = [{
       import ('../components/Test.vue')
   },
   {
-    path: '/courses/:courseId',
-    props: true,
-    name: 'CourseTests',
-    component: () =>
-      import ('../components/course/CourseTests.vue')
-  },
-  {
     path: '/courses/:courseId/tests/:testId',
     props: true,
     name: 'Test',
@@ -44,17 +37,41 @@ const routes = [{
       import ('../views/TestForStudent.vue')
   },
   {
-    path: '/course',
+    path: '/courses',
     name: 'Courses',
     component: () =>
       import ('../views/Courses.vue')
   },
   {
-    path: '/courses/:courseId/knowledge-spaces',
+    path: '/courses/:courseId',
     props: true,
-    name: 'KnowledgeSpaceTable',
+    name: 'Course',
     component: () =>
-      import ('../components/knowledgeSpace/KnowledgeSpaceTable.vue')
+      import ('../views/Course.vue'),
+    children: [{
+        path: 'tests',
+        name: 'Course.Tests',
+        props: true,
+
+        component: () =>
+          import ('../components/course/CourseTests.vue')
+      },
+      {
+        path: 'knowledge-spaces',
+        props: true,
+        name: 'Course.KnowledgeSpaceTable',
+        component: () =>
+          import ('../components/knowledgeSpace/KnowledgeSpaceTable.vue')
+      },
+      {
+        path: 'domain',
+        props: true,
+        name: 'Course.Domain',
+        component: () =>
+          import ('../components/domain/DomainProblemTable.vue')
+      },
+
+    ]
   },
   {
     path: '/diagram/:knowledgeSpaceId',
