@@ -1,5 +1,7 @@
 package eobrazovanje.dto;
 
+import eobrazovanje.model.Coordinates;
+import eobrazovanje.model.Size;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -43,29 +45,6 @@ public class DomainProblemDTO {
                 '}';
     }
 
-    public static class Coordinates{
-        @Getter @Setter
-        private Double x;
-        @Getter @Setter
-        private Double y;
-
-        public Coordinates() {
-        }
-
-        public Coordinates(Double x, Double y) {
-            this.x = x;
-            this.y = y;
-        }
-
-        @Override
-        public String toString() {
-            return "Coordinates{" +
-                    "x=" + x +
-                    ", y=" + y +
-                    '}';
-        }
-    }
-
     public class Ports{
         @Getter @Setter
         private String port;
@@ -78,19 +57,5 @@ public class DomainProblemDTO {
         }
     }
 
-    public static class Size{
-        @Getter @Setter
-        private Double width;
-        @Getter @Setter
-        private Double height;
-
-        public Size(Double width, Double height) {
-            this.width = width;
-            this.height = height;
-        }
-
-        public Size() {
-        }
-    }
 }
 

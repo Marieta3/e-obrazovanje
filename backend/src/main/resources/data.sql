@@ -19,11 +19,17 @@ insert into domains (title)
 values
 ('Prvi domen');
 
-insert into domain_problems (title, description, domain_id, height, width, x_coord, y_coord)
+insert into domain_problems (title, description, domain_id)
 values
-('Prvi domenski problem', 'Opis prvog domenskog problema', 1, 150, 150, 10, 10),
-('Drugi domenski problem', 'Opis drugog domenskog problema', 1, 150, 150, 390, 10),
-('Treci domenski problem', 'Opis treceg domenskog problema', 1, 150, 150, 175, 160);
+('Prvi domenski problem', 'Opis prvog domenskog problema', 1),
+('Drugi domenski problem', 'Opis drugog domenskog problema', 1),
+('Treci domenski problem', 'Opis treceg domenskog problema', 1);
+
+insert into knowledge_space_node (domain_problem_id, height, width, coordinate_x, coordinate_y)
+values
+(1, 150, 150, 10, 10),
+(2, 150, 150, 390, 10),
+(3, 150, 150, 175, 160);
 
 insert into knowledge_spaces (created_at, title, domain_id)
 values
