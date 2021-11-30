@@ -1,5 +1,6 @@
 package eobrazovanje.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,6 +18,7 @@ public class KnowledgeSpaceNode {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "domain_problem_id", nullable = false)
+    @JsonBackReference("knowledgeSpaceNodeList")
     @Getter @Setter
     private DomainProblem node;
 

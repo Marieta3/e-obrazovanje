@@ -1,6 +1,7 @@
 package eobrazovanje.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -29,6 +30,7 @@ public class DomainProblem {
     private String description;
 
     @OneToMany(mappedBy = "node")
+    @JsonManagedReference("knowledgeSpaceNodeList")
     @Getter @Setter
     private List<KnowledgeSpaceNode> knowledgeSpaceNodeList;
 
