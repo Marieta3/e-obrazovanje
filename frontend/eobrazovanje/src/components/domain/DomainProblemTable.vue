@@ -42,15 +42,12 @@ import axios from 'axios'
     data: () => ({
       selectedItem: null,
       headers: [
-        { text: 'Id', value: 'id'},
         { text: 'Title', value: 'title' },
         { text: 'Description', value: 'description', sortable: false },
         { text:'',value:'actions',sortable: false}
       ],
       domainProblems: [],
     }),
-
-
 
 
     created () {

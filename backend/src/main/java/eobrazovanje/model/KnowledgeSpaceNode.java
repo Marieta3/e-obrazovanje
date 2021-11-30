@@ -15,7 +15,7 @@ public class KnowledgeSpaceNode {
     @Getter @Setter
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "domain_problem_id", nullable = false)
     @Getter @Setter
     private DomainProblem node;

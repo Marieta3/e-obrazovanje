@@ -20,22 +20,10 @@ public class DomainProblem {
     @Column(name = "title")
     private String title;
 
-    @Column(name = "width")
-    private Double width;
-
-    @Column(name = "height")
-    private Double height;
-
-    @Column(name = "x_coord")
-    private Double xCoordinate;
-
-    @Column(name = "y_coord")
-    private Double yCoordinate;
 
     @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JsonBackReference("domainProblems")
     private Domain domain;
-
 
     @Column(name = "description")
     private String description;
@@ -45,17 +33,6 @@ public class DomainProblem {
     private List<KnowledgeSpaceNode> knowledgeSpaceNodeList;
 
     public DomainProblem() {
-    }
-
-    public DomainProblem(Long id, String title, Double width, Double height, Double xCoordinate, Double yCoordinate, Domain domain, String description) {
-        this.id = id;
-        this.title = title;
-        this.width = width;
-        this.height = height;
-        this.xCoordinate = xCoordinate;
-        this.yCoordinate = yCoordinate;
-        this.domain = domain;
-        this.description = description;
     }
 
     public Long getId() {
@@ -72,38 +49,6 @@ public class DomainProblem {
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public Double getWidth() {
-        return width;
-    }
-
-    public void setWidth(Double width) {
-        this.width = width;
-    }
-
-    public Double getHeight() {
-        return height;
-    }
-
-    public void setHeight(Double height) {
-        this.height = height;
-    }
-
-    public Double getxCoordinate() {
-        return xCoordinate;
-    }
-
-    public void setxCoordinate(Double xCoordinate) {
-        this.xCoordinate = xCoordinate;
-    }
-
-    public Double getyCoordinate() {
-        return yCoordinate;
-    }
-
-    public void setyCoordinate(Double yCoordinate) {
-        this.yCoordinate = yCoordinate;
     }
 
     public Domain getDomain() {
@@ -127,10 +72,6 @@ public class DomainProblem {
         return "DomainProblem{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
-                ", width=" + width +
-                ", height=" + height +
-                ", xCoordinate=" + xCoordinate +
-                ", yCoordinate=" + yCoordinate +
                 ", domain=" + domain +
                 ", description='" + description + '\'' +
                 '}';
