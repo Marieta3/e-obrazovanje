@@ -38,6 +38,13 @@ public class Course {
     @Getter @Setter
     private Domain domain;
 
+    public Course() {
+    }
+
+    public Course(Long id) {
+        this.id = id;
+    }
+
     public Long getId() {
         return id;
     }

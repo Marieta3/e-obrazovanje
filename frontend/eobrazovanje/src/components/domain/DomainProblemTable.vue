@@ -52,7 +52,16 @@ import axios from 'axios'
       this.domainProblems.push(copiedNode)
     },
     createDomain(){
-      console.log(this.domainProblems);
+      //TODO: change title name
+      let data = {
+        title : "nebino",
+        domainProblems : this.domainProblems,
+      }
+
+      axios.post(comm.protocol +'://' + comm.server + '/courses/'+this.courseId+'/domain', data, {headers: comm.getHeader()})
+        .then(response=>{
+          console.log(response.data)
+        })
     },
     getDomainProblemsForDomain(){
       axios.get(comm.protocol +'://' + comm.server + '/courses/'+this.courseId+'/domain',{headers: comm.getHeader()})
