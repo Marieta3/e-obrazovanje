@@ -1,5 +1,6 @@
 package eobrazovanje.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import eobrazovanje.model.DomainProblem;
 import eobrazovanje.model.KnowledgeSpaceNode;
 import lombok.Getter;

@@ -154,4 +154,19 @@ public class Converter {
         }
         return result;
     }
+
+    public static Domain domainDTOToDomain(DomainDTO dto){
+        Domain result = new Domain();
+        result.setTitle(dto.getTitle());
+        Set<DomainProblem> domainProblemSet = new HashSet<>(dto.getDomainProblemDTOList().size());
+        for (DomainProblemDescriptionDTO dpd: dto.getDomainProblemDTOList()) {
+            DomainProblem domainProblem = new DomainProblem();
+            domainProblem.setDescription(dpd.getDescription());
+            domainProblem.setDomain(result);
+            domainProblem.setTitle(dpd.getTitle());
+            domainProblemSet.add(domainProblem);
+        }
+        result.setDomainProblems(domainProblemSet);
+        return result;
+    }
 }

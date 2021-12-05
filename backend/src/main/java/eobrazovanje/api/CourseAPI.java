@@ -108,8 +108,18 @@ public class CourseAPI {
 
     @PreAuthorize("hasRole('ROLE_TEACHER')")
     @PostMapping(value = "{course_id}/domain")
-    public ResponseEntity<Domain> CreateDomain(@PathVariable("course_id") Long courseId, @RequestBody Domain domain){
-        //TODO: create domain
-        return null;
+    public ResponseEntity<DomainDTO> CreateDomain(@PathVariable("course_id") Long courseId, @RequestBody DomainDTO domainDTO){
+        Course course = courseService.findById(courseId);
+        if (course == null)
+            return new ResponseEntity<>(null,HttpStatus.NOT_FOUND);
+
+        if (course.getDomain() != null)
+            return new ResponseEntity<>(null,HttpStatus.FORBIDDEN);
+
+        Domain domain = Converter.domainDTOToDomain(domainDTO);
+        domain.setCourse(course);
+        course.setDomain(domain);
+        Course result = courseService.save(course);
+        return new ResponseEntity<>(new DomainDTO(result.getDomain()), HttpStatus.CREATED);
     }
 }
