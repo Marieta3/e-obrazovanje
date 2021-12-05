@@ -13,4 +13,7 @@ public interface ICourseRepository extends JpaRepository<Course,Long> {
 
     @Query("select c from Course c WHERE c.teacher.username = ?1")
     public List<Course> findByTeacherUsername(String username);
+
+    @Query("select c.domain.id from Course c Where c.id = ?1")
+    public Long findDomainIdByCourseId(Long courseId);
 }

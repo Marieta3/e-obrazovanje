@@ -8,28 +8,16 @@
             <template v-slot:item.actions="{ item }">
             <v-icon
                 small
-                class="mr-2"
-                @click="editItem(item)"
-            >
-                mdi-pencil
-            </v-icon>
-            <v-icon
-                small
+                color="error"
+                :disabled="domainExists"
                 @click="deleteItem(item)"
             >
                 mdi-delete
             </v-icon>
             </template>
-            <template v-slot:no-data>
-            <v-btn
-                color="primary"
-                @click="getDomainProblemsForDomain"
-            >
-                Reset
-            </v-btn>
-            </template>
         </v-data-table>
-        <domain-problem-new-edit-dialog :item="selectedItem" v-on:commited="addNewNode($event)"/>
+        <domain-problem-new-edit-dialog v-if="!domainExists" v-on:commited="addNewNode($event)"/>
+        <v-btn color="warning" v-if="!domainExists" @click="createDomain()">Save</v-btn>
     </div>
 </template>
 
@@ -39,14 +27,17 @@ import * as comm from '../../configuration/communication.js'
 import axios from 'axios'
   export default {
   components: { DomainProblemNewEditDialog },
+    props: ['courseId'],
     data: () => ({
       selectedItem: null,
+      isEdit: false,
       headers: [
         { text: 'Title', value: 'title' },
         { text: 'Description', value: 'description', sortable: false },
         { text:'',value:'actions',sortable: false}
       ],
       domainProblems: [],
+      domainExists: false
     }),
 
 
@@ -56,27 +47,32 @@ import axios from 'axios'
 
     methods: {
       
-    editItem(item){
-      this.selectedItem=item;
-    },
-    
-    deleteItem(item){
-      alert(item.id)
-    },
     addNewNode(item){
-      this.domainProblems.push(item)
+      let copiedNode = Object.assign({}, item);
+      this.domainProblems.push(copiedNode)
+    },
+    createDomain(){
+      console.log(this.domainProblems);
     },
     getDomainProblemsForDomain(){
-      axios.get(comm.protocol +'://' + comm.server + '/courses/1/domain',{headers: comm.getHeader()})
+      axios.get(comm.protocol +'://' + comm.server + '/courses/'+this.courseId+'/domain',{headers: comm.getHeader()})
           .then(response => {
             if(response.status==200){
                 console.log(response.data);
                 this.domainProblems = response.data;
+                this.domainExists = true
             }
-          }).catch(() => {
-            alert("greska")
+          }).catch(response => {
+            if(response.status == 404){
+              this.domainExists = false
+            }
+            //alert("greska")
           })
-      }
+      },
+       deleteItem(item){
+        this.domainProblems.splice(this.domainProblems.indexOf(item), 1)
+        this.domainProblems = [...this.domainProblems]
+      },
     }
   }
 </script>

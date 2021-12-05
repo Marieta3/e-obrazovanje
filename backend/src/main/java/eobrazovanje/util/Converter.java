@@ -146,4 +146,12 @@ public class Converter {
         }
         return result;
     }
+
+    public static List<DomainProblemDescriptionDTO> domainProblemsToDomainProblemDescriptionDTOList(List<DomainProblem> domainProblemList){
+        List<DomainProblemDescriptionDTO> result = new ArrayList<>(domainProblemList.size());
+        for (DomainProblem dp : domainProblemList){
+            result.add(new DomainProblemDescriptionDTO(dp));
+        }
+        return result;
+    }
 }

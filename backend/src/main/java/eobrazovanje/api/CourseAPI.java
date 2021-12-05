@@ -1,9 +1,6 @@
 package eobrazovanje.api;
 
-import eobrazovanje.dto.CourseDTO;
-import eobrazovanje.dto.KnowledgeSpaceDescriptionDTO;
-import eobrazovanje.dto.TestDTO;
-import eobrazovanje.dto.TestDescriptionDTO;
+import eobrazovanje.dto.*;
 import eobrazovanje.model.*;
 import eobrazovanje.service.*;
 import eobrazovanje.util.Converter;
@@ -102,8 +99,17 @@ public class CourseAPI {
 
     @PreAuthorize("hasRole('ROLE_TEACHER')")
     @GetMapping(value = "{course_id}/domain")
-    public ResponseEntity<List<DomainProblem>> GetDomainProblemsForCourse(@PathVariable("course_id") Long courseId){
-        long domainId = courseService.findById(courseId).getId();
-        return new ResponseEntity<>(domainProblemService.findByDomainId(domainId), HttpStatus.OK);
+    public ResponseEntity<List<DomainProblemDescriptionDTO>> GetDomainProblemsForCourse(@PathVariable("course_id") Long courseId){
+        Long domainId = courseService.findDomainIdByCourseId(courseId);
+        if(domainId == null)
+            return new ResponseEntity<>(null,HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(Converter.domainProblemsToDomainProblemDescriptionDTOList(domainProblemService.findByDomainId(domainId)), HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasRole('ROLE_TEACHER')")
+    @PostMapping(value = "{course_id}/domain")
+    public ResponseEntity<Domain> CreateDomain(@PathVariable("course_id") Long courseId, @RequestBody Domain domain){
+        //TODO: create domain
+        return null;
     }
 }

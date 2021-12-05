@@ -39,7 +39,6 @@ export default {
     components:{
         DomainProblemForm
     },
-    props: ['item'],
     data(){
         return{
             node: {
@@ -51,6 +50,7 @@ export default {
     },
     methods:{
       confirm(){
+        console.log("confirmed")
         this.$emit('commited',this.node)
       },
       resetForm(){
@@ -58,15 +58,5 @@ export default {
         this.node.description = "";
       }
     },
-    watch:{
-      item : function(){
-        this.node = this.item
-      }
-    }
 }
 </script>
-
-<sty
-NodeFormle>
-
-</style>

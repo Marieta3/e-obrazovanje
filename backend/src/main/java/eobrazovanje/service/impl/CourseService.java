@@ -39,4 +39,9 @@ public class CourseService implements ICourseService {
     public List<Course> findByTeacherUsername(String username) {
         return courseRepository.findByTeacherUsername(username);
     }
+
+    @Override
+    public Long findDomainIdByCourseId(Long courseId) {
+        return courseRepository.findDomainIdByCourseId(courseId);
+    }
 }
