@@ -1,6 +1,8 @@
 package eobrazovanje.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.Objects;
@@ -16,11 +18,13 @@ public class Link {
 
     @JoinColumn(name = "start_domain_problem_id", referencedColumnName = "id", unique = false)
     @ManyToOne(cascade = CascadeType.ALL)
-    private DomainProblem startNode;
+    @Getter @Setter
+    private KnowledgeSpaceNode startNode;
 
     @JoinColumn(name = "end_domain_problem_id", referencedColumnName = "id", unique = false)
     @ManyToOne(cascade = CascadeType.ALL)
-    private DomainProblem endNode;
+    @Getter @Setter
+    private KnowledgeSpaceNode endNode;
 
     @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JsonBackReference("links")
@@ -29,35 +33,12 @@ public class Link {
     public Link() {
     }
 
-    public Link(Long id, DomainProblem startNode, DomainProblem endNode, KnowledgeSpace knowledgeSpace) {
-        this.id = id;
-        this.startNode = startNode;
-        this.endNode = endNode;
-        this.knowledgeSpace = knowledgeSpace;
-    }
-
     public Long getId() {
         return id;
     }
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public DomainProblem getStartNode() {
-        return startNode;
-    }
-
-    public void setStartNode(DomainProblem startNode) {
-        this.startNode = startNode;
-    }
-
-    public DomainProblem getEndNode() {
-        return endNode;
-    }
-
-    public void setEndNode(DomainProblem endNode) {
-        this.endNode = endNode;
     }
 
     public KnowledgeSpace getKnowledgeSpace() {

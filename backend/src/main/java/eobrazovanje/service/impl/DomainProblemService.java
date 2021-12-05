@@ -28,4 +28,11 @@ public class DomainProblemService implements IDomainProblemService {
     public List<DomainProblem> findAll() {
         return domainProblemRepository.findAll();
     }
+
+    @Override
+    public List<DomainProblem> findByDomainId(Long domainId) {
+        return domainProblemRepository.getAllByDomainId(domainId);
+    }
+
+
 }

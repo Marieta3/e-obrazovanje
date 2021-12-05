@@ -3,10 +3,7 @@ package eobrazovanje.util;
 import eobrazovanje.dto.*;
 import eobrazovanje.model.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Converter {
     public static TestDTO convertTestToTestDTO(Test test, boolean shouldContainsIsAnswerCorrectProperty){
@@ -72,14 +69,21 @@ public class Converter {
     public static GraphDTO knowledgeSpaceToDTO(KnowledgeSpace ks){
         GraphDTO ksDTO = new GraphDTO();
         ksDTO.setTitle(ks.getTitle());
-        for(DomainProblem dp: ks.getDomain().getDomainProblems()){
-            DomainProblemDTO dpDTO = new DomainProblemDTO();
-            dpDTO.setTitle(dp.getTitle());
-            dpDTO.setId(dp.getId().toString());
-            dpDTO.setCoordinates(new DomainProblemDTO.Coordinates(dp.getxCoordinate(), dp.getyCoordinate()));
-            dpDTO.setSize(new DomainProblemDTO.Size(dp.getWidth(), dp.getHeight()));
-            dpDTO.setData(dp.getDescription());
-            ksDTO.getNodes().add(dpDTO);
+        Set<Long> nodeIds = new HashSet<>();
+
+        for(Link link : ks.getLinks()){
+            KnowledgeSpaceNode start = link.getStartNode();
+            KnowledgeSpaceNode end = link.getEndNode();
+            if(!nodeIds.contains(start.getId())) {
+                DomainProblemDTO dp = createDomainProblemDTO(start);
+                ksDTO.getNodes().add(dp);
+                nodeIds.add(start.getId());
+            }
+            if(!nodeIds.contains(end.getId())) {
+                DomainProblemDTO dp = createDomainProblemDTO(end);
+                ksDTO.getNodes().add(dp);
+                nodeIds.add(end.getId());
+            }
         }
 
         for(Link link: ks.getLinks()){
@@ -93,24 +97,32 @@ public class Converter {
         return ksDTO;
     }
 
+    private static DomainProblemDTO createDomainProblemDTO(KnowledgeSpaceNode knowledgeSpaceNode) {
+        DomainProblemDTO dpDTO = new DomainProblemDTO();
+        dpDTO.setTitle(knowledgeSpaceNode.getNode().getTitle());
+        dpDTO.setId(knowledgeSpaceNode.getId().toString());
+        dpDTO.setCoordinates(knowledgeSpaceNode.getCoordinates());
+        dpDTO.setSize(knowledgeSpaceNode.getSize());
+        dpDTO.setData(knowledgeSpaceNode.getNode().getDescription());
+        return dpDTO;
+    }
+
     public static KnowledgeSpace dtoToKnowledgeSpace(GraphDTO graphDTO){
         Domain domain = new Domain();
         KnowledgeSpace ks = new KnowledgeSpace();
         ks.setTitle(graphDTO.getTitle());
-        Map<String, DomainProblem> mapa = new HashMap<>();
+        Map<String, KnowledgeSpaceNode> mapa = new HashMap<>();
 
         for(DomainProblemDTO dpDTO: graphDTO.getNodes()){
-            DomainProblem dp = new DomainProblem();
-            dp.setTitle(dpDTO.getTitle());
-            dp.setWidth(dpDTO.getSize().getWidth());
-            dp.setHeight(dpDTO.getSize().getHeight());
-            dp.setxCoordinate(dpDTO.getCoordinates().getX());
-            dp.setyCoordinate(dpDTO.getCoordinates().getY());
-            dp.setDomain(domain);
-            dp.setDescription(dpDTO.getData());
+            KnowledgeSpaceNode ksn = new KnowledgeSpaceNode();
+            ksn.getNode().setTitle(dpDTO.getTitle());
+            ksn.getNode().setDomain(domain);
+            ksn.getNode().setDescription(dpDTO.getData());
+            ksn.setSize(dpDTO.getSize());
+            ksn.setCoordinates(dpDTO.getCoordinates());
             //DomainProblem dpSaved = domainProblemService.save(dp);
-            mapa.put(dpDTO.getId(), dp);
-            domain.getDomainProblems().add(dp);
+            mapa.put(dpDTO.getId(), ksn);
+            domain.getDomainProblems().add(ksn.getNode());
         }
 
         ks.setDomain(domain);
@@ -131,6 +143,14 @@ public class Converter {
         List<KnowledgeSpaceDescriptionDTO> result = new ArrayList<>(knowledgeSpaces.size());
         for(KnowledgeSpace ks : knowledgeSpaces){
             result.add(new KnowledgeSpaceDescriptionDTO(ks));
+        }
+        return result;
+    }
+
+    public static List<DomainProblemDescriptionDTO> domainProblemsToDomainProblemDescriptionDTOList(List<DomainProblem> domainProblemList){
+        List<DomainProblemDescriptionDTO> result = new ArrayList<>(domainProblemList.size());
+        for (DomainProblem dp : domainProblemList){
+            result.add(new DomainProblemDescriptionDTO(dp));
         }
         return result;
     }

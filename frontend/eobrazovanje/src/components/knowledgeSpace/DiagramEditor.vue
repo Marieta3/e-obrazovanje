@@ -7,6 +7,7 @@
           ref="diagram"
           :node-color="nodeColor"
           :node-pulsable="nodePulsable"
+          :nodeDeletable="deletable"
         >
           <pre slot="node" slot-scope="{node}">{{ format(node) }}</pre>
         </VueDiagramEditor>
@@ -59,6 +60,9 @@ export default {
     nodeColor() {
       return '#00f';
     },
+    deletable(){
+      return false
+    },
 
     nodePulsable(node) {
       console.log(node.coordinates.y > 200)
@@ -74,7 +78,7 @@ export default {
             title: node.title,
             data : node.description,
             portsIn: {
-              port: 'in'
+              port: 'in',
             },
             portsOut: {
                 port: 'out'

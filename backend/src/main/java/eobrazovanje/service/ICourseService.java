@@ -15,4 +15,6 @@ public interface ICourseService {
     List<Course> findByTeacherId(Long id);
 
     List<Course> findByTeacherUsername(String username);
+
+    Long findDomainIdByCourseId(Long courseId);
 }

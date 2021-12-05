@@ -1,16 +1,8 @@
 package eobrazovanje.api;
 
-import eobrazovanje.dto.CourseDTO;
-import eobrazovanje.dto.KnowledgeSpaceDescriptionDTO;
-import eobrazovanje.dto.TestDTO;
-import eobrazovanje.dto.TestDescriptionDTO;
-import eobrazovanje.model.Course;
-import eobrazovanje.model.Teacher;
-import eobrazovanje.model.Test;
-import eobrazovanje.service.ICourseService;
-import eobrazovanje.service.IKnowledgeSpaceService;
-import eobrazovanje.service.ITestService;
-import eobrazovanje.service.IUserService;
+import eobrazovanje.dto.*;
+import eobrazovanje.model.*;
+import eobrazovanje.service.*;
 import eobrazovanje.util.Converter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -33,7 +25,10 @@ public class CourseAPI {
     private ICourseService courseService;
 
     @Autowired
-    IKnowledgeSpaceService knowledgeSpaceService;
+    private IKnowledgeSpaceService knowledgeSpaceService;
+
+    @Autowired
+    private IDomainProblemService domainProblemService;
 
     @Autowired
     private ITestService testService;
@@ -100,5 +95,21 @@ public class CourseAPI {
     public ResponseEntity<List<KnowledgeSpaceDescriptionDTO>> getListOfKnowledgeSpaceDescritpitonDTO(@PathVariable("course_id") Long courseId){
         Long domainId = courseService.findById(courseId).getDomain().getId();
         return new ResponseEntity<>(Converter.KnowledgeSpaceToKnowledgeSpaceDescriptionDTO(knowledgeSpaceService.findByDomainId(domainId)),HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasRole('ROLE_TEACHER')")
+    @GetMapping(value = "{course_id}/domain")
+    public ResponseEntity<List<DomainProblemDescriptionDTO>> GetDomainProblemsForCourse(@PathVariable("course_id") Long courseId){
+        Long domainId = courseService.findDomainIdByCourseId(courseId);
+        if(domainId == null)
+            return new ResponseEntity<>(null,HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(Converter.domainProblemsToDomainProblemDescriptionDTOList(domainProblemService.findByDomainId(domainId)), HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasRole('ROLE_TEACHER')")
+    @PostMapping(value = "{course_id}/domain")
+    public ResponseEntity<Domain> CreateDomain(@PathVariable("course_id") Long courseId, @RequestBody Domain domain){
+        //TODO: create domain
+        return null;
     }
 }

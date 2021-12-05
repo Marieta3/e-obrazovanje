@@ -30,7 +30,6 @@
         headers: [
           {
             text: 'Created date (DD-MM-YYYY HH:mm)',
-            align: 'start',
             value: 'createdAt',
           },
           { text: 'Type', value: 'type' },
@@ -45,14 +44,12 @@
     },
     methods: {
         getKnowledgeSpacesForCurrentCourse(){
-            axios.get(comm.protocol +'://' + comm.server + '/courses/1/knowledge-spaces/description',{headers: comm.getHeader()})
+            axios.get(comm.protocol +'://' + comm.server + '/courses/'+this.courseId+'/knowledge-spaces/description',{headers: comm.getHeader()})
             .then(response => {
               if(response.status==200){
                   console.log(response.data);
                   this.knowledgeSpaces = response.data;
               }
-            }).catch(() => {
-              alert("greska")
             })
         },
         show(knowledgeSpaceId){
