@@ -2,7 +2,9 @@ package eobrazovanje.util;
 
 import eobrazovanje.dto.*;
 import eobrazovanje.model.*;
+import org.springframework.orm.hibernate5.HibernateTemplate;
 
+import javax.persistence.EntityManager;
 import java.util.*;
 
 public class Converter {
@@ -100,7 +102,7 @@ public class Converter {
     private static DomainProblemDTO createDomainProblemDTO(KnowledgeSpaceNode knowledgeSpaceNode) {
         DomainProblemDTO dpDTO = new DomainProblemDTO();
         dpDTO.setTitle(knowledgeSpaceNode.getNode().getTitle());
-        dpDTO.setId(knowledgeSpaceNode.getId().toString());
+        dpDTO.setId(knowledgeSpaceNode.getId());
         dpDTO.setCoordinates(knowledgeSpaceNode.getCoordinates());
         dpDTO.setSize(knowledgeSpaceNode.getSize());
         dpDTO.setData(knowledgeSpaceNode.getNode().getDescription());
@@ -108,35 +110,26 @@ public class Converter {
     }
 
     public static KnowledgeSpace dtoToKnowledgeSpace(GraphDTO graphDTO){
-        Domain domain = new Domain();
-        KnowledgeSpace ks = new KnowledgeSpace();
-        ks.setTitle(graphDTO.getTitle());
-        Map<String, KnowledgeSpaceNode> mapa = new HashMap<>();
+        KnowledgeSpace result = new KnowledgeSpace();
+        result.setTitle(graphDTO.getTitle());
 
-        for(DomainProblemDTO dpDTO: graphDTO.getNodes()){
+        Map<Long,KnowledgeSpaceNode> nodeMap = new HashMap<>(graphDTO.getNodes().size());
+        for (DomainProblemDTO node : graphDTO.getNodes()) {
             KnowledgeSpaceNode ksn = new KnowledgeSpaceNode();
-            ksn.getNode().setTitle(dpDTO.getTitle());
-            ksn.getNode().setDomain(domain);
-            ksn.getNode().setDescription(dpDTO.getData());
-            ksn.setSize(dpDTO.getSize());
-            ksn.setCoordinates(dpDTO.getCoordinates());
-            //DomainProblem dpSaved = domainProblemService.save(dp);
-            mapa.put(dpDTO.getId(), ksn);
-            domain.getDomainProblems().add(ksn.getNode());
+            ksn.setCoordinates(node.getCoordinates());
+            ksn.setSize(node.getSize());
+            nodeMap.put(node.getId(),ksn);
         }
 
-        ks.setDomain(domain);
-        domain.getKnowledgeSpaces().add(ks);
-
-        for(LinkDTO linkDTO: graphDTO.getLinks()){
-            Link link = new Link();
-            link.setKnowledgeSpace(ks);
-            link.setStartNode(mapa.get(linkDTO.getStart_id()));
-            link.setEndNode(mapa.get(linkDTO.getEnd_id()));
-            ks.getLinks().add(link);
+        Set<Link> links = new HashSet<>(graphDTO.getLinks().size());
+        for (LinkDTO linkDTO: graphDTO.getLinks()) {
+            Link l = new Link();
+            l.setStartNode(nodeMap.get(linkDTO.getStart_id()));
+            l.setEndNode(nodeMap.get(linkDTO.getEnd_id()));
+            links.add(l);
         }
-
-        return ks;
+        result.setLinks(links);
+        return result;
     }
 
     public static List<KnowledgeSpaceDescriptionDTO> KnowledgeSpaceToKnowledgeSpaceDescriptionDTO(List<KnowledgeSpace> knowledgeSpaces){

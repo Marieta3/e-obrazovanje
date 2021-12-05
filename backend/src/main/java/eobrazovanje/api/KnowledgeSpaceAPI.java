@@ -1,6 +1,8 @@
 package eobrazovanje.api;
 
 import eobrazovanje.dto.GraphDTO;
+import eobrazovanje.model.Domain;
+import eobrazovanje.model.DomainProblem;
 import eobrazovanje.model.KnowledgeSpace;
 import eobrazovanje.service.IDomainProblemService;
 import eobrazovanje.service.IKnowledgeSpaceService;
@@ -12,6 +14,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/knowledge-spaces")
@@ -32,8 +36,9 @@ public class KnowledgeSpaceAPI {
     }
 
     @PreAuthorize("hasRole('ROLE_TEACHER')")
-    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<KnowledgeSpace> createKnowledgeSpace(@RequestBody GraphDTO graphDTO) throws MethodArgumentNotValidException {
+    @PostMapping(value = "domain/{domain_id}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<KnowledgeSpace> createKnowledgeSpace(@PathVariable("domain_id") Long domainId, @RequestBody GraphDTO graphDTO) throws MethodArgumentNotValidException {
+        List<DomainProblem> domainProblemList = domainProblemService.findByDomainId(domainId);
         KnowledgeSpace ks = Converter.dtoToKnowledgeSpace(graphDTO);
         return new ResponseEntity<>(knowledgeSpaceService.save(ks), HttpStatus.OK);
     }

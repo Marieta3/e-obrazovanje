@@ -7,7 +7,7 @@ import lombok.Setter;
 
 public class DomainProblemDTO {
     @Getter @Setter
-    private String id;
+    private Long id;
     @Getter @Setter
     private String title;
     @Getter @Setter
@@ -24,7 +24,7 @@ public class DomainProblemDTO {
     public DomainProblemDTO() {
     }
 
-    public DomainProblemDTO(String id, String title, Size size, Coordinates coordinates, Ports portsIn, Ports portsOut) {
+    public DomainProblemDTO(Long id, String title, Size size, Coordinates coordinates, Ports portsIn, Ports portsOut) {
         this.id = id;
         this.title = title;
         this.size = size;

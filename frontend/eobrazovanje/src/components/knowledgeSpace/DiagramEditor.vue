@@ -108,7 +108,7 @@ export default {
       let data = this.$refs.diagram.serialize()
       console.log(data)
       let config = { headers: comm.getHeader() }
-      axios.post(comm.protocol +'://' + comm.server + '/knowledge-spaces', data ,config)
+      axios.post(comm.protocol +'://' + comm.server + '/knowledge-spaces/domain/1', data ,config)
                 .then(response => {
                 if(response.status==200){
                     alert("uspesno zavrsen prostor znanja")
