@@ -51,7 +51,7 @@ export default {
       });
     },
     format(node) {
-      return node.data;
+      return node.data.description;
     },
     nodeColor() {
       return '#00f';
@@ -68,10 +68,12 @@ export default {
       console.log(data.id)
     },
     addNewNode(node, cords){
+        console.log("novi node")
+        console.log(node)
         let newNode = {
             id: node.id,
             title: node.title,
-            data : node.description,
+            data :{id: node.domainProblemId, description: node.description},
             coordinates: cords,
             portsIn: {
               port: 'in',
@@ -102,12 +104,20 @@ export default {
         this.create();
     },
     update(){
+      let data = this.$refs.diagram.serialize()
+      let config = {headers: comm.getHeader()}
+      axios.put(comm.protocol +'://' + comm.server + '/knowledge-spaces/' + this.knowledgeSpaceId, data, config)
+        .then(response => {
+          console.log(response.data)
+        }).catch(() => {
+          alert("greska")
+        })
 
     },
     create(){
       let data = this.$refs.diagram.serialize()
-      console.log(data)
       let config = { headers: comm.getHeader() }
+      //TODO: change domain id 
       axios.post(comm.protocol +'://' + comm.server + '/knowledge-spaces/domain/1', data ,config)
                 .then(response => {
                 if(response.status==200){

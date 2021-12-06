@@ -90,7 +90,7 @@ public class Converter {
 
         for(Link link: ks.getLinks()){
             LinkDTO linkDTO = new LinkDTO();
-            linkDTO.setId(link.getId().toString());
+            linkDTO.setId("node-" + link.getId().toString());
             linkDTO.setStart_id(link.getStartNode().getId().toString());
             linkDTO.setEnd_id(link.getEndNode().getId().toString());
             ksDTO.getLinks().add(linkDTO);
@@ -100,13 +100,13 @@ public class Converter {
     }
 
     private static DomainProblemDTO createDomainProblemDTO(KnowledgeSpaceNode knowledgeSpaceNode) {
-        DomainProblemDTO dpDTO = new DomainProblemDTO();
-        dpDTO.setTitle(knowledgeSpaceNode.getNode().getTitle());
-        dpDTO.setId(knowledgeSpaceNode.getId());
-        dpDTO.setCoordinates(knowledgeSpaceNode.getCoordinates());
-        dpDTO.setSize(knowledgeSpaceNode.getSize());
-        dpDTO.setData(knowledgeSpaceNode.getNode().getDescription());
-        return dpDTO;
+        String title = knowledgeSpaceNode.getNode().getTitle();
+        Long id = knowledgeSpaceNode.getId();
+        Coordinates coordinates = knowledgeSpaceNode.getCoordinates();
+        String description = knowledgeSpaceNode.getNode().getDescription();
+        Long domainProblemId = knowledgeSpaceNode.getNode().getId();
+        Size size = knowledgeSpaceNode.getSize();
+        return new DomainProblemDTO(id,title,size,coordinates,description,domainProblemId);
     }
 
     public static KnowledgeSpace dtoToKnowledgeSpace(GraphDTO graphDTO){

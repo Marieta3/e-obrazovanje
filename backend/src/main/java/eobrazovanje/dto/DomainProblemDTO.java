@@ -19,18 +19,18 @@ public class DomainProblemDTO {
     @Getter @Setter
     private Ports portsOut = new Ports("out");
     @Getter @Setter
-    private String data;
+    private Data data;
+
 
     public DomainProblemDTO() {
     }
 
-    public DomainProblemDTO(Long id, String title, Size size, Coordinates coordinates, Ports portsIn, Ports portsOut) {
+    public DomainProblemDTO(Long id, String title, Size size, Coordinates coordinates, String description, Long domainProblemId) {
         this.id = id;
         this.title = title;
         this.size = size;
         this.coordinates = coordinates;
-        this.portsIn = portsIn;
-        this.portsOut = portsOut;
+        this.data = new Data(description,domainProblemId);
     }
 
     @Override
@@ -54,6 +54,21 @@ public class DomainProblemDTO {
 
         public Ports(String port) {
             this.port = port;
+        }
+    }
+
+    public class Data{
+        @Getter @Setter
+        private String description;
+        @Getter @Setter
+        private Long domainProblemId;
+
+        public Data() {
+        }
+
+        public Data(String description, Long domainProblemId) {
+            this.description = description;
+            this.domainProblemId = domainProblemId;
         }
     }
 
