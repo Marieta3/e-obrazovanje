@@ -38,7 +38,7 @@ public class KnowledgeSpaceAPI {
     @PreAuthorize("hasRole('ROLE_TEACHER')")
     @PostMapping(value = "domain/{domain_id}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<KnowledgeSpace> createKnowledgeSpace(@PathVariable("domain_id") Long domainId, @RequestBody GraphDTO graphDTO) throws MethodArgumentNotValidException {
-        KnowledgeSpace ks = Converter.dtoToKnowledgeSpace(graphDTO);
+        KnowledgeSpace ks = Converter.dtoToKnowledgeSpace(graphDTO,false);
         Domain domain = new Domain();
         domain.setId(domainId);
         ks.setDomain(domain);
@@ -50,8 +50,11 @@ public class KnowledgeSpaceAPI {
     public ResponseEntity<KnowledgeSpace> updateKnowledgeSpace(
             @PathVariable(value = "id") Long ksID,
             @RequestBody GraphDTO graphDTO) throws MethodArgumentNotValidException {
-        KnowledgeSpace ks = Converter.dtoToKnowledgeSpace(graphDTO);
-        return new ResponseEntity<>(knowledgeSpaceService.update(ksID, ks), HttpStatus.OK);
+        KnowledgeSpace ks = Converter.dtoToKnowledgeSpace(graphDTO, true);
+        KnowledgeSpace knowledgeSpace = knowledgeSpaceService.getOne(ksID);
+        knowledgeSpace.setLinks(ks.getLinks());
+        knowledgeSpace.setTitle(ks.getTitle());
+        return new ResponseEntity<>(knowledgeSpaceService.save(knowledgeSpace), HttpStatus.OK);
 
     }
 

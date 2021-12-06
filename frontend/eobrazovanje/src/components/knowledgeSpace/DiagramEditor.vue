@@ -68,12 +68,10 @@ export default {
       console.log(data.id)
     },
     addNewNode(node, cords){
-        console.log("novi node")
-        console.log(node)
         let newNode = {
             id: node.id,
             title: node.title,
-            data :{id: node.domainProblemId, description: node.description},
+            data :{domainProblemId: node.id, description: node.description},
             coordinates: cords,
             portsIn: {
               port: 'in',
@@ -90,8 +88,7 @@ export default {
       axios.get(comm.protocol +'://' + comm.server + '/knowledge-spaces/'+this.knowledgeSpaceId, config)
                 .then(response => {
                 if(response.status==200){
-                  console.log(response.data)
-                    this.$refs.diagram.setModel(response.data)
+                  this.$refs.diagram.setModel(response.data)
                 }
                 }).catch(() => {
                 alert("greska")

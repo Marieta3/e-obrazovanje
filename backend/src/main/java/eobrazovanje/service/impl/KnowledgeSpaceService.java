@@ -34,14 +34,16 @@ public class KnowledgeSpaceService implements IKnowledgeSpaceService {
         KnowledgeSpace ks = findById(id);
         ks.setTitle(knowledgeSpace.getTitle());
         ks.setLinks(knowledgeSpace.getLinks());
-
-        //ks.getDomain().setDomainProblems(knowledgeSpace.getDomain().getDomainProblems());
-
-        return null;
+        return knowledgeSpaceRepository.save(ks);
     }
 
     @Override
     public List<KnowledgeSpace> findByDomainId(Long domainId) {
         return knowledgeSpaceRepository.findAllByDomainId(domainId);
+    }
+
+    @Override
+    public KnowledgeSpace getOne(Long ksID) {
+        return knowledgeSpaceRepository.getOne(ksID);
     }
 }
