@@ -92,7 +92,7 @@ public class CourseAPI {
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_TEACHER')")
     @GetMapping(value = "{course_id}/knowledge-spaces/description")
-    public ResponseEntity<List<KnowledgeSpaceDescriptionDTO>> getListOfKnowledgeSpaceDescritpitonDTO(@PathVariable("course_id") Long courseId){
+    public ResponseEntity<List<KnowledgeSpaceDescriptionDTO>> getListOfKnowledgeSpaceDescriptionDTO(@PathVariable("course_id") Long courseId){
         Long domainId = courseService.findById(courseId).getDomain().getId();
         return new ResponseEntity<>(Converter.KnowledgeSpaceToKnowledgeSpaceDescriptionDTO(knowledgeSpaceService.findByDomainId(domainId)),HttpStatus.OK);
     }

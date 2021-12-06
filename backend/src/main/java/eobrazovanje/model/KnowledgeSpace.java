@@ -33,7 +33,7 @@ public class KnowledgeSpace {
     @JsonManagedReference("links")
     private Set<Link> links = new HashSet<>();
 
-    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @ManyToOne( fetch = FetchType.LAZY)
     @JsonBackReference("knowledgeSpaces")
     private Domain domain;
 

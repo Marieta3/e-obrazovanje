@@ -116,6 +116,9 @@ public class Converter {
         Map<Long,KnowledgeSpaceNode> nodeMap = new HashMap<>(graphDTO.getNodes().size());
         for (DomainProblemDTO node : graphDTO.getNodes()) {
             KnowledgeSpaceNode ksn = new KnowledgeSpaceNode();
+            DomainProblem dp = new DomainProblem();
+            dp.setId(node.getId());
+            ksn.setNode(dp);
             ksn.setCoordinates(node.getCoordinates());
             ksn.setSize(node.getSize());
             nodeMap.put(node.getId(),ksn);
@@ -124,8 +127,9 @@ public class Converter {
         Set<Link> links = new HashSet<>(graphDTO.getLinks().size());
         for (LinkDTO linkDTO: graphDTO.getLinks()) {
             Link l = new Link();
-            l.setStartNode(nodeMap.get(linkDTO.getStart_id()));
-            l.setEndNode(nodeMap.get(linkDTO.getEnd_id()));
+            l.setKnowledgeSpace(result);
+            l.setStartNode(nodeMap.get(Long.parseLong(linkDTO.getStart_id())));
+            l.setEndNode(nodeMap.get(Long.parseLong(linkDTO.getEnd_id())));
             links.add(l);
         }
         result.setLinks(links);
