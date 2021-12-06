@@ -109,14 +109,14 @@ public class Converter {
         return new DomainProblemDTO(id,title,size,coordinates,description,domainProblemId);
     }
 
-    public static KnowledgeSpace dtoToKnowledgeSpace(GraphDTO graphDTO, boolean edit){
+    public static KnowledgeSpace dtoToKnowledgeSpace(GraphDTO graphDTO, Long knowledgeSpaceId){
         KnowledgeSpace result = new KnowledgeSpace();
         result.setTitle(graphDTO.getTitle());
 
         Map<Long,KnowledgeSpaceNode> nodeMap = new HashMap<>(graphDTO.getNodes().size());
         for (DomainProblemDTO node : graphDTO.getNodes()) {
             KnowledgeSpaceNode ksn = new KnowledgeSpaceNode();
-            if(edit)
+            if(knowledgeSpaceId != null)
                 ksn.setId(node.getId());
             DomainProblem dp = new DomainProblem();
             dp.setId(node.getData().getDomainProblemId());
@@ -129,8 +129,12 @@ public class Converter {
         Set<Link> links = new HashSet<>(graphDTO.getLinks().size());
         for (LinkDTO linkDTO: graphDTO.getLinks()) {
             Link l = new Link();
-            if(edit)
+            if(knowledgeSpaceId != null) {
                 l.setId(Long.parseLong(linkDTO.getId()));
+                KnowledgeSpace ks = new KnowledgeSpace();
+                ks.setId(knowledgeSpaceId);
+                l.setKnowledgeSpace(ks);
+            }
             else
                 l.setKnowledgeSpace(result);
             l.setStartNode(nodeMap.get(Long.parseLong(linkDTO.getStart_id())));
