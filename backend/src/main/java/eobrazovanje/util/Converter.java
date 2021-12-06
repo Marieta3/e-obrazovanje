@@ -130,7 +130,6 @@ public class Converter {
         for (LinkDTO linkDTO: graphDTO.getLinks()) {
             Link l = new Link();
             if(knowledgeSpaceId != null) {
-                l.setId(Long.parseLong(linkDTO.getId()));
                 KnowledgeSpace ks = new KnowledgeSpace();
                 ks.setId(knowledgeSpaceId);
                 l.setKnowledgeSpace(ks);
