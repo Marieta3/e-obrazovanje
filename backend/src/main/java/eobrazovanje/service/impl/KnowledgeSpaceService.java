@@ -5,6 +5,7 @@ import eobrazovanje.repostiroy.IKnowledgeSpaceRepository;
 import eobrazovanje.service.IKnowledgeSpaceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -30,18 +31,18 @@ public class KnowledgeSpaceService implements IKnowledgeSpaceService {
     }
 
     @Override
+    @Transactional
     public KnowledgeSpace update(Long id, KnowledgeSpace knowledgeSpace) {
         KnowledgeSpace ks = findById(id);
+        System.out.println(knowledgeSpaceRepository.deleteLinksForKnowledgeSpace(id));
         ks.setTitle(knowledgeSpace.getTitle());
         ks.setLinks(knowledgeSpace.getLinks());
-
-        //ks.getDomain().setDomainProblems(knowledgeSpace.getDomain().getDomainProblems());
-
-        return null;
+        return knowledgeSpaceRepository.save(ks);
     }
 
     @Override
     public List<KnowledgeSpace> findByDomainId(Long domainId) {
         return knowledgeSpaceRepository.findAllByDomainId(domainId);
     }
+
 }

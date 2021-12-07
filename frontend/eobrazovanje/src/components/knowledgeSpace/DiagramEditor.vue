@@ -15,10 +15,7 @@
     </v-row>
     <v-row>
       <v-col>
-        <v-btn @click="submit()">Submit</v-btn>
-      </v-col>
-      <v-col>
-        <create-new-node-dialog v-on:nodeCreated="addNewNode($event)"/>
+        <v-btn @click="submit()" color="success">Submit</v-btn>
       </v-col>
     </v-row>
   </v-container>
@@ -27,15 +24,13 @@
 <script>
 import VueDiagramEditor from 'vue-diagram-editor';
 import 'vue-diagram-editor/dist/vue-diagram-editor.css';
-import CreateNewNodeDialog from './CreateNewNodeDialog'
 import axios from 'axios'
 import * as comm from '../../configuration/communication.js'
 export default {
-  props:['knowledgeSpaceId'],
+  props:['knowledgeSpaceId','courseId'],
   name: 'simple-example',
   components: {
     VueDiagramEditor,
-    CreateNewNodeDialog
   },
   data: () => ({
      nodes: {},
@@ -43,9 +38,10 @@ export default {
   }),
   mounted() {
     this.init();
-      if(this.knowledgeSpaceId != 0){
-      this.getKnowledgeSpace()
-    }
+    if(this.knowledgeSpaceId)
+      this.getKnowledgeSpace() 
+    else
+      this.getDomainProblems(); 
   },
   methods: {
     init() {
@@ -55,7 +51,7 @@ export default {
       });
     },
     format(node) {
-      return node.data;
+      return node.data.description;
     },
     nodeColor() {
       return '#00f';
@@ -71,12 +67,12 @@ export default {
     createLink(data){
       console.log(data.id)
     },
-    addNewNode(node){
-        let id = this.id
+    addNewNode(node, cords){
         let newNode = {
-            id: 'node-'+ id,
+            id: node.id,
             title: node.title,
-            data : node.description,
+            data :{domainProblemId: node.id, description: node.description},
+            coordinates: cords,
             portsIn: {
               port: 'in',
             },
@@ -84,8 +80,7 @@ export default {
                 port: 'out'
             }
         }
-        this.$refs.diagram.addNode(newNode)
-        this.id += 1    
+        this.$refs.diagram.addNode(newNode)  
     },
     getKnowledgeSpace(){
       console.log("usao")
@@ -93,18 +88,34 @@ export default {
       axios.get(comm.protocol +'://' + comm.server + '/knowledge-spaces/'+this.knowledgeSpaceId, config)
                 .then(response => {
                 if(response.status==200){
-                  console.log(response.data)
-                    this.$refs.diagram.setModel(response.data)
+                  this.$refs.diagram.setModel(response.data)
                 }
                 }).catch(() => {
                 alert("greska")
                 })
     },
     submit(){
+      if(this.knowledgeSpaceId)
+        this.update();
+      else
+        this.create();
+    },
+    update(){
       let data = this.$refs.diagram.serialize()
-      console.log(data)
+      let config = {headers: comm.getHeader()}
+      axios.put(comm.protocol +'://' + comm.server + '/knowledge-spaces/' + this.knowledgeSpaceId, data, config)
+        .then(response => {
+          console.log(response.data)
+        }).catch(() => {
+          alert("greska")
+        })
+
+    },
+    create(){
+      let data = this.$refs.diagram.serialize()
       let config = { headers: comm.getHeader() }
-      axios.post(comm.protocol +'://' + comm.server + '/knowledge-spaces', data ,config)
+      //TODO: change domain id 
+      axios.post(comm.protocol +'://' + comm.server + '/knowledge-spaces/domain/1', data ,config)
                 .then(response => {
                 if(response.status==200){
                     alert("uspesno zavrsen prostor znanja")
@@ -112,13 +123,27 @@ export default {
                 }).catch(() => {
                 alert("greska")
                 })
+    },
+    getDomainProblems(){
+      axios.get(comm.protocol +'://' + comm.server + '/courses/'+this.courseId+'/domain',{headers:comm.getHeader()})
+        .then(response => {
+          if(response.status==200){
+              this.initDomainProblems(response.data)
+          }
+          }).catch(() => {
+          alert("greska")
+          })
+    },
+    initDomainProblems(domainProblems){
+      let cord_x = 0 
+      let cord_y = 0
+      for(let dp of domainProblems){
+        cord_y += 50.0
+        cord_x += 15.0
+        this.addNewNode(dp, {x:cord_x, y:cord_y})
+      }
     }
   },
-   watch:{
-        knowledgeSpaceId: function(){
-            this.init()
-        }
-    }
 };
 </script>
 

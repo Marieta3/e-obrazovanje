@@ -1,22 +1,25 @@
 <template>
-  <v-data-table
-    :headers="headers"
-    :items="knowledgeSpaces"
-    class="elevation-1"
-  >
-  <template v-slot:item.createdAt="{ item }">
-      {{item.createdAt | dateFormat("DD-MM-YYYY HH:mm")}}
-  </template>
-    <template v-slot:item.show="{ item }">
-      <v-chip
-        color='warning'
-        dark
-        @click="show(item.id)"
-      >
-        Show
-      </v-chip>
+  <div>
+    <v-data-table
+      :headers="headers"
+      :items="knowledgeSpaces"
+      class="elevation-1"
+    >
+    <template v-slot:item.createdAt="{ item }">
+        {{item.createdAt | dateFormat("DD-MM-YYYY HH:mm")}}
     </template>
-  </v-data-table>
+      <template v-slot:item.show="{ item }">
+        <v-chip
+          color='warning'
+          dark
+          @click="show(item.id)"
+        >
+          Show
+        </v-chip>
+      </template>
+    </v-data-table>
+     <v-btn color="success" @click="redirectToCreadeNewKnowledgeSpace()">Create new</v-btn>
+  </div>
 </template>
 
 <script>
@@ -60,6 +63,9 @@
             
             return localDate.getFullYear() + '-' + ((localDate.getMonth() < 9) ? '0' : '') + (localDate.getMonth() + 1) + '-' +
                 ((localDate.getDate() < 10) ? '0' : '') + localDate.getDate();
+        },
+        redirectToCreadeNewKnowledgeSpace(){
+          this.$router.push({name: 'Diagram', params: {courseId : this.courseId}})
         }
     },
     filters:{

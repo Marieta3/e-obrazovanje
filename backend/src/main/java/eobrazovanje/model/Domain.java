@@ -21,11 +21,11 @@ public class Domain {
     @Column(name = "title")
     private String title;
 
-    @OneToMany(mappedBy = "domain", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "domain", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonManagedReference("domainProblems")
     private Set<DomainProblem> domainProblems = new HashSet<>();
 
-    @OneToMany(mappedBy = "domain", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "domain", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonManagedReference("knowledgeSpaces")
     private Set<KnowledgeSpace> knowledgeSpaces = new HashSet<>();
 

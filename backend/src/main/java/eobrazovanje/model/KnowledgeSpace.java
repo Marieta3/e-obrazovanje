@@ -24,7 +24,7 @@ public class KnowledgeSpace {
     @CreatedDate
     @Column(name = "created_at", nullable = false, updatable = false)
     @Getter @Setter
-    private Date createdAt;
+    private Date createdAt = new Date();
 
     @Column(name = "title")
     private String title;
@@ -33,7 +33,7 @@ public class KnowledgeSpace {
     @JsonManagedReference("links")
     private Set<Link> links = new HashSet<>();
 
-    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @ManyToOne( fetch = FetchType.LAZY)
     @JsonBackReference("knowledgeSpaces")
     private Domain domain;
 
