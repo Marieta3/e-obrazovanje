@@ -1,6 +1,7 @@
 package eobrazovanje.api;
 
 import eobrazovanje.dto.GraphDTO;
+import eobrazovanje.dto.KstLibParamsDTO;
 import eobrazovanje.model.Domain;
 import eobrazovanje.model.DomainProblem;
 import eobrazovanje.model.KnowledgeSpace;
@@ -8,12 +9,11 @@ import eobrazovanje.service.IDomainProblemService;
 import eobrazovanje.service.IKnowledgeSpaceService;
 import eobrazovanje.util.Converter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
@@ -55,5 +55,41 @@ public class KnowledgeSpaceAPI {
         return new ResponseEntity<>(knowledgeSpaceService.update(ksID, ks), HttpStatus.OK);
 
     }
+
+    //@GetMapping("/impl")
+    @PreAuthorize("hasRole('ROLE_TEACHER')")
+    @PostMapping(value = "/impl/{domain_id}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public  ResponseEntity<?> getEmployees(@PathVariable(value = "domain_id") Long domainId,@RequestBody KstLibParamsDTO paramsDTO)
+    {
+        List<DomainProblem> domainProblems = domainProblemService.findByDomainId(domainId);
+        paramsDTO.setItems(domainProblems.size());
+        final String uri = "http://127.0.0.1:5000/impl";
+
+        RestTemplate restTemplate = new RestTemplate();
+
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity<KstLibParamsDTO> httpEntity = new HttpEntity<KstLibParamsDTO>(paramsDTO, headers);
+
+        ResponseEntity<String> result = restTemplate.exchange(uri, HttpMethod.POST, httpEntity, String.class);
+        System.out.println(result.getBody());
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+
+    @PreAuthorize("hasRole('ROLE_TEACHER')")
+    @PostMapping(value = "/impl", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public  ResponseEntity<?> getEmployees(@RequestBody KstLibParamsDTO paramsDTO){
+        final String uri = "http://127.0.0.1:5000/impl";
+
+        RestTemplate restTemplate = new RestTemplate();
+
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity<KstLibParamsDTO> httpEntity = new HttpEntity<KstLibParamsDTO>(paramsDTO, headers);
+
+        ResponseEntity<String> result = restTemplate.exchange(uri, HttpMethod.POST, httpEntity, String.class);
+        System.out.println(result.getBody());
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
 
 }

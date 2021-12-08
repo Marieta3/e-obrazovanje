@@ -43,7 +43,8 @@ values
 
 insert into courses (description, name, teacher_id, domain_id)
 values
-('Prvi kurs koji polazu polaznici, predmet kursa je prepoznavanje', 'Prvi kurs PK', 4, 1); --id 1
+('Prvi kurs koji polazu polaznici, predmet kursa je prepoznavanje', 'Prvi kurs PK', 4, 1), --id 1
+('Drugi kurs koji polazu studenti, predmet kursa je klasifikacija', 'Drugi kurs PK', 4, null); --id 2
 
 insert into tests(title, course_id)
 values
