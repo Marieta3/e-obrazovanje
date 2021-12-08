@@ -114,8 +114,7 @@ export default {
     create(){
       let data = this.$refs.diagram.serialize()
       let config = { headers: comm.getHeader() }
-      //TODO: change domain id 
-      axios.post(comm.protocol +'://' + comm.server + '/knowledge-spaces/domain/1', data ,config)
+      axios.post(comm.protocol +'://' + comm.server + '/knowledge-spaces/course/'+this.courseId, data ,config)
                 .then(response => {
                 if(response.status==200){
                     alert("uspesno zavrsen prostor znanja")

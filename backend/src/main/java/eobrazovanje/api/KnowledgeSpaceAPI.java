@@ -6,6 +6,7 @@ import eobrazovanje.model.DomainProblem;
 import eobrazovanje.model.KnowledgeSpace;
 import eobrazovanje.service.IDomainProblemService;
 import eobrazovanje.service.IKnowledgeSpaceService;
+import eobrazovanje.service.impl.CourseService;
 import eobrazovanje.util.Converter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,6 +28,9 @@ public class KnowledgeSpaceAPI {
     @Autowired
     private IDomainProblemService domainProblemService;
 
+    @Autowired
+    private CourseService courseService;
+
     @GetMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_TEACHER')")
     public ResponseEntity<GraphDTO> FindKnowledgeSpaceById(@PathVariable("id") Long id){
@@ -36,12 +40,11 @@ public class KnowledgeSpaceAPI {
     }
 
     @PreAuthorize("hasRole('ROLE_TEACHER')")
-    @PostMapping(value = "domain/{domain_id}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<KnowledgeSpace> createKnowledgeSpace(@PathVariable("domain_id") Long domainId, @RequestBody GraphDTO graphDTO) throws MethodArgumentNotValidException {
+    @PostMapping(value = "course/{course_id}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<KnowledgeSpace> createKnowledgeSpace(@PathVariable("course_id") Long courseId, @RequestBody GraphDTO graphDTO) throws MethodArgumentNotValidException {
         KnowledgeSpace ks = Converter.dtoToKnowledgeSpace(graphDTO,null);
-
         Domain domain = new Domain();
-        domain.setId(domainId);
+        domain.setId(courseService.findDomainIdByCourseId(courseId));
         ks.setDomain(domain);
         return new ResponseEntity<>(knowledgeSpaceService.save(ks), HttpStatus.OK);
     }
