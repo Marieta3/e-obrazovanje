@@ -95,10 +95,12 @@ export default {
                 })
     },
     submit(){
-      if(this.knowledgeSpaceId)
+      if(this.knowledgeSpaceId){
         this.update();
-      else
+      }
+      else{
         this.create();
+      }
     },
     update(){
       let data = this.$refs.diagram.serialize()
