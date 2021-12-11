@@ -22,7 +22,7 @@
                     </v-stepper-content>
                 </span>
         </v-stepper>
-        <v-btn @click="commit()" color="warning" class="ma-3">Finish</v-btn>
+        <v-btn v-if="!testId" @click="commit()" color="warning" class="ma-3">Finish</v-btn>
     </div>
 </template>
 
@@ -34,6 +34,7 @@ import axios from 'axios'
     components: {
         QuestionDialog
     },
+    props: ['courseId','testId'],
     data () {
       return {
         title: "",
@@ -45,6 +46,9 @@ import axios from 'axios'
     },
     created(){
         this.getDomainProblemsForCourse()
+        if(this.testId){
+            this.getTestById();
+        }
     },
     methods:{
         continueClk(){
@@ -76,6 +80,17 @@ import axios from 'axios'
             dpq.push(newQuestion)
             this.forceRerender()
         },
+        getTestById(){
+            let config = { headers: comm.getHeader() }
+            axios.get(comm.protocol +'://' + comm.server + '/tests/'+this.testId,config)
+            .then(response => {
+              if(response.status==200){
+                this.mapResponseToDomainProblemQuestions(response.data)
+              }
+            }).catch(() => {
+              alert("greska")
+            })
+        },
         updateQuestion(domainProblemId, index, item){
             let questions = this.domainProblemQuestions.get(domainProblemId)
             questions[index] = item
@@ -92,6 +107,13 @@ import axios from 'axios'
               alert("greska")
             })
         },
+        mapResponseToDomainProblemQuestions(testResponse){
+            this.title=testResponse.title
+            for(let question of testResponse.questions){
+                let dpg = this.domainProblemQuestions.get(question.domainProblemId)
+                dpg.push(question)
+            }
+        },
         getTest() {
             let test={
                 title: this.title,
@@ -100,9 +122,8 @@ import axios from 'axios'
             }
             for(let key of this.domainProblemQuestions.keys()) {
                 for(let question of this.domainProblemQuestions.get(key)) {
-                question.domainProblemId=key
-                test.questions.push(question)
-
+                    question.domainProblemId=key
+                    test.questions.push(question)
                 }
             }
             return test

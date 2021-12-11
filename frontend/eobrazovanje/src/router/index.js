@@ -14,14 +14,14 @@ const routes = [{
     props: true,
     name: 'NewTest',
     component: () =>
-      import ('../components/Test.vue')
+      import ('../components/test/Test.vue')
   },
   {
     path: '/courses/:courseId/tests/:testId',
     props: true,
     name: 'Test',
     component: () =>
-      import ('../components/Test.vue')
+      import ('../components/test/Test.vue')
   },
   {
     path: '/courses/create',
@@ -80,12 +80,6 @@ const routes = [{
     component: () =>
       import ('../components/knowledgeSpace/DiagramEditor.vue')
   },
-  {
-    path: '/newcomp',
-    name: 'New',
-    component: () =>
-      import ('../components/test/CreateTest.vue')
-  }
 ]
 
 const router = new VueRouter({
