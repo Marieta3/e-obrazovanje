@@ -1,31 +1,34 @@
 <template>
-  <v-stepper v-model="currentStep" vertical >
-        <span v-for="(item, index) in domainProblems" :key="item.id">
-            <v-stepper-step :complete="currentStep > index" :step="index" editable>
-                {{item.title}}
-                <small>{{item.description}}</small>
-            </v-stepper-step>
-            <v-stepper-content :step="index">
-                <v-card color="grey lighten-1" class="mb-12" height="400px" v-if="renderComponent">
-                    <v-card-text>
-                        <div v-for="(domainQuestion,index2) in domainProblemQuestions.get(item.id)" :key="index2">
-                            <question-dialog :index="index2" :currentQuestion="domainQuestion" class="ma-2"/>
-                        </div>
-                    </v-card-text>
-                </v-card>
-                <span class="d-flex justify-space-around mb-6">
-                    <v-btn color="primary" @click="addQuestion(item.id)">Add question</v-btn>
-                    <v-btn color="primary" :disabled="currentStep >= domainProblems.length - 1"  @click="continueClk()">Continue</v-btn>
-                    <v-btn @click="currentStep=-1">Cancel</v-btn>
+    <div>
+        <v-stepper v-model="currentStep" vertical >
+                <span v-for="(item, index) in domainProblems" :key="item.id">
+                    <v-stepper-step :complete="currentStep > index" :step="index" editable>
+                        {{item.title}}
+                        <small>{{item.description}}</small>
+                    </v-stepper-step>
+                    <v-stepper-content :step="index">
+                        <v-card color="grey lighten-1" class="mb-12" height="400px" v-if="renderComponent">
+                            <v-card-text>
+                                <div v-for="(domainQuestion,index2) in domainProblemQuestions.get(item.id)" :key="index2">
+                                    <question-dialog :index="index2" :domainProblemId="item.id" :currentQuestion="domainQuestion" v-on:commitedQuestion="updateQuestion(item.id, index2, $event)" class="ma-2"/>
+                                </div>
+                            </v-card-text>
+                        </v-card>
+                        <span class="d-flex justify-space-around mb-6">
+                            <v-btn color="primary" @click="addQuestion(item.id)">Add question</v-btn>
+                            <v-btn color="primary" :disabled="currentStep >= domainProblems.length - 1"  @click="continueClk()">Continue</v-btn>
+                            <v-btn @click="currentStep=-1">Cancel</v-btn>
+                        </span>
+                    </v-stepper-content>
                 </span>
-            </v-stepper-content>
-        </span>
-  </v-stepper>
+        </v-stepper>
+        <v-btn @click="commit()" color="warning" class="ma-3">Finish</v-btn>
+    </div>
 </template>
 
 <script>
 import * as comm from '../../configuration/communication.js'
-import QuestionDialog from '../../dialogs/modals/QuestionDialog.vue'
+import QuestionDialog from './QuestionDialog.vue'
 import axios from 'axios'
   export default {
     components: {
@@ -33,15 +36,11 @@ import axios from 'axios'
     },
     data () {
       return {
+        title: "",
         currentStep: -1,
         domainProblems: [],
         domainProblemQuestions: new Map(),
         renderComponent: true,
-        test:{
-                id: -1,
-                title: "",
-                questions:[]
-            },
       }
     },
     created(){
@@ -77,6 +76,37 @@ import axios from 'axios'
             dpq.push(newQuestion)
             this.forceRerender()
         },
+        updateQuestion(domainProblemId, index, item){
+            let questions = this.domainProblemQuestions.get(domainProblemId)
+            questions[index] = item
+        },
+        commit(){
+            let data=this.getTest()
+            let config = {headers: comm.getHeader()}
+            axios.post(comm.protocol +'://' + comm.server + '/tests', data,config)
+            .then(response => {
+              if(response.status==200){
+                alert("uspesno kreiran test")
+              }
+            }).catch(() => {
+              alert("greska")
+            })
+        },
+        getTest() {
+            let test={
+                title: this.title,
+                questions: [],
+                courseId: 1
+            }
+            for(let key of this.domainProblemQuestions.keys()) {
+                for(let question of this.domainProblemQuestions.get(key)) {
+                question.domainProblemId=key
+                test.questions.push(question)
+
+                }
+            }
+            return test
+        },
         forceRerender() {
             // Removing my-component from the DOM
             this.renderComponent = false;
@@ -91,5 +121,4 @@ import axios from 'axios'
 </script>
 
 <style>
-
 </style>

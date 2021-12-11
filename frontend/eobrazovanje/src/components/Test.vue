@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import QuestionDialog from '../dialogs/modals/QuestionDialog.vue'
+import QuestionDialog from './test/QuestionDialog.vue'
 import axios from 'axios'
 import * as comm from '../configuration/communication.js'
 export default {

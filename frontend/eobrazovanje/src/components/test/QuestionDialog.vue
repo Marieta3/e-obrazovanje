@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import Question from '../../components/Question.vue'
+import Question from '../Question.vue'
   export default {
   components: { Question },
     name: "QuestionDialog",
@@ -41,8 +41,9 @@ import Question from '../../components/Question.vue'
     },
     methods:{
         commit(newQuestion){
+            let questionCopy = Object.assign({}, newQuestion);
             console.log("komitujem pitanje "+ this.index);
-            this.$emit('commitedQuestion',newQuestion)
+            this.$emit('commitedQuestion',questionCopy)
             this.dialog = false
             this.changeIndicator += 1;
         },
