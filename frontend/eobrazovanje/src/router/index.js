@@ -79,6 +79,12 @@ const routes = [{
     name: 'Diagram',
     component: () =>
       import ('../components/knowledgeSpace/DiagramEditor.vue')
+  },
+  {
+    path: '/newcomp',
+    name: 'New',
+    component: () =>
+      import ('../components/test/CreateTest.vue')
   }
 ]
 
