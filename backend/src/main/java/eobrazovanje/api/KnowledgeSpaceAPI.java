@@ -49,6 +49,7 @@ public class KnowledgeSpaceAPI {
         return new ResponseEntity<>(knowledgeSpaceService.save(ks), HttpStatus.OK);
     }
 
+    @CrossOrigin()
     @PreAuthorize("hasRole('ROLE_TEACHER')")
     @PutMapping(value="/{id}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<KnowledgeSpace> updateKnowledgeSpace(
