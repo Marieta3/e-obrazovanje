@@ -11,4 +11,12 @@ public class Coordinates {
     Double x;
     @Getter @Setter
     Double y;
+
+    public Coordinates() {
+    }
+
+    public Coordinates(Double x, Double y) {
+        this.x = x;
+        this.y = y;
+    }
 }

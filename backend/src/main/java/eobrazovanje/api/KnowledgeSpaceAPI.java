@@ -86,11 +86,14 @@ public class KnowledgeSpaceAPI {
 
 
         ArrayList<KnowledgeSpaceNode> ksNodes = new ArrayList<>();
+        int cnt = 0;
         for(DomainProblem dp: domainProblems){
             KnowledgeSpaceNode ksNode = new KnowledgeSpaceNode();
             ksNode.setNode(dp);
             ksNode.setSize(new Size(150.0, 150.0));
+            ksNode.setCoordinates(new Coordinates(cnt*30.0, cnt*30.0));
             ksNodes.add(ksNode);
+            cnt++;
         }
         for(int i=0; i<implications.size(); i++){
             ArrayList impl = (ArrayList) implications.get(i);
