@@ -7,7 +7,7 @@
       transition="dialog-top-transition"
     >
       <template v-slot:activator="{ on, attrs }">
-        <v-card class="d-flex justify-start" width="300px" flat tile elevation="12" color="success" dark v-bind="attrs" v-on="on">
+        <v-card class="d-flex justify-start" width="100%" flat tile elevation="12" color="success" dark v-bind="attrs" v-on="on">
             <p class="ml-2 mt-2">{{index}}</p>
             <p class="pl-6 mt-2">{{currentQuestion.text}}</p>
         </v-card>
@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import Question from '../../components/Question.vue'
+import Question from '../Question.vue'
   export default {
   components: { Question },
     name: "QuestionDialog",
@@ -41,8 +41,9 @@ import Question from '../../components/Question.vue'
     },
     methods:{
         commit(newQuestion){
+            let questionCopy = Object.assign({}, newQuestion);
             console.log("komitujem pitanje "+ this.index);
-            this.$emit('commitedQuestion',newQuestion)
+            this.$emit('commitedQuestion',questionCopy)
             this.dialog = false
             this.changeIndicator += 1;
         },

@@ -42,7 +42,7 @@ import axios from 'axios'
 
 
     created () {
-      this.getDomainProblemsForDomain()
+      this.getDomainProblemsForCourse()
     },
 
     methods: {
@@ -63,7 +63,7 @@ import axios from 'axios'
           console.log(response.data)
         })
     },
-    getDomainProblemsForDomain(){
+    getDomainProblemsForCourse(){
       axios.get(comm.protocol +'://' + comm.server + '/courses/'+this.courseId+'/domain',{headers: comm.getHeader()})
           .then(response => {
             if(response.status==200){
