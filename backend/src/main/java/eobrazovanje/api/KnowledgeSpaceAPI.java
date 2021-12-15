@@ -83,21 +83,23 @@ public class KnowledgeSpaceAPI {
         ks.setTitle("iita knowledge space ");
         ks.setCreatedAt(new Date());
         ks.setDomain(domainProblems.get(0).getDomain());
+
+
+        ArrayList<KnowledgeSpaceNode> ksNodes = new ArrayList<>();
+        for(DomainProblem dp: domainProblems){
+            KnowledgeSpaceNode ksNode = new KnowledgeSpaceNode();
+            ksNode.setNode(dp);
+            ksNode.setSize(new Size(150.0, 150.0));
+            ksNodes.add(ksNode);
+        }
         for(int i=0; i<implications.size(); i++){
             ArrayList impl = (ArrayList) implications.get(i);
             int start = (int) impl.get(0);
             int end = (int) impl.get(1);
 
-            KnowledgeSpaceNode startKSNode = new KnowledgeSpaceNode();
-            KnowledgeSpaceNode endKSNode = new KnowledgeSpaceNode();
-            startKSNode.setNode(domainProblems.get(start));
-            startKSNode.setSize(new Size(150.0, 150.0));
-            endKSNode.setNode(domainProblems.get(end));
-            endKSNode.setSize(new Size(150.0, 150.0));
-
             Link newLink = new Link();
-            newLink.setStartNode(startKSNode);
-            newLink.setEndNode(endKSNode);
+            newLink.setStartNode(ksNodes.get(start));
+            newLink.setEndNode(ksNodes.get(end));
             newLink.setKnowledgeSpace(ks);
             ks.getLinks().add(newLink);
             //System.out.println(implications.get(i));
