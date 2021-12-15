@@ -2,9 +2,7 @@ package eobrazovanje.api;
 
 import eobrazovanje.dto.GraphDTO;
 import eobrazovanje.dto.KstLibParamsDTO;
-import eobrazovanje.model.Domain;
-import eobrazovanje.model.DomainProblem;
-import eobrazovanje.model.KnowledgeSpace;
+import eobrazovanje.model.*;
 import eobrazovanje.service.IDomainProblemService;
 import eobrazovanje.service.IKnowledgeSpaceService;
 import eobrazovanje.service.impl.CourseService;
@@ -16,6 +14,9 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -62,7 +63,7 @@ public class KnowledgeSpaceAPI {
     //@GetMapping("/impl")
     @PreAuthorize("hasRole('ROLE_TEACHER')")
     @PostMapping(value = "/impl/{domain_id}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public  ResponseEntity<?> getEmployees(@PathVariable(value = "domain_id") Long domainId,@RequestBody KstLibParamsDTO paramsDTO)
+    public  ResponseEntity<?> getImplications(@PathVariable(value = "domain_id") Long domainId,@RequestBody KstLibParamsDTO paramsDTO)
     {
         List<DomainProblem> domainProblems = domainProblemService.findByDomainId(domainId);
         paramsDTO.setItems(domainProblems.size());
@@ -73,15 +74,40 @@ public class KnowledgeSpaceAPI {
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<KstLibParamsDTO> httpEntity = new HttpEntity<KstLibParamsDTO>(paramsDTO, headers);
 
-        ResponseEntity<String> result = restTemplate.exchange(uri, HttpMethod.POST, httpEntity, String.class);
+        ResponseEntity<ArrayList> result = restTemplate.exchange(uri, HttpMethod.POST, httpEntity, ArrayList.class);
         System.out.println(result.getBody());
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        ArrayList implications = result.getBody();
+
+        KnowledgeSpace ks = new KnowledgeSpace();
+        ks.setTitle("iita knowledge space ");
+        ks.setCreatedAt(new Date());
+        ks.setDomain(domainProblems.get(0).getDomain());
+        for(int i=0; i<implications.size(); i++){
+            ArrayList impl = (ArrayList) implications.get(i);
+            int start = (int) impl.get(0);
+            int end = (int) impl.get(1);
+
+            KnowledgeSpaceNode startKSNode = new KnowledgeSpaceNode();
+            KnowledgeSpaceNode endKSNode = new KnowledgeSpaceNode();
+            startKSNode.setNode(domainProblems.get(start));
+            startKSNode.setSize(new Size(150.0, 150.0));
+            endKSNode.setNode(domainProblems.get(end));
+            endKSNode.setSize(new Size(150.0, 150.0));
+
+            Link newLink = new Link();
+            newLink.setStartNode(startKSNode);
+            newLink.setEndNode(endKSNode);
+            newLink.setKnowledgeSpace(ks);
+            ks.getLinks().add(newLink);
+            //System.out.println(implications.get(i));
+        }
+        return new ResponseEntity<>(knowledgeSpaceService.save(ks), HttpStatus.OK);
     }
 
 
     @PreAuthorize("hasRole('ROLE_TEACHER')")
     @PostMapping(value = "/impl", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public  ResponseEntity<?> getEmployees(@RequestBody KstLibParamsDTO paramsDTO){
+    public  ResponseEntity<?> getImplications(@RequestBody KstLibParamsDTO paramsDTO){
         final String uri = "http://127.0.0.1:5000/impl";
 
         RestTemplate restTemplate = new RestTemplate();
@@ -89,8 +115,14 @@ public class KnowledgeSpaceAPI {
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<KstLibParamsDTO> httpEntity = new HttpEntity<KstLibParamsDTO>(paramsDTO, headers);
 
-        ResponseEntity<String> result = restTemplate.exchange(uri, HttpMethod.POST, httpEntity, String.class);
+        ResponseEntity<ArrayList> result = restTemplate.exchange(uri, HttpMethod.POST, httpEntity, ArrayList.class);
         System.out.println(result.getBody());
+        ArrayList lista = result.getBody();
+        for(int i=0; i<result.getBody().size(); i++){
+            ArrayList item = (ArrayList) lista.get(i);
+            System.out.println(item.get(0));
+            System.out.println(item.get(1));
+        }
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
