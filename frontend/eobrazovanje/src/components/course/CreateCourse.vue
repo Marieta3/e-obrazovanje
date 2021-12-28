@@ -21,6 +21,7 @@
             filled
             v-model="description"
             label="Description"
+            counter="255"
             ></v-textarea>
         </v-col>
       </v-row>

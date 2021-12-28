@@ -9,6 +9,7 @@
             v-model="node.description"
             label="Description"
             @change="emitChange()"
+            counter="255"
         ></v-textarea>
   </v-form>
 </template>
