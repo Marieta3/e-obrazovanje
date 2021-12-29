@@ -56,8 +56,7 @@ import axios from 'axios'
             console.log("current step: "+this.currentStep+" size:"+this.domainProblems.length)
         },
         getDomainProblemsForCourse(){
-            let courseId = 1;
-            axios.get(comm.protocol +'://' + comm.server + '/courses/'+courseId+'/domain',{headers: comm.getHeader()})
+            axios.get(comm.protocol +'://' + comm.server + '/courses/'+this.courseId+'/domain',{headers: comm.getHeader()})
                 .then(response => {
                     if(response.status==200){
                         this.domainProblems = response.data;
