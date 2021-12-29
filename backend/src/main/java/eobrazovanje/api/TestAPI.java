@@ -1,6 +1,7 @@
 package eobrazovanje.api;
 
 import eobrazovanje.dto.AnswerDTO;
+import eobrazovanje.dto.QuestionAnswersDTO;
 import eobrazovanje.dto.QuestionDTO;
 import eobrazovanje.dto.TestDTO;
 import eobrazovanje.model.Answer;
@@ -89,5 +90,18 @@ public class TestAPI {
     }
 
 
+//    @GetMapping("/next-question")
+//    @PreAuthorize("hasRole('ROLE_STUDENT')")
+//    public ResponseEntity<QuestionDTO> getNextQuestion(){
+//        //TODO: get next question
+//        return new ResponseEntity<>(new QuestionDTO(), HttpStatus.OK);
+//    }
+//
+//    @PreAuthorize("hasRole('ROLE_STUDENT')")
+//    @PostMapping(value="/answer-question", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+//    public ResponseEntity<?> sendAnswersForQuestion(@RequestBody QuestionAnswersDTO questionAnswersDTO){
+//
+//        return new ResponseEntity<>(HttpStatus.OK);
+//    }
 
 }

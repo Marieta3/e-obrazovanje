@@ -2,6 +2,7 @@ package eobrazovanje.api;
 
 import eobrazovanje.dto.GraphDTO;
 import eobrazovanje.dto.KstLibParamsDTO;
+import eobrazovanje.dto.KstLibResponseDTO;
 import eobrazovanje.model.*;
 import eobrazovanje.service.IDomainProblemService;
 import eobrazovanje.service.IKnowledgeSpaceService;
@@ -67,17 +68,21 @@ public class KnowledgeSpaceAPI {
     public  ResponseEntity<?> getImplications(@PathVariable(value = "domain_id") Long domainId,@RequestBody KstLibParamsDTO paramsDTO)
     {
         List<DomainProblem> domainProblems = domainProblemService.findByDomainId(domainId);
+        System.out.println("----");
+        System.out.println(domainProblems.size());
         paramsDTO.setItems(domainProblems.size());
-        final String uri = "http://127.0.0.1:5000/impl";
+        //paramsDTO.setItems(9);
+        //TODO: promeniti na dinamicku putanju
+        final String uri = "http://127.0.0.1:5000/implications";
 
         RestTemplate restTemplate = new RestTemplate();
 
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<KstLibParamsDTO> httpEntity = new HttpEntity<KstLibParamsDTO>(paramsDTO, headers);
 
-        ResponseEntity<ArrayList> result = restTemplate.exchange(uri, HttpMethod.POST, httpEntity, ArrayList.class);
+        ResponseEntity<KstLibResponseDTO> result = restTemplate.exchange(uri, HttpMethod.POST, httpEntity, KstLibResponseDTO.class);
         System.out.println(result.getBody());
-        ArrayList implications = result.getBody();
+        KstLibResponseDTO response = result.getBody();
 
         KnowledgeSpace ks = new KnowledgeSpace();
         ks.setTitle("iita knowledge space ");
@@ -95,8 +100,8 @@ public class KnowledgeSpaceAPI {
             ksNodes.add(ksNode);
             cnt++;
         }
-        for(int i=0; i<implications.size(); i++){
-            ArrayList impl = (ArrayList) implications.get(i);
+        for(int i=0; i<response.getImplications().size(); i++){
+            ArrayList impl = (ArrayList) response.getImplications().get(i);
             int start = (int) impl.get(0);
             int end = (int) impl.get(1);
 

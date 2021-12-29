@@ -116,9 +116,9 @@ import axios from 'axios'
         },
         getTest() {
             let test={
-                title: this.title,
+                title: "test",
                 questions: [],
-                courseId: 1
+                courseId: this.courseId
             }
             for(let key of this.domainProblemQuestions.keys()) {
                 for(let question of this.domainProblemQuestions.get(key)) {
@@ -126,7 +126,7 @@ import axios from 'axios'
                     test.questions.push(question)
                 }
             }
-            return test
+            return test 
         },
         forceRerender() {
             // Removing my-component from the DOM
