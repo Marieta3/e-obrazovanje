@@ -64,14 +64,11 @@ public class KnowledgeSpaceAPI {
 
     //@GetMapping("/impl")
     @PreAuthorize("hasRole('ROLE_TEACHER')")
-    @PostMapping(value = "/impl/{domain_id}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/implications/{domain_id}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public  ResponseEntity<?> getImplications(@PathVariable(value = "domain_id") Long domainId,@RequestBody KstLibParamsDTO paramsDTO)
     {
         List<DomainProblem> domainProblems = domainProblemService.findByDomainId(domainId);
-        System.out.println("----");
-        System.out.println(domainProblems.size());
         paramsDTO.setItems(domainProblems.size());
-        //paramsDTO.setItems(9);
         //TODO: promeniti na dinamicku putanju
         final String uri = "http://127.0.0.1:5000/implications";
 
@@ -101,9 +98,9 @@ public class KnowledgeSpaceAPI {
             cnt++;
         }
         for(int i=0; i<response.getImplications().size(); i++){
-            ArrayList impl = (ArrayList) response.getImplications().get(i);
-            int start = (int) impl.get(0);
-            int end = (int) impl.get(1);
+            ArrayList<Integer> impl = response.getImplications().get(i);
+            int start = impl.get(0);
+            int end = impl.get(1);
 
             Link newLink = new Link();
             newLink.setStartNode(ksNodes.get(start));
@@ -112,12 +109,24 @@ public class KnowledgeSpaceAPI {
             ks.getLinks().add(newLink);
             //System.out.println(implications.get(i));
         }
+
+        for(int i=0; i<response.getPaths().size(); i++){
+            ArrayList<Integer> path = response.getPaths().get(i);
+            State state = new State();
+            state.setKnowledgeSpace(ks);
+            state.setProbability(1.0/response.getPaths().size());
+            for(int j: path){
+                DomainProblem dp1 = domainProblems.get(j);
+                state.getDomainProblems().add(dp1);
+            }
+            ks.getStates().add(state);
+        }
         return new ResponseEntity<>(knowledgeSpaceService.save(ks), HttpStatus.OK);
     }
 
 
     @PreAuthorize("hasRole('ROLE_TEACHER')")
-    @PostMapping(value = "/impl", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/implications", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public  ResponseEntity<?> getImplications(@RequestBody KstLibParamsDTO paramsDTO){
         final String uri = "http://127.0.0.1:5000/impl";
 

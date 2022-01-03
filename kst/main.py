@@ -65,11 +65,15 @@ def get_paths(implications):
     for s in start_nodes:
         for d in nodes:
             graph.printAllPaths(s, d, paths)
-    paths.append(nodes)
+    if not has_all_nodes(paths, len(nodes)):
+        paths.append(nodes)
     return paths
 
-
-
+def has_all_nodes(paths, items):
+    for path in paths:
+        if len(path) == items:
+            return True
+    return False
 
 # A class to represent a graph. A graph
 # is the list of the adjacency lists.
@@ -173,6 +177,9 @@ if __name__ == '__main__':
     print('\nimplications:')
     print(implications)
     print(paths1)
+
+    lista12 = [[1, 2, 3], [], [1, 2]]
+
 
 
 
