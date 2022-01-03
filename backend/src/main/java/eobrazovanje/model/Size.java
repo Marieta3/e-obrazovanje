@@ -11,4 +11,12 @@ public class Size {
     private Double width;
     @Getter @Setter
     private Double height;
+
+    public Size() {
+    }
+
+    public Size(Double width, Double height) {
+        this.width = width;
+        this.height = height;
+    }
 }
