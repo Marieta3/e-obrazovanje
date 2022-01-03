@@ -115,7 +115,7 @@ import axios from 'axios'
         },
         getTest() {
             let test={
-                title: this.title,
+                title: "test",
                 questions: [],
                 courseId: this.courseId
             }
@@ -125,7 +125,7 @@ import axios from 'axios'
                     test.questions.push(question)
                 }
             }
-            return test
+            return test 
         },
         forceRerender() {
             // Removing my-component from the DOM

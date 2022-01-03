@@ -37,6 +37,11 @@ public class KnowledgeSpace {
     @JsonBackReference("knowledgeSpaces")
     private Domain domain;
 
+    @OneToMany(mappedBy = "knowledgeSpace", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JsonManagedReference("states")
+    @Getter @Setter
+    private Set<State> states = new HashSet<>();
+
     public KnowledgeSpace() {
     }
 

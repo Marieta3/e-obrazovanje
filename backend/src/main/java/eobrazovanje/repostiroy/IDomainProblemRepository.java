@@ -7,6 +7,6 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface IDomainProblemRepository extends JpaRepository<DomainProblem, Long> {
-    @Query("select dp from DomainProblem dp where domain.id = ?1")
+    @Query("select dp from DomainProblem dp where domain.id = ?1 ORDER BY dp.id")
     List<DomainProblem> getAllByDomainId(Long domainId);
 }
