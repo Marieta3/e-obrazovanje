@@ -174,4 +174,12 @@ public class Converter {
         result.setDomainProblems(domainProblemSet);
         return result;
     }
+
+    public static List<AnswerDTO> convert (List<Answer> answers){
+        List<AnswerDTO> result = new ArrayList<>(answers.size());
+        for(Answer a : answers){
+            result.add(new AnswerDTO(a));
+        }
+        return result;
+    }
 }

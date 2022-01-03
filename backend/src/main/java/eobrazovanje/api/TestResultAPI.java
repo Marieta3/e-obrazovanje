@@ -1,32 +1,22 @@
 package eobrazovanje.api;
 
+import eobrazovanje.dto.QuestionDTO;
+import eobrazovanje.dto.TestAnswerDTO;
 import eobrazovanje.dto.TestDTO;
 import eobrazovanje.dto.TestResultDTO;
-import eobrazovanje.model.Answer;
-import eobrazovanje.model.Student;
-import eobrazovanje.model.Test;
-import eobrazovanje.model.TestResult;
+import eobrazovanje.model.*;
 import eobrazovanje.service.IUserService;
-import eobrazovanje.service.impl.AnswerService;
-import eobrazovanje.service.impl.TestResultService;
-import eobrazovanje.service.impl.TestService;
-import eobrazovanje.service.impl.UserService;
+import eobrazovanje.service.impl.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @RestController
 @RequestMapping("/test-results")
@@ -43,6 +33,12 @@ public class TestResultAPI {
 
     @Autowired
     private TestService testService;
+
+    @Autowired
+    private DomainProblemService domainProblemService;
+
+    @Autowired
+    private QuestionService questionService;
 
     @PreAuthorize("hasRole('ROLE_STUDENT')")
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -107,4 +103,48 @@ public class TestResultAPI {
         }
         return questResult;
     }
+
+    @PreAuthorize("hasRole('ROLE_STUDENT')")
+    @PostMapping()
+    public QuestionDTO AnswerQuestion(@RequestBody TestAnswerDTO answerDTO, Principal user){
+        Student student = (Student) userService.findByUsername(user.getName());
+        if(answerDTO.getTestResultId()==null){
+            //kreiraj test result i vrati prvo pitanje
+        }
+
+        TestResult testResult = testResultService.findById(answerDTO.getTestResultId());
+        Answer answer = answerService.findById(answerDTO.getAnswerId());
+        DomainProblem domainProblem = answerService.getDomainProblemByAnswerId(answerDTO.getAnswerId());
+        Set<Long> availableDomainProblemsIds = new HashSet<>();
+        for (DomainProblem dp : domainProblemService.findByDomainId(domainProblem.getDomain().getId())){
+            availableDomainProblemsIds.add(dp.getId());
+        }
+
+
+        testResult.addAnswer(answer);
+        testResultService.save(testResult); //TODO: proveriti da li je upisan samo novi answer
+        //TODO: dobaviti listu mogucih stanja znanja i njihovih verovatnoca
+        for(Answer ans : testResult.getAnswers()){
+            availableDomainProblemsIds.remove(ans.getId());
+            //TODO: azurirati listu verovatnoca za svako stanje znanja
+        }
+
+        //TODO: proci kroz listu svih i proveriti da li ima neko stanje znanja koje ima veci koeficijent od 0.7 i vratiti null
+
+        if(availableDomainProblemsIds.size()==0)
+            return null;
+
+        Long[] domainProblemsIds = new Long[availableDomainProblemsIds.size()];
+        availableDomainProblemsIds.toArray(domainProblemsIds);
+        return getRandomQuestionFromAvailableDomainProblems(domainProblemsIds);
+    }
+
+    private QuestionDTO getRandomQuestionFromAvailableDomainProblems(Long[] availableDomainProblemsIds) {
+            Random random = new Random();
+            int randomIndex = random.nextInt(availableDomainProblemsIds.length);
+            Question question = questionService.getRandomQuestionForDomainProblemId(availableDomainProblemsIds[randomIndex]);
+            return new QuestionDTO(question);
+    }
+
+
 }

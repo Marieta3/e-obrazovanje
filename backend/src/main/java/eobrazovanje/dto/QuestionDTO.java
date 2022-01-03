@@ -1,22 +1,30 @@
 package eobrazovanje.dto;
 
 
+import eobrazovanje.model.Question;
+import eobrazovanje.util.Converter;
+
 import java.util.ArrayList;
+import java.util.List;
 
 public class QuestionDTO {
     private String text;
     private boolean randomized;
-    private ArrayList<AnswerDTO> answers;
+    private List<AnswerDTO> answers;
     private Long domainProblemId;
 
     public QuestionDTO() {
     }
 
-    public QuestionDTO(String text, boolean randomized, ArrayList<AnswerDTO> answers, Long domainProblemId) {
+    public QuestionDTO(String text, boolean randomized, List<AnswerDTO> answers, Long domainProblemId) {
         this.text = text;
         this.randomized = randomized;
         this.answers = answers;
         this.domainProblemId = domainProblemId;
+    }
+
+    public QuestionDTO(Question question){
+        this(question.getText(), question.isRandomize(), Converter.convert(new ArrayList<>(question.getAnswers())),question.getDomainProblem().getId());
     }
 
     public String getText() {
@@ -35,7 +43,7 @@ public class QuestionDTO {
         this.randomized = randomized;
     }
 
-    public ArrayList<AnswerDTO> getAnswers() {
+    public List<AnswerDTO> getAnswers() {
         return answers;
     }
 

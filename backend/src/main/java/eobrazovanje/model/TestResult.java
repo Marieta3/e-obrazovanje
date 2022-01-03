@@ -123,6 +123,10 @@ public class TestResult {
                 '}';
     }
 
+    public void addAnswer(Answer answer){
+        answers.add(answer);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

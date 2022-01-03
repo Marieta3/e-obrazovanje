@@ -1,6 +1,7 @@
 package eobrazovanje.service;
 
 import eobrazovanje.model.Answer;
+import eobrazovanje.model.DomainProblem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,4 +16,6 @@ public interface IAnswerService {
     Answer save(Answer answer);
 
     List<Answer> findAll();
+
+    DomainProblem getDomainProblemByAnswerId(Long answerId);
 }
