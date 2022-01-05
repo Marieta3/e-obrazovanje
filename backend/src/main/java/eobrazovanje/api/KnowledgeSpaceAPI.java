@@ -128,6 +128,7 @@ public class KnowledgeSpaceAPI {
     @PreAuthorize("hasRole('ROLE_TEACHER')")
     @PostMapping(value = "/implications", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public  ResponseEntity<?> getImplications(@RequestBody KstLibParamsDTO paramsDTO){
+        //TODO: promeniti na dinamicku putanju
         final String uri = "http://127.0.0.1:5000/impl";
 
         RestTemplate restTemplate = new RestTemplate();

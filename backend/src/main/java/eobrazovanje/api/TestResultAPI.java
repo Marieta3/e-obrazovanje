@@ -40,7 +40,7 @@ public class TestResultAPI {
     @Autowired
     private QuestionService questionService;
 
-    @PreAuthorize("hasRole('ROLE_STUDENT')")
+    /*@PreAuthorize("hasRole('ROLE_STUDENT')")
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<TestResult> createTestResult(@RequestBody TestResultDTO testResultDTO, Principal user) throws MethodArgumentNotValidException {
         TestResult testResult = new TestResult();
@@ -62,7 +62,7 @@ public class TestResultAPI {
 
         TestResult saved = testResultService.save(testResult);
         return new ResponseEntity<>(saved, HttpStatus.OK);
-    }
+    }*/
 
 
     @PreAuthorize("hasRole('ROLE_STUDENT')")
@@ -108,8 +108,10 @@ public class TestResultAPI {
     @PostMapping()
     public QuestionDTO AnswerQuestion(@RequestBody TestAnswerDTO answerDTO, Principal user){
         Student student = (Student) userService.findByUsername(user.getName());
+
         if(answerDTO.getTestResultId()==null){
-            //kreiraj test result i vrati prvo pitanje
+            createNewTestResult(answerDTO, student);
+            return null;
         }
 
         TestResult testResult = testResultService.findById(answerDTO.getTestResultId());
@@ -137,6 +139,12 @@ public class TestResultAPI {
         Long[] domainProblemsIds = new Long[availableDomainProblemsIds.size()];
         availableDomainProblemsIds.toArray(domainProblemsIds);
         return getRandomQuestionFromAvailableDomainProblems(domainProblemsIds);
+    }
+
+    private void createNewTestResult(TestAnswerDTO answerDTO, Student student) {
+        Test test = testService.findById(answerDTO.getTestId());
+        TestResult tr = new TestResult(new Date(),null,0,new HashSet<>(), student, test);
+        testResultService.save(tr);
     }
 
     private QuestionDTO getRandomQuestionFromAvailableDomainProblems(Long[] availableDomainProblemsIds) {

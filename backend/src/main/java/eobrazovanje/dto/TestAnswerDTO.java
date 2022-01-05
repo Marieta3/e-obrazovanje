@@ -5,10 +5,10 @@ import lombok.Setter;
 
 public class TestAnswerDTO {
     @Getter @Setter
-    private Long TestId;
+    private Long testId;
 
     @Getter @Setter
-    private Long TestResultId;
+    private Long testResultId;
 
     @Getter @Setter
     private Long answerId;
@@ -17,8 +17,8 @@ public class TestAnswerDTO {
     }
 
     public TestAnswerDTO(Long testId, Long testResultId, Long answerId) {
-        TestId = testId;
-        TestResultId = testResultId;
+        this.testId = testId;
+        this.testResultId = testResultId;
         this.answerId = answerId;
     }
 }
