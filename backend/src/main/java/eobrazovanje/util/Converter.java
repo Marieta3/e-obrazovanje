@@ -175,10 +175,10 @@ public class Converter {
         return result;
     }
 
-    public static List<AnswerDTO> convert (List<Answer> answers){
+    public static List<AnswerDTO> convert (List<Answer> answers, boolean hideCorrectAnswer){
         List<AnswerDTO> result = new ArrayList<>(answers.size());
         for(Answer a : answers){
-            result.add(new AnswerDTO(a));
+            result.add(new AnswerDTO(a,hideCorrectAnswer));
         }
         return result;
     }

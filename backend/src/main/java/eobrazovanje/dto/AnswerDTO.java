@@ -17,8 +17,12 @@ public class AnswerDTO {
         this.accuracy = accuracy;
     }
 
-    public AnswerDTO(Answer answer){
-        this(answer.getId(),answer.getText(), answer.getImagePath(),answer.isCorrect(),answer.getAccuracy());
+    public AnswerDTO(Answer answer, boolean hideIsCorrectData){
+        this(answer.getId(),answer.getText(), answer.getImagePath(),null,null);
+        if(!hideIsCorrectData){
+            setCorrect(answer.isCorrect());
+            setAccuracy(answer.getAccuracy());
+        }
     }
 
     public Long getId() {

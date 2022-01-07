@@ -109,49 +109,64 @@ public class TestResultAPI {
     public QuestionDTO AnswerQuestion(@RequestBody TestAnswerDTO answerDTO, Principal user){
         Student student = (Student) userService.findByUsername(user.getName());
 
-        if(answerDTO.getTestResultId()==null){
-            createNewTestResult(answerDTO, student);
-            return null;
-        }
-
-        TestResult testResult = testResultService.findById(answerDTO.getTestResultId());
-        Answer answer = answerService.findById(answerDTO.getAnswerId());
-        DomainProblem domainProblem = answerService.getDomainProblemByAnswerId(answerDTO.getAnswerId());
         Set<Long> availableDomainProblemsIds = new HashSet<>();
-        for (DomainProblem dp : domainProblemService.findByDomainId(domainProblem.getDomain().getId())){
-            availableDomainProblemsIds.add(dp.getId());
+        TestResult testResult;
+        if(answerDTO.getTestResultId()==null && answerDTO.getTestId() != null){
+            System.out.println("\n\nKreiram test!\n\n");
+            testResult = createNewTestResult(answerDTO, student);
+            System.out.println("*************************\nPronasao domenske probleme:");
+            for (DomainProblem dp : domainProblemService.findByDomainId(testResult.getTest().getCourse().getDomain().getId())){
+                availableDomainProblemsIds.add(dp.getId());
+                System.out.println(dp.getId());
+            }
+        }else if(answerDTO.getTestResultId() != null && answerDTO.getAnswerId() != null){
+            testResult = testResultService.findById(answerDTO.getTestResultId());
+            Answer answer = answerService.findById(answerDTO.getAnswerId());
+            testResult.addAnswer(answer);
+            testResultService.save(testResult); //TODO: proveriti da li je upisan samo novi answer
+
+            DomainProblem domainProblem = answerService.getDomainProblemByAnswerId(answerDTO.getAnswerId());
+            for (DomainProblem dp : domainProblemService.findByDomainId(domainProblem.getDomain().getId())){
+                availableDomainProblemsIds.add(dp.getId());
+            }
+            for(Answer ans : testResult.getAnswers()){
+                availableDomainProblemsIds.remove(ans.getId());
+                //TODO: azurirati listu verovatnoca za svako stanje znanja
+            }
+        }else{
+            //throw bad request
         }
-
-
-        testResult.addAnswer(answer);
-        testResultService.save(testResult); //TODO: proveriti da li je upisan samo novi answer
-        //TODO: dobaviti listu mogucih stanja znanja i njihovih verovatnoca
-        for(Answer ans : testResult.getAnswers()){
-            availableDomainProblemsIds.remove(ans.getId());
-            //TODO: azurirati listu verovatnoca za svako stanje znanja
-        }
-
-        //TODO: proci kroz listu svih i proveriti da li ima neko stanje znanja koje ima veci koeficijent od 0.7 i vratiti null
 
         if(availableDomainProblemsIds.size()==0)
             return null;
+
+
+
+
+
+        //TODO: dobaviti listu mogucih stanja znanja i njihovih verovatnoca
+
+
+        //TODO: proci kroz listu svih i proveriti da li ima neko stanje znanja koje ima veci koeficijent od 0.7 i vratiti null
+
+
 
         Long[] domainProblemsIds = new Long[availableDomainProblemsIds.size()];
         availableDomainProblemsIds.toArray(domainProblemsIds);
         return getRandomQuestionFromAvailableDomainProblems(domainProblemsIds);
     }
 
-    private void createNewTestResult(TestAnswerDTO answerDTO, Student student) {
+    private TestResult createNewTestResult(TestAnswerDTO answerDTO, Student student) {
         Test test = testService.findById(answerDTO.getTestId());
         TestResult tr = new TestResult(new Date(),null,0,new HashSet<>(), student, test);
-        testResultService.save(tr);
+        return testResultService.save(tr);
     }
 
     private QuestionDTO getRandomQuestionFromAvailableDomainProblems(Long[] availableDomainProblemsIds) {
             Random random = new Random();
             int randomIndex = random.nextInt(availableDomainProblemsIds.length);
             Question question = questionService.getRandomQuestionForDomainProblemId(availableDomainProblemsIds[randomIndex]);
-            return new QuestionDTO(question);
+            return new QuestionDTO(question,true);
     }
 
 

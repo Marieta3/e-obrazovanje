@@ -23,8 +23,8 @@ public class QuestionDTO {
         this.domainProblemId = domainProblemId;
     }
 
-    public QuestionDTO(Question question){
-        this(question.getText(), question.isRandomize(), Converter.convert(new ArrayList<>(question.getAnswers())),question.getDomainProblem().getId());
+    public QuestionDTO(Question question, boolean hideCorrectAnswer){
+        this(question.getText(), question.isRandomize(), Converter.convert(new ArrayList<>(question.getAnswers()), hideCorrectAnswer),question.getDomainProblem().getId());
     }
 
     public String getText() {

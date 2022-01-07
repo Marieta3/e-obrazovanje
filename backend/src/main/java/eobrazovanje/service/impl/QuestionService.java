@@ -13,6 +13,6 @@ public class QuestionService implements IQuestionService {
     private IQuestionRepository questionRepository;
     @Override
     public Question getRandomQuestionForDomainProblemId(Long domainProblemId) {
-        return questionRepository.getRandomQuestionForDomainProblemId(domainProblemId);
+        return questionRepository.getRandomQuestionForDomainProblemId(domainProblemId).get(0);
     }
 }
