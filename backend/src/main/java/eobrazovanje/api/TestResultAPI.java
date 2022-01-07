@@ -109,16 +109,11 @@ public class TestResultAPI {
     public QuestionDTO AnswerQuestion(@RequestBody TestAnswerDTO answerDTO, Principal user){
         Student student = (Student) userService.findByUsername(user.getName());
 
-        Set<Long> availableDomainProblemsIds = new HashSet<>();
+        Set<Long> availableDomainProblemsIds;
         TestResult testResult;
         if(answerDTO.getTestResultId()==null && answerDTO.getTestId() != null){
-            System.out.println("\n\nKreiram test!\n\n");
             testResult = createNewTestResult(answerDTO, student);
-            System.out.println("*************************\nPronasao domenske probleme:");
-            for (DomainProblem dp : domainProblemService.findByDomainId(testResult.getTest().getCourse().getDomain().getId())){
-                availableDomainProblemsIds.add(dp.getId());
-                System.out.println(dp.getId());
-            }
+            availableDomainProblemsIds = getSetOfAllDomainProblemIdsForDomainId(testResult.getTest().getCourse().getDomain().getId());
         }else if(answerDTO.getTestResultId() != null && answerDTO.getAnswerId() != null){
             testResult = testResultService.findById(answerDTO.getTestResultId());
             Answer answer = answerService.findById(answerDTO.getAnswerId());
@@ -126,15 +121,14 @@ public class TestResultAPI {
             testResultService.save(testResult); //TODO: proveriti da li je upisan samo novi answer
 
             DomainProblem domainProblem = answerService.getDomainProblemByAnswerId(answerDTO.getAnswerId());
-            for (DomainProblem dp : domainProblemService.findByDomainId(domainProblem.getDomain().getId())){
-                availableDomainProblemsIds.add(dp.getId());
-            }
+            availableDomainProblemsIds = getSetOfAllDomainProblemIdsForDomainId(domainProblem.getDomain().getId());
             for(Answer ans : testResult.getAnswers()){
                 availableDomainProblemsIds.remove(ans.getId());
                 //TODO: azurirati listu verovatnoca za svako stanje znanja
             }
         }else{
             //throw bad request
+            return null;
         }
 
         if(availableDomainProblemsIds.size()==0)
@@ -167,6 +161,15 @@ public class TestResultAPI {
             int randomIndex = random.nextInt(availableDomainProblemsIds.length);
             Question question = questionService.getRandomQuestionForDomainProblemId(availableDomainProblemsIds[randomIndex]);
             return new QuestionDTO(question,true);
+    }
+
+    private Set<Long> getSetOfAllDomainProblemIdsForDomainId(Long domainId){
+        List<DomainProblem> domainProblems = domainProblemService.findByDomainId(domainId);
+        Set<Long> result = new HashSet<>(domainProblems.size());
+        for(DomainProblem dp : domainProblems){
+            result.add(dp.getId());
+        }
+        return result;
     }
 
 
