@@ -29,6 +29,10 @@ public class Domain {
     @JsonManagedReference("knowledgeSpaces")
     private Set<KnowledgeSpace> knowledgeSpaces = new HashSet<>();
 
+    @Getter @Setter
+    @OneToOne
+    private KnowledgeSpace activeKnowledgeSpace;
+
     @OneToOne(mappedBy = "domain")
     @Getter @Setter
     private Course course;

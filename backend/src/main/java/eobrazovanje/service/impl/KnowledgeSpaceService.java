@@ -45,4 +45,11 @@ public class KnowledgeSpaceService implements IKnowledgeSpaceService {
         return knowledgeSpaceRepository.findAllByDomainId(domainId);
     }
 
+    @Override
+    public void setKnowledgeSpaceToBeActive(KnowledgeSpace knowledgeSpace) {
+        Long ksId = knowledgeSpace.getId();
+        Long dId = knowledgeSpace.getDomain().getId();
+        knowledgeSpaceRepository.setKnowledgeSpaceToBeActive(ksId,dId);
+    }
+
 }

@@ -11,6 +11,7 @@ import eobrazovanje.util.Converter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
@@ -63,6 +64,7 @@ public class KnowledgeSpaceAPI {
     }
 
     //@GetMapping("/impl")
+    @Transactional
     @PreAuthorize("hasRole('ROLE_TEACHER')")
     @PostMapping(value = "/implications/{domain_id}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public  ResponseEntity<?> getImplications(@PathVariable(value = "domain_id") Long domainId,@RequestBody KstLibParamsDTO paramsDTO)
@@ -121,7 +123,9 @@ public class KnowledgeSpaceAPI {
             }
             ks.getStates().add(state);
         }
-        return new ResponseEntity<>(knowledgeSpaceService.save(ks), HttpStatus.OK);
+        KnowledgeSpace createdKnowledgeSpace = knowledgeSpaceService.save(ks);
+        knowledgeSpaceService.setKnowledgeSpaceToBeActive(createdKnowledgeSpace);
+        return new ResponseEntity<>(createdKnowledgeSpace, HttpStatus.OK);
     }
 
 
