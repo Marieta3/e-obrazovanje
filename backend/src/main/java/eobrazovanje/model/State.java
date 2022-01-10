@@ -73,13 +73,35 @@ public class State {
         this.knowledgeSpace = knowledgeSpace;
     }
 
+    public boolean containsDomainProblem(Long domainProblemId){
+        for(DomainProblem dp : domainProblems){
+            if(dp.getId()==domainProblemId)
+                return true;
+        }
+        return false;
+    }
+
+    public void increaseProbability(double value){
+        probability+=value;
+    }
+
     @Override
     public String toString() {
+        String domainProblemsStr = "[ ";
+        int cnt = 0;
+        for(DomainProblem dp : domainProblems){
+            domainProblemsStr += dp.getId();
+            if(cnt < domainProblems.size()-1){
+                domainProblemsStr += ", ";
+            }else{
+                domainProblemsStr += " ]";
+            }
+            cnt++;
+        }
         return "State{" +
                 "id=" + id +
-                ", domainProblems=" + domainProblems +
+                ", domainProblems=" + domainProblemsStr +
                 ", probability=" + probability +
-                ", knowledgeSpace=" + knowledgeSpace +
                 '}';
     }
 }

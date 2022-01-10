@@ -1,9 +1,6 @@
 package eobrazovanje.api;
 
-import eobrazovanje.dto.QuestionDTO;
-import eobrazovanje.dto.TestAnswerDTO;
-import eobrazovanje.dto.TestDTO;
-import eobrazovanje.dto.TestResultDTO;
+import eobrazovanje.dto.*;
 import eobrazovanje.model.*;
 import eobrazovanje.service.IUserService;
 import eobrazovanje.service.impl.*;
@@ -106,48 +103,142 @@ public class TestResultAPI {
 
     @PreAuthorize("hasRole('ROLE_STUDENT')")
     @PostMapping()
-    public QuestionDTO AnswerQuestion(@RequestBody TestAnswerDTO answerDTO, Principal user){
+    public TestAnswerResponseDTO AnswerQuestion(@RequestBody TestAnswerDTO answerDTO, Principal user){
+        System.out.println("***************************************Pocetak***************************");
         Student student = (Student) userService.findByUsername(user.getName());
 
         Set<Long> availableDomainProblemsIds;
         TestResult testResult;
+
+        double maxProbability=0;
+        final double THRESHOLD = 0.7;
         if(answerDTO.getTestResultId()==null && answerDTO.getTestId() != null){
+            System.out.println("****************************************\nKreiram test result");
             testResult = createNewTestResult(answerDTO, student);
             availableDomainProblemsIds = getSetOfAllDomainProblemIdsForDomainId(testResult.getTest().getCourse().getDomain().getId());
+            System.out.println("Dostupni domenski problemi:");
+            System.out.println(availableDomainProblemsIds);
         }else if(answerDTO.getTestResultId() != null && answerDTO.getAnswerId() != null){
             testResult = testResultService.findById(answerDTO.getTestResultId());
             Answer answer = answerService.findById(answerDTO.getAnswerId());
-            testResult.addAnswer(answer);
-            testResultService.save(testResult); //TODO: proveriti da li je upisan samo novi answer
-
+            System.out.println("Odgovor na pitanje "+answer.getId()+": tacnost = "+answer.isCorrect());
             DomainProblem domainProblem = answerService.getDomainProblemByAnswerId(answerDTO.getAnswerId());
-            availableDomainProblemsIds = getSetOfAllDomainProblemIdsForDomainId(domainProblem.getDomain().getId());
-            for(Answer ans : testResult.getAnswers()){
-                availableDomainProblemsIds.remove(ans.getId());
-                //TODO: azurirati listu verovatnoca za svako stanje znanja
+            Domain domain = domainProblem.getDomain();
+            availableDomainProblemsIds = getSetOfAllDomainProblemIdsForDomainId(domain.getId());
+            System.out.println("Svi domenski problemi za domen dobijen iz odgovora");
+            System.out.println(availableDomainProblemsIds);
+            Set<State> states = domain.getActiveKnowledgeSpace().getStates();
+            System.out.println("-------------\nSva moguca stanja sa verovatnocama:");
+            for(State s : states){
+                System.out.println(s.toString());
             }
+            testResult.addAnswer(answer);
+            testResultService.save(testResult);
+
+            updateStateProbabilities(availableDomainProblemsIds, testResult.getAnswers(), states);
+            System.out.println("Dostupni preostali domenski problemi");
+            System.out.println(availableDomainProblemsIds);
+            System.out.println("Trazim max verovatnocu");
+            boolean isEmptyStateWithMaxProbability = false;
+            for(State s: states){
+                if(maxProbability< s.getProbability())
+                    maxProbability = s.getProbability();
+            }
+            System.out.println("Max verovatnoca je "+maxProbability);
+            Set<Long> domainProblemsInMaximalProbabilityStates = new HashSet<>();
+            for(State s: states){
+                if(s.getProbability()==maxProbability){
+                    for(DomainProblem dp : s.getDomainProblems()){
+                        domainProblemsInMaximalProbabilityStates.add(dp.getId());
+                    }
+                }
+            }
+            if(domainProblemsInMaximalProbabilityStates.size()==0){
+                System.out.println("Jedini preostali state sa maksimalnom verovatnocom je prazan state i ne menjamo skup mogucih domenskih problema");
+            }else{
+                System.out.println("pravim presek skupova domenskih problema");
+                Set<Long> intersection = getSetIntersection(availableDomainProblemsIds, domainProblemsInMaximalProbabilityStates);
+                if(intersection.size()>0)
+                    availableDomainProblemsIds = intersection;
+            }
+            System.out.println("Preostali domenski problemi koji se nalaze u stanju znanja sa maksimalnom verovatnocom su:");
+            System.out.println(availableDomainProblemsIds);
         }else{
             //throw bad request
             return null;
         }
 
-        if(availableDomainProblemsIds.size()==0)
+        if(availableDomainProblemsIds.isEmpty() || maxProbability >= THRESHOLD) {
+            testResult.setEndTime(new Date());
+            testResultService.save(testResult);
             return null;
-
-
-
-
-
-        //TODO: dobaviti listu mogucih stanja znanja i njihovih verovatnoca
-
-
-        //TODO: proci kroz listu svih i proveriti da li ima neko stanje znanja koje ima veci koeficijent od 0.7 i vratiti null
-
-
+        }
 
         Long[] domainProblemsIds = new Long[availableDomainProblemsIds.size()];
         availableDomainProblemsIds.toArray(domainProblemsIds);
-        return getRandomQuestionFromAvailableDomainProblems(domainProblemsIds);
+        return new TestAnswerResponseDTO(testResult.getId(), getRandomQuestionFromAvailableDomainProblems(domainProblemsIds));
+    }
+
+    private void updateStateProbabilities(Set<Long> availableDomainProblemsIds, Set<Answer> answers, Set<State> states) {
+        System.out.println("-------------------------------------------------------\n\nAzuriranje verovatnoce\n------------------------------------");
+        final double UPDATE_VALUE = 0.05;
+        for(Answer ans : answers){
+            System.out.println("Novo pitanje\n-----------------------------");
+            Long domainProblemId = ans.getQuestion().getDomainProblem().getId();
+            System.out.println("1) Odgovaram na pitanje iz domenskog problema "+ domainProblemId+ ": tacnost = "+ans.isCorrect());
+            availableDomainProblemsIds.remove(domainProblemId);
+            System.out.println("Trenutni skup dostupnih domenskih problema:");
+            System.out.println(availableDomainProblemsIds);
+            List<State> unchangedState = new ArrayList<>();
+            double changedValue = 0;
+            System.out.println("2) Prolazim kroz sva stanja znanja\n------------------------------------");
+            for(State s : states){
+                if(s.containsDomainProblem(domainProblemId)){
+                    if(ans.isCorrect()) {
+                        s.increaseProbability(UPDATE_VALUE);
+                        changedValue += UPDATE_VALUE;
+                        System.out.println("Uvecavam tacnost stanja" + s.getId()+  " na "+s.getProbability());
+                    }
+                    else {
+                        if(s.getProbability()<UPDATE_VALUE) {
+                            changedValue += s.getProbability();
+                            s.setProbability(0d);
+                        }
+                        else{
+                            changedValue += UPDATE_VALUE;
+                            s.increaseProbability(-UPDATE_VALUE);
+                        }
+                        System.out.println("Smanjujem tacnost stanja" + s.getId()+  " na "+s.getProbability());
+                    }
+                }else{
+                    unchangedState.add(s);
+                }
+            }
+            System.out.println("ukupno izmenjena verovatnoca = "+changedValue);
+            System.out.println("neazurirana stanja:");
+            System.out.println(unchangedState);
+            final double UPDATE_VALUE_FOR_OTHER_STATES = changedValue/unchangedState.size();
+            System.out.println("---------------------------\n3) Azuriram vrednosti svih neazuriranih stanja");
+            System.out.println("UPDATE_VALUE_FOR_OTHER_STATES = "+UPDATE_VALUE_FOR_OTHER_STATES);
+            System.out.println("-------------------------------");
+            for(State s: unchangedState){
+                if(ans.isCorrect()){
+                    s.increaseProbability(-UPDATE_VALUE_FOR_OTHER_STATES);
+                    System.out.println("Smanjujem mu verovatnocu stanja" + s.getId()+  " na "+s.getProbability());
+                }else{
+                    s.increaseProbability(UPDATE_VALUE_FOR_OTHER_STATES);
+                    System.out.println("Uvecavam mu verovatnocu stanja" + s.getId()+  " na "+s.getProbability());
+                }
+            }
+
+            System.out.println("-------------\nNove verovatnoce stanja znanja:");
+            for(State s : states){
+                System.out.println(s.toString());
+            }
+
+            System.out.println("Kraj trenutnog pitanja");
+        }
+        System.out.println("Kraj algoritma za azuriranje");
     }
 
     private TestResult createNewTestResult(TestAnswerDTO answerDTO, Student student) {
@@ -160,6 +251,7 @@ public class TestResultAPI {
             Random random = new Random();
             int randomIndex = random.nextInt(availableDomainProblemsIds.length);
             Question question = questionService.getRandomQuestionForDomainProblemId(availableDomainProblemsIds[randomIndex]);
+            System.out.println("Dajem sledece pitanje iz domenskog problema "+question.getDomainProblem().getId() );
             return new QuestionDTO(question,true);
     }
 
@@ -172,5 +264,17 @@ public class TestResultAPI {
         return result;
     }
 
+    private Set<Long> getSetIntersection(Set<Long> set1, Set<Long> set2){
+        System.out.println("********************************\nPravim presek skupova\n*********************\n");
+        System.out.println("available: "+set1);
+        System.out.println("max states: " + set2);
+        Set<Long> result = new HashSet<>();
+        for(long id : set1){
+            if(set2.contains(id))
+                result.add(id);
+        }
+        System.out.println("rezultat = "+ result);
+        return result;
+    }
 
 }
