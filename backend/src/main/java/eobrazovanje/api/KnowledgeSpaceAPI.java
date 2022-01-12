@@ -5,6 +5,7 @@ import eobrazovanje.dto.KstLibParamsDTO;
 import eobrazovanje.dto.KstLibResponseDTO;
 import eobrazovanje.model.*;
 import eobrazovanje.service.IDomainProblemService;
+import eobrazovanje.service.IDomainService;
 import eobrazovanje.service.IKnowledgeSpaceService;
 import eobrazovanje.service.impl.CourseService;
 import eobrazovanje.util.Converter;
@@ -32,6 +33,9 @@ public class KnowledgeSpaceAPI {
 
     @Autowired
     private CourseService courseService;
+
+    @Autowired
+    private IDomainService domainService;
 
     @GetMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_TEACHER')")
@@ -146,5 +150,17 @@ public class KnowledgeSpaceAPI {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
+
+    @GetMapping("/compare-ks/{course_id}")
+    @PreAuthorize("hasRole('ROLE_TEACHER')")
+    public ResponseEntity<?> findKnowledgeSpacesByICoursed(@PathVariable("course_id") Long course_id){
+        Domain domain = domainService.findByCourseId(course_id);
+        ArrayList<GraphDTO> graphs = new ArrayList<>();
+        for(KnowledgeSpace ks: domain.getKnowledgeSpaces()){
+            graphs.add(Converter.knowledgeSpaceToDTO(ks));
+        }
+        System.out.println(graphs.size());
+        return new ResponseEntity<>(graphs, HttpStatus.OK);
+    }
 
 }
