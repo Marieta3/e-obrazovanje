@@ -2,6 +2,7 @@ package eobrazovanje.service;
 
 import eobrazovanje.model.Test;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface ITestService {
@@ -13,5 +14,7 @@ public interface ITestService {
     List<Test> findAll();
 
     List<Test> findByCourseId(Long courseId);
+
+    void export(Long testId) throws IOException;
 
 }

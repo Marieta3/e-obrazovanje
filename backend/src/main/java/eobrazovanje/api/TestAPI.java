@@ -24,6 +24,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.security.Principal;
 import java.util.Collection;
 
@@ -89,6 +90,13 @@ public class TestAPI {
         return new ResponseEntity<>(testService.save(test), HttpStatus.OK);
     }
 
+
+    @GetMapping("/export/{test_id}")
+    @PreAuthorize("hasRole('ROLE_TEACHER')")
+    public ResponseEntity<?> export(@PathVariable("test_id") Long testId) throws IOException {
+        testService.export(testId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 
 //    @GetMapping("/next-question")
 //    @PreAuthorize("hasRole('ROLE_STUDENT')")
