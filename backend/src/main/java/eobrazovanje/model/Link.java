@@ -66,4 +66,12 @@ public class Link {
         return Objects.equals(getId(), link.getId());
     }
 
+    public boolean equalsByNodes(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Link)) return false;
+        Link link = (Link) o;
+        return Objects.equals(getStartNode().getNode().getId(), link.getStartNode().getNode().getId()) &&
+                Objects.equals(getEndNode().getNode().getId(), link.getEndNode().getNode().getId());
+    }
+
 }
