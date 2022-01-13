@@ -139,7 +139,6 @@ public class TestResultAPI {
             System.out.println("Dostupni preostali domenski problemi");
             System.out.println(availableDomainProblemsIds);
             System.out.println("Trazim max verovatnocu");
-            boolean isEmptyStateWithMaxProbability = false;
             for(State s: states){
                 if(maxProbability< s.getProbability())
                     maxProbability = s.getProbability();
@@ -189,49 +188,47 @@ public class TestResultAPI {
             availableDomainProblemsIds.remove(domainProblemId);
             System.out.println("Trenutni skup dostupnih domenskih problema:");
             System.out.println(availableDomainProblemsIds);
-            List<State> unchangedState = new ArrayList<>();
-            double changedValue = 0;
             System.out.println("2) Prolazim kroz sva stanja znanja\n------------------------------------");
+            double minProbability = 10d;
+            double maxProbability = 0;
+            double sum = 0;
             for(State s : states){
-                if(s.containsDomainProblem(domainProblemId)){
-                    if(ans.isCorrect()) {
-                        s.increaseProbability(UPDATE_VALUE);
-                        changedValue += UPDATE_VALUE;
-                        System.out.println("Uvecavam tacnost stanja" + s.getId()+  " na "+s.getProbability());
-                    }
-                    else {
-                        if(s.getProbability()<UPDATE_VALUE) {
-                            changedValue += s.getProbability();
-                            s.setProbability(0d);
-                        }
-                        else{
-                            changedValue += UPDATE_VALUE;
-                            s.increaseProbability(-UPDATE_VALUE);
-                        }
-                        System.out.println("Smanjujem tacnost stanja" + s.getId()+  " na "+s.getProbability());
-                    }
-                }else{
-                    unchangedState.add(s);
-                }
+                double increment = updateNegativity(s, domainProblemId, ans.isCorrect()) * UPDATE_VALUE;
+                s.increaseProbability(increment);
+                System.out.println(String.format("Menjam vrednost stanja %2d na ",s.getId())+ s.getProbability());
+                minProbability = (minProbability > s.getProbability()) ? s.getProbability() : minProbability;
+                maxProbability = (maxProbability < s.getProbability()) ? s.getProbability() : maxProbability;
+                sum += s.getProbability();
             }
-            System.out.println("ukupno izmenjena verovatnoca = "+changedValue);
-            System.out.println("neazurirana stanja:");
-            System.out.println(unchangedState);
-            final double UPDATE_VALUE_FOR_OTHER_STATES = changedValue/unchangedState.size();
-            System.out.println("---------------------------\n3) Azuriram vrednosti svih neazuriranih stanja");
-            System.out.println("UPDATE_VALUE_FOR_OTHER_STATES = "+UPDATE_VALUE_FOR_OTHER_STATES);
+            System.out.println("---------------------------\n3) Skaliram verovatnoce ako za to ima potrebe");
+            System.out.println("MAX verovatnoca = "+maxProbability);
+            System.out.println("MIN verovatnoca = "+minProbability);
+            System.out.println("Suma = "+ sum);
             System.out.println("-------------------------------");
-            for(State s: unchangedState){
-                if(ans.isCorrect()){
-                    s.increaseProbability(-UPDATE_VALUE_FOR_OTHER_STATES);
-                    System.out.println("Smanjujem mu verovatnocu stanja" + s.getId()+  " na "+s.getProbability());
-                }else{
-                    s.increaseProbability(UPDATE_VALUE_FOR_OTHER_STATES);
-                    System.out.println("Uvecavam mu verovatnocu stanja" + s.getId()+  " na "+s.getProbability());
+            boolean isProbabilitiesInRange = minProbability >= 0d && maxProbability < 1d;
+            if(!isProbabilitiesInRange){
+                sum = 0;
+                System.out.println("Skaliranje vrednosti u opseg [0,1]\n*******************************************");
+                for(State s : states){
+                    //https://stackoverflow.com/questions/929103/convert-a-number-range-to-another-range-maintaining-ratio
+                    //NewValue = (((OldValue - OldMin) * (NewMax - NewMin)) / (OldMax - OldMin)) + NewMin
+                    double newProbability = (s.getProbability()-minProbability)/(maxProbability-minProbability);
+                    s.setProbability(newProbability);
+                    sum+=newProbability;
+                    System.out.println(s.toString());
                 }
             }
-
-            System.out.println("-------------\nNove verovatnoce stanja znanja:");
+            boolean isProbabilitiesSumCorrect = sum > 0.999d && sum < 1.001d;
+            if(!isProbabilitiesSumCorrect){
+                System.out.println("Skaliranje vrednosti kako bi suma bila 1\n*******************************************");
+                for(State s : states){
+                    double newProbability = s.getProbability()/sum;
+                    s.setProbability(newProbability);
+                    System.out.println(s.toString());
+                }
+            }
+            System.out.println("Zavrseno skaliranje");
+            System.out.println("-------------\nFinalna vrednost verovatnoce:");
             for(State s : states){
                 System.out.println(s.toString());
             }
@@ -239,6 +236,14 @@ public class TestResultAPI {
             System.out.println("Kraj trenutnog pitanja");
         }
         System.out.println("Kraj algoritma za azuriranje");
+    }
+
+    private int updateNegativity(State s,  Long domainProblemId, boolean isCorrectAnswer) {
+        if(s.containsDomainProblem(domainProblemId) && isCorrectAnswer)
+            return 1;
+        if(!s.containsDomainProblem(domainProblemId) && !isCorrectAnswer)
+            return 1;
+        return -1;
     }
 
     private TestResult createNewTestResult(TestAnswerDTO answerDTO, Student student) {
@@ -276,5 +281,6 @@ public class TestResultAPI {
         System.out.println("rezultat = "+ result);
         return result;
     }
+
 
 }

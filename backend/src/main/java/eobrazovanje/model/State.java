@@ -99,8 +99,8 @@ public class State {
             cnt++;
         }
         return "State{" +
-                "id=" + id +
-                ", domainProblems=" + domainProblemsStr +
+                String.format("id = %2d",id)+
+                String.format(", domainProblems= %50s" , domainProblemsStr) +
                 ", probability=" + probability +
                 '}';
     }
