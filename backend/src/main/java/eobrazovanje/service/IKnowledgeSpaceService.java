@@ -14,4 +14,6 @@ public interface IKnowledgeSpaceService {
     KnowledgeSpace update(Long id, KnowledgeSpace knowledgeSpace);
 
     List<KnowledgeSpace> findByDomainId(Long domainId);
+
+    void setKnowledgeSpaceToBeActive(KnowledgeSpace knowledgeSpace);
 }

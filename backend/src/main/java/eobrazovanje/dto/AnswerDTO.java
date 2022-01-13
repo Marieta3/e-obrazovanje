@@ -1,5 +1,7 @@
 package eobrazovanje.dto;
 
+import eobrazovanje.model.Answer;
+
 public class AnswerDTO {
     private Long id;
     private String text;
@@ -13,6 +15,14 @@ public class AnswerDTO {
         this.imagePath = imagePath;
         this.correct = correct;
         this.accuracy = accuracy;
+    }
+
+    public AnswerDTO(Answer answer, boolean hideIsCorrectData){
+        this(answer.getId(),answer.getText(), answer.getImagePath(),null,null);
+        if(!hideIsCorrectData){
+            setCorrect(answer.isCorrect());
+            setAccuracy(answer.getAccuracy());
+        }
     }
 
     public Long getId() {

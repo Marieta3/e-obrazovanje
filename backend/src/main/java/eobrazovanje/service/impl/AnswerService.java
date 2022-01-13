@@ -1,6 +1,7 @@
 package eobrazovanje.service.impl;
 
 import eobrazovanje.model.Answer;
+import eobrazovanje.model.DomainProblem;
 import eobrazovanje.repostiroy.IAnswerRepository;
 import eobrazovanje.service.IAnswerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,5 +35,10 @@ public class AnswerService implements IAnswerService {
     @Override
     public List<Answer> findAll() {
         return answerRepository.findAll();
+    }
+
+    @Override
+    public DomainProblem getDomainProblemByAnswerId(Long answerId) {
+        return answerRepository.getDomainProblemByAnswerId(answerId);
     }
 }

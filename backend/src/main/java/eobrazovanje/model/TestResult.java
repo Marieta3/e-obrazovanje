@@ -41,14 +41,18 @@ public class TestResult {
     @JsonBackReference
     private Test test;
 
-    public TestResult(Long id, Date startTime, Date endTime, int points, Set<Answer> answers, Student student, Test test) {
-        this.id = id;
+    public TestResult(Date startTime, Date endTime, int points, Set<Answer> answers, Student student, Test test) {
         this.startTime = startTime;
         this.endTime = endTime;
         this.points = points;
         this.answers = answers;
         this.student = student;
         this.test = test;
+    }
+
+    public TestResult(Long id, Date startTime, Date endTime, int points, Set<Answer> answers, Student student, Test test) {
+        this(startTime,endTime,points,answers,student,test);
+        this.id = id;
     }
 
     public TestResult() {
@@ -121,6 +125,10 @@ public class TestResult {
                 ", student=" + student.getFirstName() +
                 ", test=" + test.getTitle() +
                 '}';
+    }
+
+    public void addAnswer(Answer answer){
+        answers.add(answer);
     }
 
     @Override
