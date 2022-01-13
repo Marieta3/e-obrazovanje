@@ -99,6 +99,24 @@ public class Converter {
         return ksDTO;
     }
 
+    private static LinkDTO linkToLinkDTO(Link link){
+        LinkDTO linkDTO = new LinkDTO();
+        linkDTO.setId(link.getId().toString());
+        linkDTO.setStart_id(link.getStartNode().getId().toString());
+        linkDTO.setEnd_id(link.getEndNode().getId().toString());
+        return linkDTO;
+    }
+
+    public static CompareGraphsDTO createCompareGraphsDTO(KnowledgeSpace ks1, KnowledgeSpace ks2, ArrayList<Link> common_links){
+        CompareGraphsDTO compareDTO = new CompareGraphsDTO();
+        compareDTO.setKs1(knowledgeSpaceToDTO(ks1));
+        compareDTO.setKs2(knowledgeSpaceToDTO(ks2));
+        for(Link l: common_links){
+            compareDTO.getLinks().add(linkToLinkDTO(l));
+        }
+        return compareDTO;
+    }
+
     private static DomainProblemDTO createDomainProblemDTO(KnowledgeSpaceNode knowledgeSpaceNode) {
         String title = knowledgeSpaceNode.getNode().getTitle();
         Long id = knowledgeSpaceNode.getId();
