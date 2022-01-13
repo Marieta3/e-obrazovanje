@@ -1,5 +1,6 @@
 package eobrazovanje.api;
 
+import eobrazovanje.dto.CompareGraphsDTO;
 import eobrazovanje.dto.GraphDTO;
 import eobrazovanje.dto.KstLibParamsDTO;
 import eobrazovanje.dto.KstLibResponseDTO;
@@ -9,10 +10,12 @@ import eobrazovanje.service.IDomainService;
 import eobrazovanje.service.IKnowledgeSpaceService;
 import eobrazovanje.service.impl.CourseService;
 import eobrazovanje.util.Converter;
+import org.apache.tomcat.util.json.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
@@ -20,6 +23,7 @@ import org.springframework.web.client.RestTemplate;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 
 @RestController
@@ -166,6 +170,56 @@ public class KnowledgeSpaceAPI {
         }
         System.out.println(graphs.size());
         return new ResponseEntity<>(graphs, HttpStatus.OK);
+    }
+
+    @GetMapping("/compare-ks1/{course_id}")
+    @PreAuthorize("hasRole('ROLE_TEACHER')")
+    public ResponseEntity<?> findKnowledgeSpacesByICoursed1(@PathVariable("course_id") Long course_id){
+        Domain domain = domainService.findByCourseId(course_id);
+        ArrayList<KnowledgeSpace> ks_list = new ArrayList<>(domain.getKnowledgeSpaces());
+        KnowledgeSpace ks1 = ks_list.get(0);
+        KnowledgeSpace ks2 = ks_list.get(1);
+        ArrayList<Link> common_links = new ArrayList<>();
+        ArrayList<Link> ks1_links = new ArrayList<>(ks1.getLinks());
+        ArrayList<Link> ks2_links = new ArrayList<>(ks2.getLinks());
+
+        for(Link l1: ks1.getLinks()){
+            for(Link l2: ks2.getLinks()){
+                if(l1.equalsByNodes(l2)){
+                    common_links.add(l1);
+                    ks1_links.remove(l1);
+                    ks2_links.remove(l2);
+                }
+            }
+        }
+
+        ks1.setLinks(new HashSet<>(ks1_links));
+        ks2.setLinks(new HashSet<>(ks2_links));
+
+        System.out.println("Common links: "+common_links.size());
+        System.out.println("KS1 links: "+ks1_links.size());
+        System.out.println("KS2 links: "+ks2_links.size());
+
+        for(Link l: common_links){
+            System.out.println("Start node: "+l.getStartNode().getNode().getId());
+            System.out.println("End node: "+l.getEndNode().getNode().getId());
+            System.out.println("-----------------------------------------");
+        }
+        System.out.println("********************KS1***************************");
+        for(Link l: ks1_links){
+            System.out.println("Start node: "+l.getStartNode().getNode().getId());
+            System.out.println("End node: "+l.getEndNode().getNode().getId());
+            System.out.println("-----------------------------------------");
+        }
+        System.out.println("*******************KS2****************************");
+        for(Link l: ks2_links){
+            System.out.println("Start node: "+l.getStartNode().getNode().getId());
+            System.out.println("End node: "+l.getEndNode().getNode().getId());
+            System.out.println("-----------------------------------------");
+        }
+
+
+        return new ResponseEntity<>(Converter.createCompareGraphsDTO(ks1, ks2, common_links), HttpStatus.OK);
     }
 
 }
