@@ -60,7 +60,7 @@ public class KnowledgeSpace {
         return "KnowledgeSpace{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
-                ", links=" + links +
+                ", type='" + type.toString() + '\'' +
                 '}';
     }
 
