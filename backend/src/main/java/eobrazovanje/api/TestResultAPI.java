@@ -118,11 +118,10 @@ public class TestResultAPI {
             availableDomainProblemsIds = getSetOfAllDomainProblemIdsForDomainId(testResult.getTest().getCourse().getDomain().getId());
             System.out.println("Dostupni domenski problemi:");
             System.out.println(availableDomainProblemsIds);
-        }else if(answerDTO.getTestResultId() != null && answerDTO.getAnswerId() != null){
+        }else if(answerDTO.getTestResultId() != null && answerDTO.getAnswerIds() != null){
             testResult = testResultService.findById(answerDTO.getTestResultId());
-            Answer answer = answerService.findById(answerDTO.getAnswerId());
-            System.out.println("Odgovor na pitanje "+answer.getId()+": tacnost = "+answer.isCorrect());
-            DomainProblem domainProblem = answerService.getDomainProblemByAnswerId(answerDTO.getAnswerId());
+            Set<Answer> answers = answerService.findByIds(new ArrayList<>(answerDTO.getAnswerIds()));
+            DomainProblem domainProblem = answerService.getDomainProblemByAnswerId(answers.iterator().next().getId());
             Domain domain = domainProblem.getDomain();
             availableDomainProblemsIds = getSetOfAllDomainProblemIdsForDomainId(domain.getId());
             System.out.println("Svi domenski problemi za domen dobijen iz odgovora");
@@ -132,9 +131,14 @@ public class TestResultAPI {
             for(State s : states){
                 System.out.println(s.toString());
             }
-            testResult.addAnswer(answer);
+            for(Answer a: answers){
+                System.out.println(a);
+                testResult.addAnswer(a);
+            }
+            System.out.println("ODGOVORI: -----------------------------");
+            System.out.println(testResult.getAnswers());
             testResultService.save(testResult);
-
+            System.out.println("Sacuvao odgovor");
             updateStateProbabilities(availableDomainProblemsIds, testResult.getAnswers(), states);
             System.out.println("Dostupni preostali domenski problemi");
             System.out.println(availableDomainProblemsIds);
@@ -181,10 +185,13 @@ public class TestResultAPI {
     private void updateStateProbabilities(Set<Long> availableDomainProblemsIds, Set<Answer> answers, Set<State> states) {
         System.out.println("-------------------------------------------------------\n\nAzuriranje verovatnoce\n------------------------------------");
         final double UPDATE_VALUE = 0.05;
-        for(Answer ans : answers){
+        //TODO: grupisati po id-u pitanja i onda prolaziti kroz svako pitanje i gledati da li je odgovoreno tacano ili ne
+        HashMap<Long,Integer> questions = scoreTest(answers);
+        for(Long questionId : questions.keySet()){
             System.out.println("Novo pitanje\n-----------------------------");
-            Long domainProblemId = ans.getQuestion().getDomainProblem().getId();
-            System.out.println("1) Odgovaram na pitanje iz domenskog problema "+ domainProblemId+ ": tacnost = "+ans.isCorrect());
+            boolean isCorrect = questions.get(questionId)>0;
+            Long domainProblemId = questionService.getDomainProblemIdByQuestionId(questionId);
+            System.out.println("1) Odgovaram na pitanje iz domenskog problema "+ domainProblemId+ ": tacnost = "+isCorrect);
             availableDomainProblemsIds.remove(domainProblemId);
             System.out.println("Trenutni skup dostupnih domenskih problema:");
             System.out.println(availableDomainProblemsIds);
@@ -193,7 +200,7 @@ public class TestResultAPI {
             double maxProbability = 0;
             double sum = 0;
             for(State s : states){
-                double increment = updateNegativity(s, domainProblemId, ans.isCorrect()) * UPDATE_VALUE;
+                double increment = updateNegativity(s, domainProblemId, isCorrect) * UPDATE_VALUE;
                 s.increaseProbability(increment);
                 System.out.println(String.format("Menjam vrednost stanja %2d na ",s.getId())+ s.getProbability());
                 minProbability = (minProbability > s.getProbability()) ? s.getProbability() : minProbability;
