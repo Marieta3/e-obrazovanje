@@ -53,10 +53,10 @@ INSERT INTO "knowledge_space_node" ("coordinate_x", "coordinate_y", "height", "w
 (928.5,	76,	150,	150,	11),
 (-229.5,	299,	150,	150,	5);
 
-INSERT INTO "knowledge_spaces" ("created_at", "title", "domain_id") VALUES
-('2021-12-13 19:17:37.075802',	'Prvi prostor znanja za prvi domen',	1),
-('2021-12-13 18:17:57.696',	'iita za prvi domen',	1),
-('2021-12-27 23:32:06.623',	'profa generisao za drugi domen',	2);                                -- id 2
+INSERT INTO "knowledge_spaces" ("created_at", "title", "domain_id","type") VALUES
+('2021-12-13 19:17:37.075802',	'Prvi prostor znanja za prvi domen',	1,'MANUAL'),
+('2021-12-13 18:17:57.696',	'iita za prvi domen',	1,'IITA'),
+('2021-12-27 23:32:06.623',	'profa generisao za drugi domen',	2,'MANUAL');                                -- id 2
 
 INSERT INTO "links" ("end_domain_problem_id", "knowledge_space_id", "start_domain_problem_id") VALUES
 (3,	1,	1),
