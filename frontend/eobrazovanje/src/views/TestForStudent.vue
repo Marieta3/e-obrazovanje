@@ -27,7 +27,7 @@
     import * as comm from '../configuration/communication.js'
     import Question from '../components/Question.vue'
     export default {
-        props: ['testId'],
+        props: ['testId','courseId'],
         components:{
             Question
         },
@@ -40,7 +40,9 @@
                 testStarted: false,
                 startTime: null,
                 testResultId: null,
-                renderComponent: true
+                renderComponent: true,
+                answeredIndex: -1,
+                generatedTest: false
             }
         },
         methods:{
@@ -49,12 +51,11 @@
                 axios.get(comm.protocol +'://' + comm.server + '/tests/'+this.testId,config)
                 .then(response => {
                 if(response.status==200){
-                    console.log(response.data)
                     this.questions = response.data.questions
+                    this.question = this.questions[this.answeredIndex+1]
                     this.steps = this.questions.length
                     this.testStarted = true
                     this.startTime = new Date().getTime()
-                    this.currentStep = 1
                 }
                 }).catch(() => {
                 alert("greska")
@@ -68,7 +69,7 @@
                 let endTime = new Date().getTime()
                 let config = { headers: comm.getHeader() }
                 let data = {startTime: this.startTime, endTime: endTime, answerIDs: myAnswers, testID: this.testId}
-                axios.post(comm.protocol +'://' + comm.server + '/test-results', data ,config)
+                axios.post(comm.protocol +'://' + comm.server + '/test-results/manually-created', data ,config)
                 .then(response => {
                 if(response.status==200){
                     alert("uspesno zavrsen test")
@@ -80,7 +81,8 @@
             getMyAnswers(){
                 let result = []
                 for(let q of this.questions){
-                    result.push(this.getSelectedAnswersForQuestion(q))
+                    for(let a of this.getSelectedAnswersForQuestion(q))
+                        result.push(a)
                 }
                 return result
             },
@@ -108,22 +110,52 @@
                     })
             },
             answer(){
-                let data = {testId: this.testId, testResultId: this.testResultId, answerIds: this.getSelectedAnswersForQuestion(this.question)}
-                let config = { headers: comm.getHeader() }
-                axios.post(comm.protocol +'://' + comm.server + '/test-results', data ,config)
+                if(this.generatedTest){
+                    this.sendAnswer()
+                }else{
+                    this.answeredIndex += 1
+                    if(this.answeredIndex == this.questions.length-1){
+                        alert("Zavrsen test!")
+                        console.log(this.questions)
+                        this.finishTest();
+                    }else{
+                        this.question=this.questions[this.answeredIndex+1]
+                        this.forceRerender()
+                    }
+                }
+            },
+            sendAnswer() {
+                let data={ testId: this.testId, testResultId: this.testResultId, answerIds: this.getSelectedAnswersForQuestion(this.question) }
+                let config={ headers: comm.getHeader() }
+                axios.post(comm.protocol+'://'+comm.server+'/test-results', data, config)
                     .then(response => {
-                        if(response.status==200){
-                            this.question = response.data.question
-                            this.forceRerender();
+                        if(response.status==200) {
+                        this.question=response.data.question
+                        this.forceRerender()
                         }
                     }).catch(() => {
                         alert("greska")
                     })
             },
             startTest(){
-                //TODO: proveri da li je ks izgenerisan ili rucno kreiran i na osnovu toga dobavi pitanja
-               // this.getTestQuestions()
-               this.getFirstQuestion()
+                this.getActiveKnowledgeSpaceTypeAndQuestions()                
+            },
+            getActiveKnowledgeSpaceTypeAndQuestions(){
+                let config={ headers: comm.getHeader() }
+                axios.get(comm.protocol+'://'+comm.server+'/knowledge-spaces/course/'+this.courseId+'/active', config)
+                    .then(response => {
+                        if(response.status==200) {
+                            this.generatedTest = response.data.type != 'MANUAL'
+                            console.log(this.generatedTest)
+                            if(this.generatedTest){
+                                this.getFirstQuestion()
+                            }else{
+                                this.getTestQuestions()
+                            } 
+                        }
+                    }).catch(() => {
+                        alert("greska")
+                    })
             },
             forceRerender() {
             // Removing my-component from the DOM
@@ -136,5 +168,7 @@
         },
         }
     }
+    
+
     
 </script>

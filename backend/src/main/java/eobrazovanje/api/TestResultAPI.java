@@ -37,8 +37,8 @@ public class TestResultAPI {
     @Autowired
     private QuestionService questionService;
 
-    /*@PreAuthorize("hasRole('ROLE_STUDENT')")
-    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('ROLE_STUDENT')")
+    @PostMapping(value = "/manually-created",produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<TestResult> createTestResult(@RequestBody TestResultDTO testResultDTO, Principal user) throws MethodArgumentNotValidException {
         TestResult testResult = new TestResult();
         Student student = (Student) userService.findByUsername(user.getName());
@@ -59,7 +59,7 @@ public class TestResultAPI {
 
         TestResult saved = testResultService.save(testResult);
         return new ResponseEntity<>(saved, HttpStatus.OK);
-    }*/
+    }
 
 
     @PreAuthorize("hasRole('ROLE_STUDENT')")

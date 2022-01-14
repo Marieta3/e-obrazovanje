@@ -50,14 +50,18 @@ public class KnowledgeSpaceAPI {
         return new ResponseEntity<>(ksDTO, HttpStatus.OK);
     }
 
+    @Transactional
     @PreAuthorize("hasRole('ROLE_TEACHER')")
     @PostMapping(value = "course/{course_id}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<KnowledgeSpace> createKnowledgeSpace(@PathVariable("course_id") Long courseId, @RequestBody GraphDTO graphDTO) throws MethodArgumentNotValidException {
         KnowledgeSpace ks = Converter.dtoToKnowledgeSpace(graphDTO,null);
         Domain domain = new Domain();
+        ks.setType(KnowledgeSpaceType.MANUAL);
         domain.setId(courseService.findDomainIdByCourseId(courseId));
         ks.setDomain(domain);
-        return new ResponseEntity<>(knowledgeSpaceService.save(ks), HttpStatus.OK);
+        KnowledgeSpace createdKnowledgeSpace = knowledgeSpaceService.save(ks);
+        knowledgeSpaceService.setKnowledgeSpaceToBeActive(createdKnowledgeSpace);
+        return new ResponseEntity<>(createdKnowledgeSpace, HttpStatus.OK);
     }
 
     @CrossOrigin()
@@ -94,6 +98,7 @@ public class KnowledgeSpaceAPI {
         KnowledgeSpace ks = new KnowledgeSpace();
         ks.setTitle("iita knowledge space ");
         ks.setCreatedAt(new Date());
+        ks.setType(KnowledgeSpaceType.IITA);
         ks.setDomain(domainProblems.get(0).getDomain());
 
 
@@ -136,6 +141,12 @@ public class KnowledgeSpaceAPI {
         return new ResponseEntity<>(createdKnowledgeSpace, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_TEACHER', 'ROLE_STUDENT')")
+    @GetMapping(value = "/course/{courseId}/active")
+    public  ResponseEntity<KnowledgeSpace> getImplications(@PathVariable("courseId") Long courseId){
+        Domain d = domainService.findByCourseId(courseId);
+        return new ResponseEntity<>(d.getActiveKnowledgeSpace(),HttpStatus.OK);
+    }
 
     @PreAuthorize("hasRole('ROLE_TEACHER')")
     @PostMapping(value = "/implications", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
