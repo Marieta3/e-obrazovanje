@@ -13,6 +13,20 @@
         </VueDiagramEditor>
       </v-col>
     </v-row>
+    <v-row class="d-flex justify-space-around">
+        <v-col>
+            <v-btn max-height="20" max-width="5"   :color="colors[0]"/>
+            {{ks1Descript}}
+        </v-col>
+        <v-col>
+            <v-btn max-height="20" max-width="5"  :color="colors[1]"/>
+            {{ks2Descript}}
+        </v-col>
+        <v-col>
+            <v-btn max-height="20" max-width="5"   :color="colors[2]"/>
+            {{'same for both'}}
+        </v-col>
+    </v-row>
   </v-container>
 </template>
 
@@ -32,6 +46,10 @@ export default {
      ks1Links: [],
      ks2Links:[],
      sharedLinks: [],
+     cubeSize: 10,
+     colors: ['#457b9d',"#723d46","rgb(0,200,0)"],
+     ks1Descript: "",
+     ks2Descript: "",
      id: 1
   }),
   mounted() {
@@ -55,13 +73,10 @@ export default {
       return false
     },
 
-    nodePulsable(node) {
-      console.log(node.coordinates.y > 200)
-      //TODO: pulsira node ako je sam 
+    nodePulsable() {
       return false
     },
-    createLink(data){
-      console.log(data.id)
+    createLink(){
     },
     addNewNode(node, cords){
         let newNode = {
@@ -94,14 +109,16 @@ export default {
                     this.ks1Links = response.data.ks1.links
                     this.ks2Links = response.data.ks2.links
                     this.sharedLinks = response.data.links
+                    this.ks1Descript = response.data.ks1.title
+                    this.ks2Descript = response.data.ks2.title
                 }
                 }).catch(() => {
                 alert("greska")
                 })
                 
-       this.styleLinks(this.ks1Links,"#457b9d")
-       this.styleLinks(this.ks2Links,"#723d46")
-       this.styleLinks(this.sharedLinks,"rgb(0,200,0)")
+       this.styleLinks(this.ks1Links, this.colors[0])
+       this.styleLinks(this.ks2Links, this.colors[1])
+       this.styleLinks(this.sharedLinks, this.colors[2])
         
     },
     styleLinks(links,style){ 
