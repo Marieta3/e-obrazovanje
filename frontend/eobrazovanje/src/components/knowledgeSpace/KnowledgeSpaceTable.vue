@@ -37,7 +37,6 @@
           },
           { text: 'Type', value: 'type' },
           { text: '', value: 'show', sortable: false },
-          { text: 'Is active', value: 'active' },
         ],
         knowledgeSpaces: [],
       }

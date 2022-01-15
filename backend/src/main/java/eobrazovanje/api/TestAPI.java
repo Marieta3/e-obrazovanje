@@ -10,6 +10,7 @@ import eobrazovanje.model.Question;
 import eobrazovanje.model.Test;
 import eobrazovanje.service.ICourseService;
 import eobrazovanje.service.IDomainProblemService;
+import eobrazovanje.service.IQuestionService;
 import eobrazovanje.service.ITestService;
 import eobrazovanje.util.Converter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 import static eobrazovanje.util.Connection.hasRole;
 //import javax.validation.Valid;
@@ -39,6 +42,9 @@ public class TestAPI {
     private ITestService testService;
 
     @Autowired
+    private IQuestionService questionService;
+
+    @Autowired
     private ICourseService courseService;
 
     @Autowired
@@ -48,6 +54,15 @@ public class TestAPI {
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_TEACHER', 'ROLE_STUDENT')")
     public TestDTO FindTestById(@PathVariable("id") Long id){
         Test test = testService.findById(id);
+        Set<Long> domainProblemIds = new HashSet<>();
+        for(Question q :test.getQuestions()){
+            domainProblemIds.add(q.getDomainProblem().getId());
+        }
+        Set<Question> questionsToAsk = new HashSet<>();
+        for(Long dpId : domainProblemIds){
+            questionsToAsk.add(questionService.getRandomQuestionForDomainProblemId(dpId));
+        }
+        test.setQuestions(questionsToAsk);
         return Converter.convertTestToTestDTO(test, !hasRole("ROLE_STUDENT"));
     }
 

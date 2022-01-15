@@ -14,6 +14,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "knowledge_spaces")
+@Getter @Setter
 public class KnowledgeSpace {
 
     @Id
@@ -23,7 +24,6 @@ public class KnowledgeSpace {
 
     @CreatedDate
     @Column(name = "created_at", nullable = false, updatable = false)
-    @Getter @Setter
     private Date createdAt = new Date();
 
     @Column(name = "title")
@@ -39,8 +39,10 @@ public class KnowledgeSpace {
 
     @OneToMany(mappedBy = "knowledgeSpace", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JsonManagedReference("states")
-    @Getter @Setter
     private Set<State> states = new HashSet<>();
+
+    @Enumerated(EnumType.STRING)
+    private KnowledgeSpaceType type;
 
     public KnowledgeSpace() {
     }
@@ -52,44 +54,13 @@ public class KnowledgeSpace {
         this.domain = domain;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public Set<Link> getLinks() {
-        return links;
-    }
-
-    public void setLinks(Set<Link> links) {
-        this.links = links;
-    }
-
-    public Domain getDomain() {
-        return domain;
-    }
-
-    public void setDomain(Domain domain) {
-        this.domain = domain;
-    }
 
     @Override
     public String toString() {
         return "KnowledgeSpace{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
-                ", links=" + links +
+                ", type='" + type.toString() + '\'' +
                 '}';
     }
 

@@ -14,8 +14,6 @@ public class KnowledgeSpaceDescriptionDTO {
     private Date createdAt;
     @Getter @Setter
     private String type;
-    @Getter @Setter
-    private boolean isActive;
 
     public KnowledgeSpaceDescriptionDTO() {
     }
@@ -23,14 +21,12 @@ public class KnowledgeSpaceDescriptionDTO {
     public KnowledgeSpaceDescriptionDTO(KnowledgeSpace knowledgeSpace){
         this.id = knowledgeSpace.getId();
         this.createdAt = knowledgeSpace.getCreatedAt();
-        this.type = "TEST";
-        this.isActive = true;
+        this.type = knowledgeSpace.getType().toString();
     }
 
-    public KnowledgeSpaceDescriptionDTO(Long id, Date createdAt, String type, boolean isActive) {
+    public KnowledgeSpaceDescriptionDTO(Long id, Date createdAt, String type) {
         this.id = id;
         this.createdAt = createdAt;
         this.type = type;
-        this.isActive = isActive;
     }
 }

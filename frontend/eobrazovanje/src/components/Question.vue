@@ -18,15 +18,6 @@
                 :label="`randomize`"
                 ></v-switch>
           </v-col>
-          <v-col cols="12" md="3" v-else/>
-           <v-col cols="12" md="3" >
-              <v-text-field
-                v-model="question.points"
-                label="Points"
-                :disabled="!hasAnyRole(userTypes.TEACHER)"
-                filled
-            ></v-text-field>
-          </v-col>
       </v-row>
       <!-- TODO ako nije profesor i selektovan je randomize onda promeniti redosled odgovora -->
       <v-row v-for="(item,index) in question.answers" :key="index" justify="center">

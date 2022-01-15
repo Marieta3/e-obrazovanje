@@ -97,7 +97,7 @@ public class Answer {
                 ", text='" + text + '\'' +
                 ", imagePath='" + imagePath + '\'' +
                 ", isCorrect=" + isCorrect +
-                ", question=" + question +
+                ", question=" + question.getId() +
                 ", accuracy=" + accuracy +
                 '}';
     }

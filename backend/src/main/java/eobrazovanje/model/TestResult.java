@@ -4,10 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = "test_results")
@@ -130,6 +127,7 @@ public class TestResult {
     public void addAnswer(Answer answer){
         answers.add(answer);
     }
+
 
     @Override
     public boolean equals(Object o) {

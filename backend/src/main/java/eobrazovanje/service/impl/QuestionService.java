@@ -15,4 +15,9 @@ public class QuestionService implements IQuestionService {
     public Question getRandomQuestionForDomainProblemId(Long domainProblemId) {
         return questionRepository.getRandomQuestionForDomainProblemId(domainProblemId).get(0);
     }
+
+    @Override
+    public Long getDomainProblemIdByQuestionId(Long questionId) {
+        return questionRepository.getDomainProblemIdByQuestionId(questionId);
+    }
 }

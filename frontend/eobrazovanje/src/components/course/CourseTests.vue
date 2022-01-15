@@ -62,7 +62,7 @@ export default {
         },
         redirectToTest(testId){
             if(comm.hasRole("ROLE_STUDENT"))
-                this.$router.push({name: 'StudentTest', params: {testId: testId}})
+                this.$router.push({name: 'StudentTest', params: {courseId: this.courseId, testId: testId}})
             else    
                 this.$router.push({name: 'Test', params: {courseId : this.courseId, testId: testId}})
             
