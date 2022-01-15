@@ -101,14 +101,14 @@ public class KnowledgeSpaceAPI {
         ks.setType(KnowledgeSpaceType.IITA);
         ks.setDomain(domainProblems.get(0).getDomain());
 
-
         ArrayList<KnowledgeSpaceNode> ksNodes = new ArrayList<>();
         int cnt = 0;
         for(DomainProblem dp: domainProblems){
+            Coordinates coords = knowledgeSpaceService.getCoordinatesForDomainProblem(dp.getId());
             KnowledgeSpaceNode ksNode = new KnowledgeSpaceNode();
             ksNode.setNode(dp);
             ksNode.setSize(new Size(150.0, 150.0));
-            ksNode.setCoordinates(new Coordinates(cnt*30.0, cnt*30.0));
+            ksNode.setCoordinates(coords);
             ksNodes.add(ksNode);
             cnt++;
         }
@@ -195,7 +195,15 @@ public class KnowledgeSpaceAPI {
         ArrayList<Link> ks2_links = new ArrayList<>(ks2.getLinks());
 
         for(Link l1: ks1.getLinks()){
+            KnowledgeSpaceNode startKsn = l1.getStartNode();
+            startKsn.setId(startKsn.getNode().getId());
+            KnowledgeSpaceNode endKsn = l1.getEndNode();
+            endKsn.setId(endKsn.getNode().getId());
             for(Link l2: ks2.getLinks()){
+                KnowledgeSpaceNode startKsn2 = l2.getStartNode();
+                startKsn2.setId(startKsn2.getNode().getId());
+                KnowledgeSpaceNode endKsn2 = l2.getEndNode();
+                endKsn2.setId(endKsn2.getNode().getId());
                 if(l1.equalsByNodes(l2)){
                     common_links.add(l1);
                     ks1_links.remove(l1);

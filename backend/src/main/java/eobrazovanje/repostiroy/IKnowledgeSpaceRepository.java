@@ -1,5 +1,6 @@
 package eobrazovanje.repostiroy;
 
+import eobrazovanje.model.Coordinates;
 import eobrazovanje.model.KnowledgeSpace;
 import eobrazovanje.model.Test;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -21,4 +22,5 @@ public interface IKnowledgeSpaceRepository extends JpaRepository<KnowledgeSpace,
     @Modifying
     @Query(value = "update Domain d set d.activeKnowledgeSpace.id = ?1 where d.id = ?2")
     void setKnowledgeSpaceToBeActive(Long knowledgeSpaceId, Long domainId);
+
 }

@@ -1,5 +1,6 @@
 package eobrazovanje.service;
 
+import eobrazovanje.model.Coordinates;
 import eobrazovanje.model.KnowledgeSpace;
 import java.util.List;
 
@@ -16,4 +17,6 @@ public interface IKnowledgeSpaceService {
     List<KnowledgeSpace> findByDomainId(Long domainId);
 
     void setKnowledgeSpaceToBeActive(KnowledgeSpace knowledgeSpace);
+
+    Coordinates getCoordinatesForDomainProblem(Long domainProblemId);
 }
