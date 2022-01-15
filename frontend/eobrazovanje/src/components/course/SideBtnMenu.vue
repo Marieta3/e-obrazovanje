@@ -3,6 +3,7 @@
       <v-row><v-btn @click="showTests()" :width="width" class="ma-2" :color="color">Tests</v-btn></v-row>
       <v-row><v-btn @click="showKnowledgeSpaces()" :width="width" class="mx-2" :color="color">Knowledge spaces</v-btn></v-row>
       <v-row><v-btn @click="showDomain()" :width="width" class="ma-2" :color="color">Domain</v-btn></v-row>
+      <v-row><v-btn @click="showCompareKnowledgeSpaces()" :width="width" class="ma-2" :color="color">Compare KS</v-btn></v-row>
   </v-container>
 </template>
 
@@ -24,6 +25,9 @@ export default {
         },
         showDomain(){
             this.$router.push({name: 'Course.Domain', params: {courseId : this.courseId}})
+        },
+        showCompareKnowledgeSpaces(){
+            this.$router.push({name: 'Course.CompareKnowledgeSpaces', params: {courseId : this.courseId}})
         }
     }
 }

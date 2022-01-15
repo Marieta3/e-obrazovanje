@@ -1,6 +1,8 @@
 package eobrazovanje.service.impl;
 
+import eobrazovanje.model.Coordinates;
 import eobrazovanje.model.KnowledgeSpace;
+import eobrazovanje.repostiroy.IKnowledgeSpaceNodeRepository;
 import eobrazovanje.repostiroy.IKnowledgeSpaceRepository;
 import eobrazovanje.service.IKnowledgeSpaceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,9 @@ public class KnowledgeSpaceService implements IKnowledgeSpaceService {
 
     @Autowired
     private IKnowledgeSpaceRepository knowledgeSpaceRepository;
+
+    @Autowired
+    private IKnowledgeSpaceNodeRepository knowledgeSpaceNodeRepository;
 
     @Override
     public KnowledgeSpace findById(Long id) {
@@ -50,6 +55,11 @@ public class KnowledgeSpaceService implements IKnowledgeSpaceService {
         Long ksId = knowledgeSpace.getId();
         Long dId = knowledgeSpace.getDomain().getId();
         knowledgeSpaceRepository.setKnowledgeSpaceToBeActive(ksId,dId);
+    }
+
+    @Override
+    public Coordinates getCoordinatesForDomainProblem(Long domainProblemId) {
+        return knowledgeSpaceNodeRepository.getCoordinatesForDomainProblem(domainProblemId).get(0).getCoordinates();
     }
 
 }

@@ -64,6 +64,13 @@ const routes = [{
           import ('../components/knowledgeSpace/KnowledgeSpaceTable.vue')
       },
       {
+        path: 'knowledge-spaces/compare',
+        props: true,
+        name: 'Course.CompareKnowledgeSpaces',
+        component: () =>
+          import ('../components/knowledgeSpace/CompareKnowledgeSpaces.vue')
+      },
+      {
         path: 'domain',
         props: true,
         name: 'Course.Domain',
