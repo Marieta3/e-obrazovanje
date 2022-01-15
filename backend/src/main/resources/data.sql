@@ -58,6 +58,9 @@ INSERT INTO "knowledge_spaces" ("created_at", "title", "domain_id","type") VALUE
 ('2021-12-13 18:17:57.696',	'iita za prvi domen',	1,'IITA'),
 ('2021-12-27 23:32:06.623',	'profa generisao za drugi domen',	2,'MANUAL');                                -- id 2
 
+UPDATE "domains" SET "active_knowledge_space_id" = 2 where "id" = 1;
+UPDATE "domains" SET "active_knowledge_space_id" = 3 where "id" = 2;
+
 INSERT INTO "links" ("end_domain_problem_id", "knowledge_space_id", "start_domain_problem_id") VALUES
 (3,	1,	1),
 (2,	1,	3),
