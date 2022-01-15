@@ -29,6 +29,9 @@ export default {
   data: () => ({
      nodes: {},
      common: [],
+     ks1Links: [],
+     ks2Links:[],
+     sharedLinks: [],
      id: 1
   }),
   mounted() {
@@ -45,9 +48,7 @@ export default {
     format(node) {
       return node.data.description;
     },
-    nodeColor(node) {
-        if(this.isNodeInCommonLinks(node.id))
-            return '#0f0'
+    nodeColor() {
         return '#00f';
     },
     deletable(){
@@ -77,10 +78,10 @@ export default {
         }
         this.$refs.diagram.addNode(newNode)  
     },
-    getKnowledgeSpaces(){
+    async getKnowledgeSpaces(){
       console.log("usao")
       let config = { headers: comm.getHeader() }
-      axios.get(comm.protocol +'://' + comm.server + '/knowledge-spaces/compare-ks1/'+this.courseId, config)
+      await axios.get(comm.protocol +'://' + comm.server + '/knowledge-spaces/compare-ks1/'+this.courseId, config)
                 .then(response => {
                 if(response.status==200){
                     console.log(response.data)
@@ -90,13 +91,24 @@ export default {
                        nodes: response.data.ks2.nodes,
                        links: links
                     })
-                    
+                    this.ks1Links = response.data.ks1.links
+                    this.ks2Links = response.data.ks2.links
+                    this.sharedLinks = response.data.links
                 }
                 }).catch(() => {
                 alert("greska")
                 })
+                
+       this.styleLinks(this.ks1Links,"#457b9d")
+       this.styleLinks(this.ks2Links,"#723d46")
+       this.styleLinks(this.sharedLinks,"rgb(0,200,0)")
+        
     },
-    
+    styleLinks(links,style){ 
+        for(let l of links){
+            document.getElementById(l.id).children[1].style.stroke = style
+        }
+    },
     isNodeInCommonLinks(id){
         for(let l of this.common){
             if(l.start_id == id || l.end_id == id)
@@ -108,7 +120,7 @@ export default {
         let result = []
         for(let l of links){
             for(let con of l){
-                con.id = 'l'+con.id
+                con.id = "l"+con.id
                 result.push(con)
             }
         }
