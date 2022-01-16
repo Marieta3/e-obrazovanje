@@ -22,6 +22,10 @@ public class Course {
     @Column(name = "name")
     private String name;
 
+    @Getter @Setter
+    @Column(name = "identifier")
+    private String identifier;
+
     @Column(name = "description")
     private String description;
 

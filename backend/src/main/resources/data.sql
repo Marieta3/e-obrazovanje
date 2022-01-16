@@ -107,6 +107,27 @@ INSERT INTO "courses" ("description", "name", "domain_id", "teacher_id") VALUES
 ('Prvi kurs koji polazu polaznici, predmet kursa je prepoznavanje',	'Prvi kurs PK',	1,	4),
 ('This learning path will teach you how to create awesome apps using low-code.\nIf you have a business analyst focus, this is the path for you, as it focuses on both Mendix Studio and Mendix Studio pro.',	'Become a Rapid Developer',	2,	4);
 
+INSERT INTO "courses" ("name", "identifier", "description") VALUES
+('Osnove programiranja', '17 - SE0001', 'Upoznavanje studenata sa osnovnim konceptima, elementima i strukturom računarskih programa, i osnovnim algoritmima za obradu podataka.'),
+('Arhitektura računara','17 - SE0014','Upoznavanje studenata sa osnovnim pojmovima računarske arhitekture, principima rada, strukturnom organizacijom računara i načinima njegove implementacije.'),
+('Algebra','17 - SE0002','Osposobljavanje studenata na apstraktno mišljenje i sticanje osnovnih znanja iz oblasti elementarne, opšte, apstraktne i linearne algebre, kao i iz osnova klasične kombinatorike. Cilj predmeta je da...'),
+('Sociologija tehnike','17 - E106','Osposobljenost inženjera da shvate društveni značaj i ulogu tehnike u razvoju društva, pozitine i negativne uticaje tehnike na razvoj društva i čoveka, kao i vlastiti  društveni značaj i odgovornost u stvaranju humanog društva.'),
+('Web dizajn','17 - SEN006','Osposobljavanje studenata za rukovanje tehnologijama izrade web sadržaja i upoznavanje sa principima web dizajna.'),
+('Internet mreže','17 - E233','Ovladavanje teorijskim osnovama i tehnologijama TCP/IP mreža.'),
+('Objektno orijentisano programiranje 1','17 - SE0006','Osposobljavanje studenata za rešavanje problema iz oblasti objektno orijetnisanog programiranja.'),
+('Algoritmi i strukture podataka','17 - SE0008','Upoznavanje studenata sa strukturama podataka u operativnoj memoriji i razvojem programa koji ih koriste.'),
+('Matematička analiza','17 - E212S','Cilj predmeta je sticanje osnovnih znanja iz oblasti matematičke analize neophodnih za dalje izučavanje bliskih predmeta i osposobljavanje studenata za apstraktno mišljenje. Stečena znanja iz matematičke ...'),
+('Objektno orijentisano programiranje 2','17 - SE1006','Upoznavanje studenata sa naprednim konceptima objektno-orijentisanog pristupa upotrebom programskog jezika Ce++ i razvojem programa istovremenom upotrebom više programerskih paradigmi ...'),
+('Organizacija podataka','17 - SE0013','Osnovno obrazovanje studenata u oblasti organizacije podataka u sistemima datoteka i sistemima relacionih i nerelacionih (NoSQL) baza podataka. Ovladavanje modelima podataka i fizičkim strukturama podataka na eksternim memorijskim uređajima.'),
+('Numerički algoritmi i numerički softver','17 - E231','Ovladavanje osnovnim znanjima iz numeričke analize, ovladavanje metodoologijom primene numeričkih modela u inženjerskim disciplinama, ovladavanje korišćenjem odabranog standardnog numeričkog softverskog alata.'),
+('Nelinearno programiranje i evolutivni algoritmi','17 - SEAU01','Ovladavanje osnovnim principima nelinearne optimizacije (nelinearnog programiranja) i osnovnim principima evolutivnih algoritama.'),
+('Diskretna matematika','17 - SE0009','Osnovni cilj predmeta jeste osposobljavanje studenata na apstraktno mišljenje i sticanje osnovnih znanja iz oblasti  klasičnih kombinatornih objekata, neklasičnih kombinatornih objekata i teorije grafova. Studenti će učiti da klasifikuju probleme...'),
+('Uvod u softversko inženjerstvo','17 - SE0011','Osposobiti studente za primenu savremenih metoda, alata i najbolje prakse u procesu inženjerskog razvoja softvera. Omogućiti jasnu diferencijaciju između programiranja i softverskog inženjerstva i uloge modela životnog ciklusa softvera u procesu...'),
+('Baze podataka','17 - SE0016','Osnovno obrazovanje studenata u oblasti baza podataka. Ovladavanje osnovnim pojmovima u oblasti baza podataka i osnovnim tehnikama implementacije, korišćenja i održavanja baza podataka.'),
+('Operativni sistemi','17 - SE0031','Upoznavanje studenata sa pojmom operativnog sistema, njegovim osnovnim delovima i strukturom, principima rada, kao i načinima za njegovu implementaciju.'),
+('Softverski obrasci i komponente','17 - SES40','Ovladavanje osnovnim teorijskim znanjima, tehnikama, alatima i preporučenom praksom iz oblasti softverskih obrazaca (Software Patterns) i razvoja softvera baziranog na komponentama (Component-Based Development – CBD). Osposobljavanje studenata za...');
+
+
 INSERT INTO "tests" ("title", "course_id") VALUES
 ('Prvi test',	1),
 ('Mendix Rapid',	2);

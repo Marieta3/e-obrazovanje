@@ -45,7 +45,7 @@ public class Converter {
     }
 
     public static CourseDTO courseToCourseDTO(Course course){
-        return new CourseDTO(course.getId(), course.getName(), course.getDescription(), course.getTeacher().getId());
+        return new CourseDTO(course.getId(), course.getName(), course.getDescription(), course.getTeacher().getId(), course.getIdentifier());
     }
 
     public static List<CourseDTO> coursesToCourseDTOs(List<Course> courses){

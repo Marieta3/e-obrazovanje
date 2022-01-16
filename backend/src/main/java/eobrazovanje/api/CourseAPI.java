@@ -49,6 +49,7 @@ public class CourseAPI {
         course.setName(courseDTO.getName());
         course.setDescription(courseDTO.getDescription());
         course.setTeacher((Teacher) userService.findById(courseDTO.getTeacherId()));
+        course.setIdentifier(courseDTO.getIdentifier());
         return new ResponseEntity<>(courseService.save(course), HttpStatus.OK);
     }
 
