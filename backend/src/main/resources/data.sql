@@ -5,40 +5,36 @@ values
 ('student','Marko','Markovic','mare021','$2a$10$kMLJl/fG/j6OHIPLKUC8fetWtt1cXv8fgJTOpOLRSQcotxsmyCDJy',TRUE, 'R2-123-2021'), -- sifra 123, id 1
 ('student','Petar','Petrovic','pero','$2a$10$GQHFBBU1gG8y0W5uT7zFsO90TayiQ7ALfMlWlipIttUCKIalP0qli',TRUE, 'R2-456-2021'),    -- id 2
 ('student','Nadja','Higl','nadja','$2a$10$GQHFBBU1gG8y0W5uT7zFsO90TayiQ7ALfMlWlipIttUCKIalP0qli',TRUE, 'R2-654-2021'),
-('student','Jelena','Arsic','jelena','$2a$10$GQHFBBU1gG8y0W5uT7zFsO90TayiQ7ALfMlWlipIttUCKIalP0qli',TRUE, 'R2-222-2021'), 
-('student','Marija','Lazovic','mara','$2a$10$GQHFBBU1gG8y0W5uT7zFsO90TayiQ7ALfMlWlipIttUCKIalP0qli',TRUE, 'R2-111-2021'), 
+('student','Jelena','Arsic','jelena','$2a$10$GQHFBBU1gG8y0W5uT7zFsO90TayiQ7ALfMlWlipIttUCKIalP0qli',TRUE, 'R2-222-2021'),
+('student','Marija','Lazovic','mara','$2a$10$GQHFBBU1gG8y0W5uT7zFsO90TayiQ7ALfMlWlipIttUCKIalP0qli',TRUE, 'R2-111-2021'),
 ('student','Veljko','Misic','veljas','$2a$10$GQHFBBU1gG8y0W5uT7zFsO90TayiQ7ALfMlWlipIttUCKIalP0qli',TRUE, 'R2-333-2021'),
-('student','Monika','Guric','monika','$2a$10$GQHFBBU1gG8y0W5uT7zFsO90TayiQ7ALfMlWlipIttUCKIalP0qli',TRUE, 'R2-455-2021'),  
-('student','Zoran','Velickovic','zoranV','$2a$10$GQHFBBU1gG8y0W5uT7zFsO90TayiQ7ALfMlWlipIttUCKIalP0qli',TRUE, 'R2-733-2021'), 
+('student','Monika','Guric','monika','$2a$10$GQHFBBU1gG8y0W5uT7zFsO90TayiQ7ALfMlWlipIttUCKIalP0qli',TRUE, 'R2-455-2021'),
+('student','Zoran','Velickovic','zoranV','$2a$10$GQHFBBU1gG8y0W5uT7zFsO90TayiQ7ALfMlWlipIttUCKIalP0qli',TRUE, 'R2-733-2021'),
 ('student','Vesna','Subicin','vesna','$2a$10$GQHFBBU1gG8y0W5uT7zFsO90TayiQ7ALfMlWlipIttUCKIalP0qli',TRUE, 'R2-955-2021'),
 ('student','Ivan','Dejic','deja','$2a$10$GQHFBBU1gG8y0W5uT7zFsO90TayiQ7ALfMlWlipIttUCKIalP0qli',TRUE, 'R2-135-2021'),
 ('student','Jovan','Subasic','jovan','$2a$10$GQHFBBU1gG8y0W5uT7zFsO90TayiQ7ALfMlWlipIttUCKIalP0qli',TRUE, 'R2-364-2020'),
 ('student','Silvana','Tesic','silvana','$2a$10$GQHFBBU1gG8y0W5uT7zFsO90TayiQ7ALfMlWlipIttUCKIalP0qli',TRUE, 'R2-456-2020'),
 ('student','Dusan','Eric','dusan','$2a$10$GQHFBBU1gG8y0W5uT7zFsO90TayiQ7ALfMlWlipIttUCKIalP0qli',TRUE, 'R2-883-2021'),
-('student','Dusan','Maric','duca','$2a$10$GQHFBBU1gG8y0W5uT7zFsO90TayiQ7ALfMlWlipIttUCKIalP0qli',TRUE, 'R2-856-2021'), 
-('student','Milena','Vesnic','mila','$2a$10$GQHFBBU1gG8y0W5uT7zFsO90TayiQ7ALfMlWlipIttUCKIalP0qli',TRUE, 'R2-777-2021'), 
-('student','Lazar','Jovanovic','lazo','$2a$10$GQHFBBU1gG8y0W5uT7zFsO90TayiQ7ALfMlWlipIttUCKIalP0qli',TRUE, 'R2-399-2021'),  
+('student','Dusan','Maric','duca','$2a$10$GQHFBBU1gG8y0W5uT7zFsO90TayiQ7ALfMlWlipIttUCKIalP0qli',TRUE, 'R2-856-2021'),
+('student','Milena','Vesnic','mila','$2a$10$GQHFBBU1gG8y0W5uT7zFsO90TayiQ7ALfMlWlipIttUCKIalP0qli',TRUE, 'R2-777-2021'),
+('student','Lazar','Jovanovic','lazo','$2a$10$GQHFBBU1gG8y0W5uT7zFsO90TayiQ7ALfMlWlipIttUCKIalP0qli',TRUE, 'R2-399-2021'),
 ('student','Aco','Pejovic','aca','$2a$10$GQHFBBU1gG8y0W5uT7zFsO90TayiQ7ALfMlWlipIttUCKIalP0qli',TRUE, 'R2-315-2021'),
-('student','Rada','Manojlovic','rada','$2a$10$GQHFBBU1gG8y0W5uT7zFsO90TayiQ7ALfMlWlipIttUCKIalP0qli',TRUE, 'R2-316-2021'),  
-('student','Arandjel','Zivadinovic','arandjel','$2a$10$GQHFBBU1gG8y0W5uT7zFsO90TayiQ7ALfMlWlipIttUCKIalP0qli',TRUE, 'R2-419-2021'), 
+('student','Rada','Manojlovic','rada','$2a$10$GQHFBBU1gG8y0W5uT7zFsO90TayiQ7ALfMlWlipIttUCKIalP0qli',TRUE, 'R2-316-2021'),
+('student','Arandjel','Zivadinovic','arandjel','$2a$10$GQHFBBU1gG8y0W5uT7zFsO90TayiQ7ALfMlWlipIttUCKIalP0qli',TRUE, 'R2-419-2021'),
 ('student','Nebojsa','Zivanovic','neso','$2a$10$GQHFBBU1gG8y0W5uT7zFsO90TayiQ7ALfMlWlipIttUCKIalP0qli',TRUE, 'R2-221-2021'),
-('student','Nikola','Obradovic','nikola','$2a$10$GQHFBBU1gG8y0W5uT7zFsO90TayiQ7ALfMlWlipIttUCKIalP0qli',TRUE, 'R2-998-2021'); 
+('student','Nikola','Obradovic','nikola','$2a$10$GQHFBBU1gG8y0W5uT7zFsO90TayiQ7ALfMlWlipIttUCKIalP0qli',TRUE, 'R2-998-2021');
 
 insert into users (user_type,first_name,last_name,username,password,enabled)
 values
 ('admin','Marta','Martic','martaa','$2a$10$GwmzvbZUxoDR.4tlCLauve7C7qKtDR1q15OcFKCGM4FcT/f5q/H1.',TRUE),      -- id 3
-('teacher','Eva','Ras','eva','$2a$10$nzYuqq4AvIAH42I.f.jQDuL0247GwUFU5yF2SiSl.o5qFeU4z95DC',TRUE), 
-('teacher','Elon','Musk','elon','$2a$10$nzYuqq4AvIAH42I.f.jQDuL0247GwUFU5yF2SiSl.o5qFeU4z95DC',TRUE),     
-('teacher','Zoran','Djindjic','zorandj','$2a$10$nzYuqq4AvIAH42I.f.jQDuL0247GwUFU5yF2SiSl.o5qFeU4z95DC',TRUE),   
-('teacher','Zivojin','Misic','zivojin','$2a$10$nzYuqq4AvIAH42I.f.jQDuL0247GwUFU5yF2SiSl.o5qFeU4z95DC',TRUE),   
-('teacher','Nikola','Tesla','tesla','$2a$10$nzYuqq4AvIAH42I.f.jQDuL0247GwUFU5yF2SiSl.o5qFeU4z95DC',TRUE),
-('teacher','Natasa','Bekvalac','natasa','$2a$10$nzYuqq4AvIAH42I.f.jQDuL0247GwUFU5yF2SiSl.o5qFeU4z95DC',TRUE), 
-('teacher','Jovana','Bjelica','bjelica','$2a$10$nzYuqq4AvIAH42I.f.jQDuL0247GwUFU5yF2SiSl.o5qFeU4z95DC',TRUE),     -- id 4
-('teacher','Aca','Lukas','lukas','$2a$10$nzYuqq4AvIAH42I.f.jQDuL0247GwUFU5yF2SiSl.o5qFeU4z95DC',TRUE);         -- id 5
+('teacher','Eva','Ras','eva','$2a$10$nzYuqq4AvIAH42I.f.jQDuL0247GwUFU5yF2SiSl.o5qFeU4z95DC',TRUE),            -- id 4
+('teacher','sdkfs','adsa','ddd','$2a$10$nzYuqq4AvIAH42I.f.jQDuL0247GwUFU5yF2SiSl.o5qFeU4z95DC',TRUE);         -- id 5
+
 
 
 insert into user_authority (user_id, authority_id)
-values (1,1),(2,1),(3,3),(4,2),(5,2) ;
+values (1,1),(2,1),(3,1),(4,1),(5,1),(6,1),(7,1),(8,1),(9,1),(10,1),(11,1),(12,1),(13,1),(14,1),(15,1),(16,1),
+(17,1),(18,1),(19,1),(20,1),(21,1),(22,3),(23,2),(24,2) ;
 
 INSERT INTO "domains" ("title") VALUES
 ('Prvi domen'), -- id 1
