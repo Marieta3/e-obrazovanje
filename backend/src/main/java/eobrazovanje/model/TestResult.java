@@ -2,6 +2,8 @@ package eobrazovanje.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.*;
@@ -23,6 +25,10 @@ public class TestResult {
 
     @Column(name = "points")
     private int points;
+
+    @OneToOne
+    @Getter @Setter
+    private State studentState;
 
     @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JoinTable(name = "test_result_answer", joinColumns = @JoinColumn(name = "test_result_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "answer_id", referencedColumnName = "id"))

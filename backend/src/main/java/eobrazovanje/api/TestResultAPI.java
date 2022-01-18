@@ -4,6 +4,7 @@ import eobrazovanje.dto.*;
 import eobrazovanje.model.*;
 import eobrazovanje.service.IUserService;
 import eobrazovanje.service.impl.*;
+import eobrazovanje.util.Converter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -70,6 +71,20 @@ public class TestResultAPI {
         return new ResponseEntity<>(answers, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('ROLE_STUDENT')")
+    @GetMapping(value = "/{id}/state")
+    public ResponseEntity<?> getStudentStateForTestResult(@PathVariable("id") Long testId){
+        TestResult tr = testResultService.findById(testId);
+        List<DomainProblemDescriptionDTO> result = new ArrayList<>();
+        for(DomainProblem dp : tr.getTest().getCourse().getDomain().getDomainProblems()){
+            DomainProblemDescriptionDTO dpDTO = new DomainProblemDescriptionDTO(dp);
+            dpDTO.setStudentKnow(tr.getStudentState().containsDomainProblem(dp.getId()));
+            result.add(dpDTO);
+        }
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+
     @PreAuthorize("hasAnyRole('ROLE_STUDENT', 'ROLE_TEACHER')")
     @PostMapping(value = "/results", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> questResults(@RequestBody TestResultDTO testResultDTO){
@@ -109,7 +124,7 @@ public class TestResultAPI {
 
         Set<Long> availableDomainProblemsIds;
         TestResult testResult;
-
+        State studentState = null;
         double maxProbability=0;
         final double THRESHOLD = 0.7;
         if(answerDTO.getTestResultId()==null && answerDTO.getTestId() != null){
@@ -151,6 +166,7 @@ public class TestResultAPI {
             Set<Long> domainProblemsInMaximalProbabilityStates = new HashSet<>();
             for(State s: states){
                 if(s.getProbability()==maxProbability){
+                    studentState = s;
                     for(DomainProblem dp : s.getDomainProblems()){
                         domainProblemsInMaximalProbabilityStates.add(dp.getId());
                     }
@@ -173,6 +189,7 @@ public class TestResultAPI {
 
         if(availableDomainProblemsIds.isEmpty() || maxProbability >= THRESHOLD) {
             testResult.setEndTime(new Date());
+            testResult.setStudentState(studentState);
             testResultService.save(testResult);
             return null;
         }
