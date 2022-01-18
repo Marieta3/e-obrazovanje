@@ -1,11 +1,21 @@
 <template>
-  <div>
-      Student state
-
-      <div v-for="d in domainProblems" :key="d.id">
-          <p>{{d.studentKnow}} -- {{d.title}}</p>
+  <span>
+      <div>
+        <h1>Student state</h1>
       </div>
-  </div>
+      <div>
+        <h3>Oblast koje student zna:</h3>
+        <div v-for="d in getCorrectDomainProblems(true)" :key="d.id">
+            <p>{{d.title}}</p>
+        </div>
+      </div>
+      <div>
+        <h3>Oblasti koje student ne zna:</h3>
+        <div v-for="d in getCorrectDomainProblems(false)" :key="d.id">
+            <p>{{d.title}}</p>
+        </div>
+    </div>
+  </span>
 </template>
 
 <script>
@@ -30,6 +40,16 @@ export default {
                 }).catch(()=>{
                     alert("greska")
                 })
+    },
+    methods: {
+        getCorrectDomainProblems(correct){
+            let result = []
+            for(let dp of this.domainProblems){
+                if(dp.studentKnow== correct)
+                    result.push(dp)
+            }
+            return result;
+        }
     }
 }
 </script>
