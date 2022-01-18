@@ -130,8 +130,17 @@
                 axios.post(comm.protocol+'://'+comm.server+'/test-results', data, config)
                     .then(response => {
                         if(response.status==200) {
-                        this.question=response.data.question
-                        this.forceRerender()
+                            console.log("response")
+                            console.log(response.data)
+                            if(response.data){
+                                this.question=response.data.question
+                                this.testResultId = response.data.testResultId
+                                this.forceRerender()
+                            }else{
+                                if(this.testResultId != null){
+                                     this.$router.push({name: 'StudentState', params: {id : this.testResultId}})
+                                }
+                            }
                         }
                     }).catch(() => {
                         alert("greska")

@@ -30,6 +30,13 @@ const routes = [{
       import ('../components/course/CreateCourse')
   },
   {
+    path: '/test-result/:id/state',
+    props: true,
+    name: 'StudentState',
+    component: () =>
+      import ('../components/test/StudentState.vue')
+  },
+  {
     path: '/tests/:testId',
     props: true,
     name: 'StudentTest',
