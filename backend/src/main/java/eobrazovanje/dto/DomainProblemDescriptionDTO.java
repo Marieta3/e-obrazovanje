@@ -12,6 +12,8 @@ public class DomainProblemDescriptionDTO {
     private Long id;
     @Getter @Setter
     private String title, description;
+    @Getter @Setter
+    private boolean studentKnow;
 
     public DomainProblemDescriptionDTO() {
     }
